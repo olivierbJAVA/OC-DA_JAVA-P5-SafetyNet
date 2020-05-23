@@ -10,17 +10,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(scanBasePackages = {"com"} )
+@SpringBootApplication(scanBasePackages = { "com" })
 public class SafetyNetApplication {
 
 	public static void main(String[] args) {
 		Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
 		logger.info("INFO : Launch SafetyNet");
 		logger.debug("DEBUG : Launch SafetyNet");
-		
+
 		SpringApplication.run(SafetyNetApplication.class, args);
 	}
-	
+
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
@@ -35,5 +35,5 @@ public class SafetyNetApplication {
 
 		};
 	}
-	
+
 }

@@ -2,11 +2,16 @@ package com.safetynet.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.safetynet.dao.IFirestationDao;
 import com.safetynet.entities.Firestation;
 
+@Component
 public class FirestationModelImpl implements IFirestationModel {
 
+	@Autowired
 	private IFirestationDao firestationDao;
 
 	public FirestationModelImpl() {

@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.safetynet.entities.MedicalRecord;
 
+@Component
 public class MedicalRecordDaoHashmapImpl implements IMedicalRecordDao {
 
 	private Map<String, MedicalRecord> medicalRecords = new HashMap<>();

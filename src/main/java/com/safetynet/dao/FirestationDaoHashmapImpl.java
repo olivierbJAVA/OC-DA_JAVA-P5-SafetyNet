@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.safetynet.entities.Firestation;
 
+@Component
 public class FirestationDaoHashmapImpl implements IFirestationDao {
 
 	private Map<String, Firestation> firestations = new HashMap<>();

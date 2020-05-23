@@ -2,11 +2,16 @@ package com.safetynet.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.Person;
 
+@Component
 public class PersonModelImpl implements IPersonModel {
 
+	@Autowired
 	private IPersonDao personDao;
 	
 	public PersonModelImpl() {

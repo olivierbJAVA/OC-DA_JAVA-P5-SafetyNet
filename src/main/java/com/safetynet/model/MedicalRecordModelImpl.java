@@ -2,11 +2,16 @@ package com.safetynet.model;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.safetynet.dao.IMedicalRecordDao;
 import com.safetynet.entities.MedicalRecord;
 
+@Component
 public class MedicalRecordModelImpl implements IMedicalRecordModel {
 
+	@Autowired
 	private IMedicalRecordDao medicalRecordDao;
 	
 	public MedicalRecordModelImpl() {
