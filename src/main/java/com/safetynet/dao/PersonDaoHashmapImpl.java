@@ -13,7 +13,7 @@ import com.safetynet.entities.Person;
 @Component
 public class PersonDaoHashmapImpl implements IPersonDao {
 
-	private Map<String, Person> persons = new HashMap<>();
+	private static Map<String, Person> persons = new HashMap<>();
 
 	@Override
 	public void addPerson(Person person) {

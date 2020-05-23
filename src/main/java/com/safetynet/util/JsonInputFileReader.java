@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.dao.FirestationDaoTreemapImpl;
@@ -19,168 +22,120 @@ import com.safetynet.model.PersonModelImpl;
 
 public class JsonInputFileReader {
 
-	public static void main(String[] args) {
-			//InputStream input = new FileInputStream("data.json");
+	private static final Logger logger = LogManager.getLogger("JsonInputFileReader");
 
-			try {
-	        	/*
-	        	ObjectMapper mapper = new ObjectMapper();
-	            // JSON file to Java object
-	            SafetyNetEntity sne = mapper.readValue(new File("data.json"), SafetyNetEntity.class);
+	// InputStream input = new FileInputStream("data.json");
 
-	            // compact print
-	            System.out.println(sne.toString());
+	public static List<Person> readIntitialListPersons() {
+		List<Person> personList;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode rootNode = mapper.readTree(new File("data.json"));
 
-	            // pretty print
-	            String prettyStaff1 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sne);
+			JsonNode jsonNodePersons = rootNode.path("persons");
+			Iterator<JsonNode> iteratorPersons = jsonNodePersons.elements();
+			PersonModelImpl personModel = new PersonModelImpl();
+			PersonDaoHashmapImpl personDao = new PersonDaoHashmapImpl();
+			personModel.setPersonDao(personDao);
 
-	            System.out.println(prettyStaff1);
-				*/
+			ObjectMapper mapperPersons = new ObjectMapper();
+			Person person;
+			int numPerson = 0;
+			while (iteratorPersons.hasNext()) {
+				person = mapperPersons.treeToValue(jsonNodePersons.get(numPerson), Person.class);
+				person.setIdPerson(jsonNodePersons.get(numPerson).get("firstName").asText()
+						+ jsonNodePersons.get(numPerson).get("lastName").asText());
+				personModel.addPerson(person);
+				numPerson++;
+				iteratorPersons.next();
+			}
 
-	        	ObjectMapper mapper = new ObjectMapper();
-	        	JsonNode rootNode = mapper.readTree(new File("data.json"));
+			// pretty print
+			personList = personModel.listPerson();
+			String prettyPersons = mapperPersons.writerWithDefaultPrettyPrinter().writeValueAsString(personList);
+			System.out.println(prettyPersons);
 
-	        	
-	        	
-	        	//persons
-	        	JsonNode jsonNodePersons = rootNode.path("persons");
-	        	//System.out.println(jsonNodePersons.toString());
-	        	Iterator<JsonNode> iteratorPersons = jsonNodePersons.elements();
-	    		
-	        	//PERSONS
-	        	//model
-	        	PersonModelImpl personModel = new PersonModelImpl();
-				PersonDaoHashmapImpl personDao = new PersonDaoHashmapImpl();
-				personModel.setPersonDao(personDao);
-				
-				ObjectMapper mapperPersons = new ObjectMapper();
-				Person person;
-				int numPerson=0;
-	        	while(iteratorPersons.hasNext()) {
-	        			//System.out.println(jsonNodePersons.get(numPerson));
-	        			person = mapperPersons.treeToValue(jsonNodePersons.get(numPerson),Person.class);
-	        			person.setIdPerson(jsonNodePersons.get(numPerson).get("firstName").asText()+jsonNodePersons.get(numPerson).get("lastName").asText());
-	        			personModel.addPerson(person);
-	        			numPerson++;
-	        			iteratorPersons.next();
-	        	}
-	        	
-				//vue
-				/*
-	        	PersonViewConsoleImpl personView = new PersonViewConsoleImpl();
-				personView.setPersonListToPrint(personList);
-				personView.printDetails();
-	        	*/
-	            // pretty print
-	        	List<Person> personList = personModel.listPerson();
-	        	String prettyPersons = mapperPersons.writerWithDefaultPrettyPrinter().writeValueAsString(personList);
-	            System.out.println(prettyPersons);
-				
-	            
-	            
-	        	//firestations
-	        	JsonNode jsonNodeFirestations = rootNode.path("firestations");
-	        	//System.out.println(jsonNodeFirestations.toString());
-	        	Iterator<JsonNode> iteratorFirestations = jsonNodeFirestations.elements();
-	        	
-				// FIRESTATIONS
-				// model
-				FirestationModelImpl firestationModel = new FirestationModelImpl();
-				firestationModel.setFirestationDao(new FirestationDaoTreemapImpl());
-
-				ObjectMapper mapperFirestations = new ObjectMapper();
-	        	Firestation firestation;
-				int numFirestation=0;
-	        	while(iteratorFirestations.hasNext()) {
-	        			//System.out.println(jsonNodePersons.get(numFirestation));
-	        			firestation = mapperFirestations.treeToValue(jsonNodeFirestations.get(numFirestation),Firestation.class);
-	        			firestation.setIdFirestation(jsonNodeFirestations.get(numFirestation).get("address").asText()+jsonNodeFirestations.get(numFirestation).get("station").asText());
-	        			firestationModel.addFirestation(firestation);
-	        			numFirestation++;
-	        			iteratorFirestations.next();
-	        	}
-				 
-				// vue
-				/*
-	        	FirestationViewConsoleImpl firestationViewList = new FirestationViewConsoleImpl();
-				firestationViewList.printDetails(firestationList);
-	        	*/
-	            // pretty print
-	        	List<Firestation> firestationList = firestationModel.listFirestation();
-	        	String prettyFirestations = mapperFirestations.writerWithDefaultPrettyPrinter().writeValueAsString(firestationList);
-	            System.out.println(prettyFirestations);
-	            
-	            
-
-	        	//medicalrecords
-	        	JsonNode jsonNodeMedicalRecords = rootNode.path("medicalrecords");
-	        	//System.out.println(jsonNodeMedicalRecords.toString());
-	        	Iterator<JsonNode> iteratorMedicalRecords = jsonNodeMedicalRecords.elements();
-	        	
-	        	
-	        	// MEDICALRECORDS
-				// model
-				MedicalRecordDaoHashmapImpl medicalRecordDao = new MedicalRecordDaoHashmapImpl();
-				MedicalRecordModelImpl medicalRecordModel = new MedicalRecordModelImpl(medicalRecordDao);
-				
-				ObjectMapper mapperMedicalRecords = new ObjectMapper();
-				MedicalRecord medicalRecord;
-				int numMedicalRecord=0;
-	        	while(iteratorMedicalRecords.hasNext()) {
-	        			//System.out.println(jsonNodeMedicalRecords.get(numMedicalRecord));
-	        			medicalRecord = mapperMedicalRecords.treeToValue(jsonNodeMedicalRecords.get(numMedicalRecord),MedicalRecord.class);
-	        			medicalRecord.setIdMedicalRecord(jsonNodeMedicalRecords.get(numMedicalRecord).get("firstName").asText()+jsonNodeMedicalRecords.get(numMedicalRecord).get("lastName").asText());
-	        			medicalRecordModel.addMedicalRecord(medicalRecord);
-	        			numMedicalRecord++;
-	        			iteratorMedicalRecords.next();
-	        	}
-				
-				/*
-				JsonArray jsonArrayMedicalRecords = rootJSON.getJsonArray("medicalrecords");
-
-				for (int i = 0; i < jsonArrayMedicalRecords.size(); i++) {
-					JsonObject obj = jsonArrayMedicalRecords.getJsonObject(i);
-					
-					MedicalRecord medicalRecord = new MedicalRecord();
-					medicalRecord.setIdMedicalRecord(obj.getString("firstName") + obj.getString("lastName"));
-					medicalRecord.setFirstName(obj.getString("firstName"));
-					medicalRecord.setLastName(obj.getString("lastName"));
-					medicalRecord.setBirthdate(obj.getString("birthdate"));
-
-					JsonArray jsonArrayMedications = obj.getJsonArray("medications");
-					String[] medications = new String[jsonArrayMedications.size()];
-					int j = 0;
-					for (JsonValue value : jsonArrayMedications) {
-						medications[j++] = value.toString();
-					}
-					medicalRecord.setMedications(medications);
-
-					JsonArray jsonArrayAllergies = obj.getJsonArray("allergies");
-					String[] allergies = new String[jsonArrayAllergies.size()];
-					j = 0;
-					for (JsonValue value : jsonArrayAllergies) {
-						allergies[j++] = value.toString();
-					}
-					medicalRecord.setAllergies(allergies);
-
-					medicalRecordModel.addMedicalRecord(medicalRecord);
-				}
-				*/
-
-	        	/*
-	        	// vue
-				MedicalRecordViewConsoleImpl medicalRecordViewList = new MedicalRecordViewConsoleImpl(medicalRecordList);
-				medicalRecordViewList.printDetails();
-				*/
-	            // pretty print
-	        	List<MedicalRecord> medicalRecordList = medicalRecordModel.listMedicalRecords();
-	        	String prettyMedicalRecords = mapperMedicalRecords.writerWithDefaultPrettyPrinter().writeValueAsString(medicalRecordList);
-	            System.out.println(prettyMedicalRecords);
-	        	
-	        } catch (IOException e) {
-	            
-	        	e.printStackTrace();
-	        }
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return personList;
 	}
-	
+
+	public static List<Firestation> readIntitialListFirestations() {
+		List<Firestation> firestationList;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode rootNode = mapper.readTree(new File("data.json"));
+
+			JsonNode jsonNodeFirestations = rootNode.path("firestations");
+			Iterator<JsonNode> iteratorFirestations = jsonNodeFirestations.elements();
+
+			FirestationModelImpl firestationModel = new FirestationModelImpl();
+			firestationModel.setFirestationDao(new FirestationDaoTreemapImpl());
+
+			ObjectMapper mapperFirestations = new ObjectMapper();
+			Firestation firestation;
+			int numFirestation = 0;
+			while (iteratorFirestations.hasNext()) {
+				firestation = mapperFirestations.treeToValue(jsonNodeFirestations.get(numFirestation),
+						Firestation.class);
+				firestation.setIdFirestation(jsonNodeFirestations.get(numFirestation).get("address").asText()
+						+ jsonNodeFirestations.get(numFirestation).get("station").asText());
+				firestationModel.addFirestation(firestation);
+				numFirestation++;
+				iteratorFirestations.next();
+			}
+
+			// pretty print
+			firestationList = firestationModel.listFirestation();
+			String prettyFirestations = mapperFirestations.writerWithDefaultPrettyPrinter()
+					.writeValueAsString(firestationList);
+			System.out.println(prettyFirestations);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return firestationList;
+	}
+
+	public static List<MedicalRecord> readIntitialListMedicalRecords() {
+		List<MedicalRecord> medicalRecordList;
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode rootNode = mapper.readTree(new File("data.json"));
+
+			JsonNode jsonNodeMedicalRecords = rootNode.path("medicalrecords");
+
+			Iterator<JsonNode> iteratorMedicalRecords = jsonNodeMedicalRecords.elements();
+
+			MedicalRecordDaoHashmapImpl medicalRecordDao = new MedicalRecordDaoHashmapImpl();
+			MedicalRecordModelImpl medicalRecordModel = new MedicalRecordModelImpl(medicalRecordDao);
+
+			ObjectMapper mapperMedicalRecords = new ObjectMapper();
+			MedicalRecord medicalRecord;
+			int numMedicalRecord = 0;
+			while (iteratorMedicalRecords.hasNext()) {
+				medicalRecord = mapperMedicalRecords.treeToValue(jsonNodeMedicalRecords.get(numMedicalRecord),
+						MedicalRecord.class);
+				medicalRecord.setIdMedicalRecord(jsonNodeMedicalRecords.get(numMedicalRecord).get("firstName").asText()
+						+ jsonNodeMedicalRecords.get(numMedicalRecord).get("lastName").asText());
+				medicalRecordModel.addMedicalRecord(medicalRecord);
+				numMedicalRecord++;
+				iteratorMedicalRecords.next();
+			}
+
+			// pretty print
+			medicalRecordList = medicalRecordModel.listMedicalRecords();
+			String prettyMedicalRecords = mapperMedicalRecords.writerWithDefaultPrettyPrinter()
+					.writeValueAsString(medicalRecordList);
+			System.out.println(prettyMedicalRecords);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return medicalRecordList;
+	}
+
 }

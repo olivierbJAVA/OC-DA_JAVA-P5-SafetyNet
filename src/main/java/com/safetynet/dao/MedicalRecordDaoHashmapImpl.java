@@ -13,7 +13,7 @@ import com.safetynet.entities.MedicalRecord;
 @Component
 public class MedicalRecordDaoHashmapImpl implements IMedicalRecordDao {
 
-	private Map<String, MedicalRecord> medicalRecords = new HashMap<>();
+	private static Map<String, MedicalRecord> medicalRecords = new HashMap<>();
 
 	@Override
 	public void addMedicalRecord(MedicalRecord medicalRecord) {

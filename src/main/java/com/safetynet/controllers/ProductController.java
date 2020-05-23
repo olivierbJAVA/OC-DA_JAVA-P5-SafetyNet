@@ -16,16 +16,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.safetynet.util.JsonInputFileReader;
+
 
 
 @RestController
 public class ProductController {
 
-	Logger logger = LoggerFactory.getLogger(ProductController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 	
 	public ProductController() {
 		super();
+		
+		//JsonInputFileReader.read();
 		logger.info("ProductController info");
 		logger.debug("ProductController debug");
 	}

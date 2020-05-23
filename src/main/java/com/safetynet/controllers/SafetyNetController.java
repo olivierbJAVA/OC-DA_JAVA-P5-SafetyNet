@@ -2,87 +2,75 @@ package com.safetynet.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynet.application.SafetyNetSpringConfig;
+import com.safetynet.SafetyNetApplication;
+import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.Firestation;
 import com.safetynet.entities.MedicalRecord;
 import com.safetynet.entities.Person;
 import com.safetynet.model.IFirestationModel;
 import com.safetynet.model.IMedicalRecordModel;
 import com.safetynet.model.IPersonModel;
+import com.safetynet.util.JsonInputFileReader;
+import com.safetynet.util.JsonInputFileReader;
 
 
-
+@RestController
 public class SafetyNetController {
 
-	private int userChoice;
+	private static final Logger logger = LoggerFactory.getLogger(SafetyNetController.class);
 	
-	public SafetyNetController(int option) {
-		userChoice = option;
+	@Autowired
+	private IPersonModel personModel;
+
+	private static List<Person> listPersons;
+	private static List<Firestation> listFirestations;
+	private static List<MedicalRecord> listMedicalRecords;
+	
+	public SafetyNetController() {
+		listPersons = JsonInputFileReader.readIntitialListPersons();
+		listFirestations = JsonInputFileReader.readIntitialListFirestations();
+		listMedicalRecords = JsonInputFileReader.readIntitialListMedicalRecords();
+	
 	}
-
-	public int getUserChoice() {
-		return userChoice;
+	
+	@GetMapping(value="/Persons")
+	public List<Person> listPersons(){
+		return listPersons;
 	}
-
-	public void setUserChoice(int userChoice) {
-		this.userChoice = userChoice;
+	
+	@GetMapping(value="/Firestations")
+	public List<Firestation> listFirestations(){
+		return listFirestations;
 	}
-
-	public void getModelandPrintView() {
-		
-		//ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-				
-		ApplicationContext context =new AnnotationConfigApplicationContext(SafetyNetSpringConfig.class);
-		
-		switch (userChoice) {
-		case 1: {
-			// Get & set Model - SETTERS
-			System.out.println("\nController : get Person model");
-			IPersonModel personModel = context.getBean(IPersonModel.class);
-			
-			// Print View - SETTERS
-			System.out.println("\nController : print person");
-			
-			List<Person> personList = personModel.listPerson();
-			
-			// vue
-		break;
-		}
-		case 2: {
-			// Get & set Model - CONSTRUCTEUR
-			System.out.println("\nController : get MedicalRecord model");
-			
-			IMedicalRecordModel medicalRecordModel = (IMedicalRecordModel)context.getBean(IMedicalRecordModel.class);
-						
-			// Print View - CONSTRUCTEUR
-			System.out.println("\nController : print medicalRecord");
-			
-			List<MedicalRecord> medicalRecordList = medicalRecordModel.listMedicalRecords();
-			
-			// vue
-		break;
-		}
-		case 3: {
-			// Get & set Model - SETTERS
-			System.out.println("\nController : get Firestation model");
-
-			IFirestationModel firestationModel = (IFirestationModel)context.getBean(IFirestationModel.class);
-						
-			// Print View - METHOD PARAMETER
-			System.out.println("\nController : print firestation");
-			
-			List<Firestation> firestationList = firestationModel.listFirestation();
-			
-			// vue
-			break;
-		}
-
-		default:
-			System.out.println("Unsupported option. Error");
-		}
+	
+	@GetMapping(value="/MedicalRecords")
+	public List<MedicalRecord> listMedicalRecords(){
+		return listMedicalRecords;
 	}
-
+	
+	 @PostMapping(value = "/Persons")
+	    public void addPerson(@RequestBody Person person) {
+		 Person personToAdd = new Person();
+		 personToAdd.setIdPerson(person.getFirstName()+person.getLastName());
+		 personToAdd.setFirstName(person.getFirstName());
+		 personToAdd.setLastName(person.getLastName());
+		 personToAdd.setAddress(person.getAddress());
+		 personToAdd.setCity(person.getCity());
+		 personToAdd.setZip(person.getZip());
+		 personToAdd.setPhone(person.getPhone());
+		 personToAdd.setEmail(person.getEmail());
+		 
+		 personModel.addPerson(personToAdd);
+		 listPersons = personModel.listPerson();
+	    }
 }

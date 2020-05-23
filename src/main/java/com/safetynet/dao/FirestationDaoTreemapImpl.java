@@ -10,7 +10,7 @@ import com.safetynet.entities.Firestation;
 
 public class FirestationDaoTreemapImpl implements IFirestationDao {
 
-	private Map<String, Firestation> firestations = new TreeMap<>();
+	private static Map<String, Firestation> firestations = new TreeMap<>();
 
 	@Override
 	public void addFirestation(Firestation firestation) {

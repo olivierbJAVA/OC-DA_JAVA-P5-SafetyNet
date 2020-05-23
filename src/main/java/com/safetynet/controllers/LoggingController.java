@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class LoggingController {
 
-    Logger logger = LoggerFactory.getLogger(LoggingController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoggingController.class);
     
     @RequestMapping("/log")
     public String index() {

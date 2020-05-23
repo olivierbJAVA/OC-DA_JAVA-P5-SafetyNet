@@ -13,7 +13,7 @@ import com.safetynet.entities.Firestation;
 @Component
 public class FirestationDaoHashmapImpl implements IFirestationDao {
 
-	private Map<String, Firestation> firestations = new HashMap<>();
+	private static Map<String, Firestation> firestations = new HashMap<>();
 
 	@Override
 	public void addFirestation(Firestation firestation) {

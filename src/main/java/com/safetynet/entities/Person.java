@@ -1,7 +1,10 @@
 package com.safetynet.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Person {
 	
+	@JsonIgnore
 	private String idPerson;
 	private String firstName;
 	private String lastName;
