@@ -7,9 +7,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safety.view.FirestationViewConsoleImpl;
-import com.safety.view.MedicalRecordViewConsoleImpl;
-import com.safety.view.PersonViewConsoleImpl;
 import com.safetynet.dao.FirestationDaoTreemapImpl;
 import com.safetynet.dao.MedicalRecordDaoHashmapImpl;
 import com.safetynet.dao.PersonDaoHashmapImpl;
@@ -20,7 +17,7 @@ import com.safetynet.model.FirestationModelImpl;
 import com.safetynet.model.MedicalRecordModelImpl;
 import com.safetynet.model.PersonModelImpl;
 
-public class JacksonReaderSN {
+public class JsonInputFileReader {
 
 	public static void main(String[] args) {
 			//InputStream input = new FileInputStream("data.json");
@@ -69,13 +66,14 @@ public class JacksonReaderSN {
 	        	}
 	        	
 				//vue
-				PersonViewConsoleImpl personView = new PersonViewConsoleImpl();
-				List<Person> personList = personModel.listPerson();
+				/*
+	        	PersonViewConsoleImpl personView = new PersonViewConsoleImpl();
 				personView.setPersonListToPrint(personList);
 				personView.printDetails();
-	        	
+	        	*/
 	            // pretty print
-	            String prettyPersons = mapperPersons.writerWithDefaultPrettyPrinter().writeValueAsString(personList);
+	        	List<Person> personList = personModel.listPerson();
+	        	String prettyPersons = mapperPersons.writerWithDefaultPrettyPrinter().writeValueAsString(personList);
 	            System.out.println(prettyPersons);
 				
 	            
@@ -103,12 +101,13 @@ public class JacksonReaderSN {
 	        	}
 				 
 				// vue
-				List<Firestation> firestationList = firestationModel.listFirestation();
-				FirestationViewConsoleImpl firestationViewList = new FirestationViewConsoleImpl();
+				/*
+	        	FirestationViewConsoleImpl firestationViewList = new FirestationViewConsoleImpl();
 				firestationViewList.printDetails(firestationList);
-	        	
+	        	*/
 	            // pretty print
-	            String prettyFirestations = mapperFirestations.writerWithDefaultPrettyPrinter().writeValueAsString(firestationList);
+	        	List<Firestation> firestationList = firestationModel.listFirestation();
+	        	String prettyFirestations = mapperFirestations.writerWithDefaultPrettyPrinter().writeValueAsString(firestationList);
 	            System.out.println(prettyFirestations);
 	            
 	            
@@ -167,13 +166,15 @@ public class JacksonReaderSN {
 					medicalRecordModel.addMedicalRecord(medicalRecord);
 				}
 				*/
-				// vue
-				List<MedicalRecord> medicalRecordList = medicalRecordModel.listMedicalRecords();
+
+	        	/*
+	        	// vue
 				MedicalRecordViewConsoleImpl medicalRecordViewList = new MedicalRecordViewConsoleImpl(medicalRecordList);
 				medicalRecordViewList.printDetails();
-				
+				*/
 	            // pretty print
-	            String prettyMedicalRecords = mapperMedicalRecords.writerWithDefaultPrettyPrinter().writeValueAsString(medicalRecordList);
+	        	List<MedicalRecord> medicalRecordList = medicalRecordModel.listMedicalRecords();
+	        	String prettyMedicalRecords = mapperMedicalRecords.writerWithDefaultPrettyPrinter().writeValueAsString(medicalRecordList);
 	            System.out.println(prettyMedicalRecords);
 	        	
 	        } catch (IOException e) {
