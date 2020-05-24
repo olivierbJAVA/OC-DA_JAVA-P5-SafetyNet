@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.dao.IFirestationDao;
 import com.safetynet.entities.Firestation;
+import com.safetynet.entities.Person;
 
 @Component
 public class FirestationModelImpl implements IFirestationModel {
@@ -50,4 +51,10 @@ public class FirestationModelImpl implements IFirestationModel {
 	public List<Firestation> listFirestation() {
 		return firestationDao.listFirestations();
 	}
+	
+	@Override
+	public Firestation getFirestationById(String idFirestation) {
+		return firestationDao.getFirestationById(idFirestation);
+	}
+		
 }

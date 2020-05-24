@@ -1,7 +1,10 @@
 package com.safetynet.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Firestation {
 
+	@JsonIgnore
 	private String idFirestation;
 	private String address;
 	private String nbStation;

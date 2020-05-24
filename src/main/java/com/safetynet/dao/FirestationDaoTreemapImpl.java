@@ -33,4 +33,13 @@ public class FirestationDaoTreemapImpl implements IFirestationDao {
 		return new ArrayList<>(listAllFirestations);
 	}
 
+	@Override
+	public Firestation getFirestationById(String idFirestation) {
+		for (Map.Entry<String,Firestation> mapentry : firestations.entrySet()) {
+			if(mapentry.getKey().equals(idFirestation)) {
+				return mapentry.getValue();
+			}	
+		}
+		return null;
+	}
 }

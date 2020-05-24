@@ -12,4 +12,6 @@ public interface IFirestationModel {
 	public void updateFirestation(Firestation firestation);
 
 	public List<Firestation> listFirestation();
+	
+	public Firestation getFirestationById(String idFirestation);
 }

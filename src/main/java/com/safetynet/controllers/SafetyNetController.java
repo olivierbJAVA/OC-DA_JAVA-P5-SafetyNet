@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.safetynet.entities.Firestation;
 import com.safetynet.entities.MedicalRecord;
 import com.safetynet.entities.Person;
+import com.safetynet.model.IFirestationModel;
 import com.safetynet.model.IPersonModel;
 import com.safetynet.util.IInputReader;
 import com.safetynet.util.JsonFileInputReaderImpl;
@@ -31,6 +32,7 @@ public class SafetyNetController {
 	@Autowired
 	private IPersonModel personModel;
 
+	private IFirestationModel firestationModel; 
 	//@Autowired
 	//private IInputReader jsonFileInputReader;
 	
@@ -48,16 +50,17 @@ public class SafetyNetController {
 
 	}
 
-	@GetMapping(value = "/Persons")
+	@GetMapping(value = "/persons")
 	public List<Person> getAllPersons() {
 		return personModel.getAllPersons();
 	}
 
-	@GetMapping(value = "/Persons/{id}")
+	@GetMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
 		if(personModel.getPersonById(id) == null) {
 			logger.error("Error : person not found");
-			return ResponseEntity.noContent().build();
+			//return ResponseEntity.noContent().build();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		else {
 			logger.info("Success : person found");
@@ -100,10 +103,75 @@ public class SafetyNetController {
 	}
 	*/
 	
-	@PostMapping(value = "/Persons")
+	@PostMapping(value = "/persons")
 	public ResponseEntity<Person> addPerson(@RequestBody Person person) {
 		
 		if (personModel.getPersonById(person.getFirstName() + person.getLastName()) != null) {
+			logger.error("Error : person already in the list");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		Person personToAdd = new Person();
+		personToAdd.setIdPerson(person.getFirstName() + person.getLastName());
+		personToAdd.setFirstName(person.getFirstName());
+		personToAdd.setLastName(person.getLastName());
+		personToAdd.setAddress(person.getAddress());
+		personToAdd.setCity(person.getCity());
+		personToAdd.setZip(person.getZip());
+		personToAdd.setPhone(person.getPhone());
+		personToAdd.setEmail(person.getEmail());
+		
+		personModel.addPerson(personToAdd);
+		listPersons = personModel.getAllPersons();
+
+		if (listPersons.contains(personToAdd)) {
+			logger.info("Success : person added to the list");
+			URI location = ServletUriComponentsBuilder
+	                .fromCurrentRequest()
+	                .path("/{id}")
+	                .buildAndExpand(personToAdd.getIdPerson())
+	                .toUri();
+		
+			return ResponseEntity.created(location).build();	
+		} else {
+			logger.error("Error : person not added to the list");
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);	
+		}
+
+	}
+	
+	@DeleteMapping(value = "/persons/{id}")
+	public ResponseEntity<Void> deletePerson(@PathVariable(value = "id") String id) {
+		Person personToDelete = personModel.getPersonById(id);
+		
+		if (personToDelete == null) {
+			logger.error("Error : person not in the list");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
+		}
+				
+		personModel.deletePerson(id);
+		listPersons = personModel.getAllPersons();
+	
+		if (!listPersons.contains(personToDelete)) {
+			logger.info("Success : person deleted from the list");
+			return new ResponseEntity<>(HttpStatus.GONE);	
+		} else {
+			logger.info("Error : person not deleted from the list");
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);	
+		}
+	
+	}
+	
+	@GetMapping(value = "/firestations")
+	public List<Firestation> listFirestations() {
+		return listFirestations;
+	}
+	
+	/*
+	@PostMapping(value = "/firstations")
+	public ResponseEntity<Firestation> addFirestation(@RequestBody Firestation firestation) {
+		
+		if (firestationModel.getFirestationById(idFirestation) != null) {
 			logger.error("Error : person already in the list");
 			return ResponseEntity.noContent().build();
 		}
@@ -136,40 +204,8 @@ public class SafetyNetController {
 		}
 
 	}
+	*/
 	
-	@DeleteMapping(value = "/Persons/{id}")
-	public ResponseEntity<Person> deletePerson(@PathVariable(value = "id") String id) {
-		Person personToDelete = personModel.getPersonById(id);
-		
-		if (personToDelete == null) {
-			logger.error("Error : person not in the list");
-			return ResponseEntity.noContent().build();
-		}
-				
-		personModel.deletePerson(id);
-		listPersons = personModel.getAllPersons();
-	
-		if (!listPersons.contains(personToDelete)) {
-			logger.info("Success : person deleted from the list");
-			URI location = ServletUriComponentsBuilder
-	                .fromCurrentRequest()
-	                .path("/{id}")
-	                .buildAndExpand(personToDelete.getIdPerson())
-	                .toUri();
-		
-			return ResponseEntity.created(location).build();	
-		} else {
-			logger.info("Error : person not deleted from the list");
-			return ResponseEntity.noContent().build();
-		}
-	
-	}
-	
-	@GetMapping(value = "/Firestations")
-	public List<Firestation> listFirestations() {
-		return listFirestations;
-	}
-
 	@GetMapping(value = "/MedicalRecords")
 	public List<MedicalRecord> listMedicalRecords() {
 		return listMedicalRecords;

@@ -13,4 +13,5 @@ public interface IFirestationDao {
 
 	public List<Firestation> listFirestations();
 
+	public Firestation getFirestationById(String idFirestation);
 }

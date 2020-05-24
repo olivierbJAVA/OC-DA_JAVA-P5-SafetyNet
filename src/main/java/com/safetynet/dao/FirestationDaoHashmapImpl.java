@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.entities.Firestation;
+import com.safetynet.entities.Person;
 
 @Component
 public class FirestationDaoHashmapImpl implements IFirestationDao {
@@ -36,4 +37,13 @@ public class FirestationDaoHashmapImpl implements IFirestationDao {
 		return new ArrayList<>(listAllFirestations);
 	}
 
+	@Override
+	public Firestation getFirestationById(String idFirestation) {
+		for (Map.Entry<String,Firestation> mapentry : firestations.entrySet()) {
+			if(mapentry.getKey().equals(idFirestation)) {
+				return mapentry.getValue();
+			}	
+		}
+		return null;
+	}
 }
