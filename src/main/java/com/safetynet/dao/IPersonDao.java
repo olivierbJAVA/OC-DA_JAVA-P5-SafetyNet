@@ -5,12 +5,14 @@ import java.util.List;
 import com.safetynet.entities.Person;
 
 public interface IPersonDao {
-	public void addPerson(Person person);
+	public Person addPerson(Person person);
 
 	public void deletePerson(String idPerson);
 
 	public void updatePerson(Person person);
 
-	public List<Person> listPersons();
+	public List<Person> getAllPersons();
+
+	public Person getPersonById(String idPerson);
 
 }

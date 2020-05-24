@@ -2,6 +2,8 @@ package com.safetynet.model;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,15 +13,19 @@ import com.safetynet.entities.Person;
 @Component
 public class PersonModelImpl implements IPersonModel {
 
+	private static final Logger logger = LoggerFactory.getLogger(PersonModelImpl.class);
+
 	@Autowired
 	private IPersonDao personDao;
-	
+
 	public PersonModelImpl() {
 		super();
+		logger.info("Constructeur PersonModelImpl sans arg");
 	}
-	
+
 	public PersonModelImpl(IPersonDao personDao) {
 		super();
+		logger.info("Constructeur PersonModelImpl avec arg");
 		this.personDao = personDao;
 	}
 
@@ -32,8 +38,8 @@ public class PersonModelImpl implements IPersonModel {
 	}
 
 	@Override
-	public void addPerson(Person person) {
-		personDao.addPerson(person);
+	public Person addPerson(Person person) {
+		return personDao.addPerson(person);
 	}
 
 	@Override
@@ -47,7 +53,13 @@ public class PersonModelImpl implements IPersonModel {
 	}
 
 	@Override
-	public List<Person> listPerson() {
-		return personDao.listPersons();
+	public List<Person> getAllPersons() {
+		return personDao.getAllPersons();
 	}
+
+	@Override
+	public Person getPersonById(String idPerson) {
+		return personDao.getPersonById(idPerson);
+	}
+		
 }

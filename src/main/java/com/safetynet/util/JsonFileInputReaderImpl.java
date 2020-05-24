@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,13 +21,14 @@ import com.safetynet.model.FirestationModelImpl;
 import com.safetynet.model.MedicalRecordModelImpl;
 import com.safetynet.model.PersonModelImpl;
 
-public class JsonInputFileReader {
+@Component
+public class JsonFileInputReaderImpl implements IInputReader {
 
 	private static final Logger logger = LogManager.getLogger("JsonInputFileReader");
 
 	// InputStream input = new FileInputStream("data.json");
 
-	public static List<Person> readIntitialListPersons() {
+	public List<Person> readIntitialListPersons() {
 		List<Person> personList;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -51,7 +53,7 @@ public class JsonInputFileReader {
 			}
 
 			// pretty print
-			personList = personModel.listPerson();
+			personList = personModel.getAllPersons();
 			String prettyPersons = mapperPersons.writerWithDefaultPrettyPrinter().writeValueAsString(personList);
 			System.out.println(prettyPersons);
 
@@ -62,7 +64,7 @@ public class JsonInputFileReader {
 		return personList;
 	}
 
-	public static List<Firestation> readIntitialListFirestations() {
+	public List<Firestation> readIntitialListFirestations() {
 		List<Firestation> firestationList;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -99,7 +101,7 @@ public class JsonInputFileReader {
 		return firestationList;
 	}
 
-	public static List<MedicalRecord> readIntitialListMedicalRecords() {
+	public List<MedicalRecord> readIntitialListMedicalRecords() {
 		List<MedicalRecord> medicalRecordList;
 		try {
 			ObjectMapper mapper = new ObjectMapper();

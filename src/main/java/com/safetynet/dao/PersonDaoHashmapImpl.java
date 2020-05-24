@@ -16,8 +16,8 @@ public class PersonDaoHashmapImpl implements IPersonDao {
 	private static Map<String, Person> persons = new HashMap<>();
 
 	@Override
-	public void addPerson(Person person) {
-		persons.put(person.getIdPerson(), person);
+	public Person addPerson(Person person) {
+		return persons.put(person.getIdPerson(), person);
 	}
 
 	@Override
@@ -31,9 +31,19 @@ public class PersonDaoHashmapImpl implements IPersonDao {
 	}
 
 	@Override
-	public List<Person> listPersons() {
+	public List<Person> getAllPersons() {
 		Collection<Person> listAllPersons = persons.values();
 		return new ArrayList<>(listAllPersons);
+	}
+
+	@Override
+	public Person getPersonById(String idPerson) {
+		for (Map.Entry<String,Person> mapentry : persons.entrySet()) {
+			if(mapentry.getKey().equals(idPerson)) {
+				return mapentry.getValue();
+			}	
+		}
+		return null;
 	}
 
 }
