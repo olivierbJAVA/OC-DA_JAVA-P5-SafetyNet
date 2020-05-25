@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.dao.IFirestationDao;
 import com.safetynet.entities.Firestation;
-import com.safetynet.entities.Person;
 
 @Component
 public class FirestationModelImpl implements IFirestationModel {
@@ -33,28 +32,28 @@ public class FirestationModelImpl implements IFirestationModel {
 	}
 
 	@Override
-	public void addFirestation(Firestation firestation) {
-		firestationDao.addFirestation(firestation);
+	public Firestation addFirestation(Firestation firestation) {
+		return firestationDao.addFirestation(firestation);
 	}
 
 	@Override
-	public void deleteFirestation(String idFirestation) {
-		firestationDao.deleteFirestation(idFirestation);
+	public Firestation deleteFirestation(String idFirestation) {
+		return firestationDao.deleteFirestation(idFirestation);
 	}
 
 	@Override
-	public void updateFirestation(Firestation firestation) {
-		firestationDao.updateFirestation(firestation);
+	public Firestation updateFirestation(Firestation firestation) {
+		return firestationDao.updateFirestation(firestation);
 	}
 
 	@Override
-	public List<Firestation> listFirestation() {
-		return firestationDao.listFirestations();
+	public List<Firestation> getAllFirestations() {
+		return firestationDao.getAllFirestations();
 	}
-	
+
 	@Override
 	public Firestation getFirestationById(String idFirestation) {
 		return firestationDao.getFirestationById(idFirestation);
 	}
-		
+
 }

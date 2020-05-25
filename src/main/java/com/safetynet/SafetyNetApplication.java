@@ -14,9 +14,8 @@ import org.springframework.context.annotation.Bean;
 public class SafetyNetApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
-
+	
 	public static void main(String[] args) {
-		// Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
 		logger.info("INFO : Launch SafetyNet");
 
 		SpringApplication.run(SafetyNetApplication.class, args);

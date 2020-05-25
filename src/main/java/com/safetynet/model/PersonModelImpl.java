@@ -43,13 +43,13 @@ public class PersonModelImpl implements IPersonModel {
 	}
 
 	@Override
-	public void deletePerson(String idPerson) {
-		personDao.deletePerson(idPerson);
+	public Person deletePerson(String idPerson) {
+		return personDao.deletePerson(idPerson);
 	}
 
 	@Override
-	public void updatePerson(Person person) {
-		personDao.updatePerson(person);
+	public Person updatePerson(Person person) {
+		return personDao.updatePerson(person);
 	}
 
 	@Override
@@ -61,5 +61,5 @@ public class PersonModelImpl implements IPersonModel {
 	public Person getPersonById(String idPerson) {
 		return personDao.getPersonById(idPerson);
 	}
-		
+
 }

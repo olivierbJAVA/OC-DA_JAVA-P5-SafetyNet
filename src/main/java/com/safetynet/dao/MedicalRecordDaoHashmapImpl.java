@@ -16,24 +16,33 @@ public class MedicalRecordDaoHashmapImpl implements IMedicalRecordDao {
 	private static Map<String, MedicalRecord> medicalRecords = new HashMap<>();
 
 	@Override
-	public void addMedicalRecord(MedicalRecord medicalRecord) {
-		medicalRecords.put(medicalRecord.getIdMedicalRecord(), medicalRecord);
+	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
+		return medicalRecords.put(medicalRecord.getIdMedicalRecord(), medicalRecord);
 	}
 
 	@Override
-	public void deleteMedicalRecord(String idMedicalRecord) {
-		medicalRecords.remove(idMedicalRecord);
+	public MedicalRecord deleteMedicalRecord(String idMedicalRecord) {
+		return medicalRecords.remove(idMedicalRecord);
 	}
 
 	@Override
-	public void updateMedicalRecord(MedicalRecord medicalRecord) {
-		medicalRecords.put(medicalRecord.getIdMedicalRecord(), medicalRecord);
+	public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
+		return medicalRecords.put(medicalRecord.getIdMedicalRecord(), medicalRecord);
 	}
 
 	@Override
-	public List<MedicalRecord> listMedicalRecords() {
+	public List<MedicalRecord> getAllMedicalRecords() {
 		Collection<MedicalRecord> listAllMedicalRecords = medicalRecords.values();
 		return new ArrayList<>(listAllMedicalRecords);
 	}
 
+	@Override
+	public MedicalRecord getMedicalRecordById(String idMedicalRecord) {
+		for (Map.Entry<String, MedicalRecord> mapentry : medicalRecords.entrySet()) {
+			if (mapentry.getKey().equals(idMedicalRecord)) {
+				return mapentry.getValue();
+			}
+		}
+		return null;
+	}
 }

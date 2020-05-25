@@ -5,13 +5,13 @@ import java.util.List;
 import com.safetynet.entities.Firestation;
 
 public interface IFirestationModel {
-	public void addFirestation(Firestation firestation);
+	public Firestation addFirestation(Firestation firestation);
 
-	public void deleteFirestation(String idFirestation);
+	public Firestation deleteFirestation(String idFirestation);
 
-	public void updateFirestation(Firestation firestation);
+	public Firestation updateFirestation(Firestation firestation);
 
-	public List<Firestation> listFirestation();
-	
+	public List<Firestation> getAllFirestations();
+
 	public Firestation getFirestationById(String idFirestation);
 }

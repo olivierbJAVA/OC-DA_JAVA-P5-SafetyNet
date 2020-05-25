@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,7 +24,7 @@ import com.safetynet.model.PersonModelImpl;
 @Component
 public class JsonFileInputReaderImpl implements IInputReader {
 
-	private static final Logger logger = LogManager.getLogger("JsonInputFileReader");
+	private static final Logger logger = LoggerFactory.getLogger("JsonInputFileReader");
 
 	// InputStream input = new FileInputStream("data.json");
 
@@ -90,7 +90,7 @@ public class JsonFileInputReaderImpl implements IInputReader {
 			}
 
 			// pretty print
-			firestationList = firestationModel.listFirestation();
+			firestationList = firestationModel.getAllFirestations();
 			String prettyFirestations = mapperFirestations.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(firestationList);
 			System.out.println(prettyFirestations);
@@ -128,7 +128,7 @@ public class JsonFileInputReaderImpl implements IInputReader {
 			}
 
 			// pretty print
-			medicalRecordList = medicalRecordModel.listMedicalRecords();
+			medicalRecordList = medicalRecordModel.getAllMedicalRecords();
 			String prettyMedicalRecords = mapperMedicalRecords.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(medicalRecordList);
 			System.out.println(prettyMedicalRecords);

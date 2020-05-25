@@ -5,12 +5,14 @@ import java.util.List;
 import com.safetynet.entities.MedicalRecord;
 
 public interface IMedicalRecordDao {
-	public void addMedicalRecord(MedicalRecord medicalRecord);
+	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);
 
-	public void deleteMedicalRecord(String idmedicalRecord);
+	public MedicalRecord deleteMedicalRecord(String idmedicalRecord);
 
-	public void updateMedicalRecord(MedicalRecord medicalRecord);
+	public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord);
 
-	public List<MedicalRecord> listMedicalRecords();
+	public List<MedicalRecord> getAllMedicalRecords();
+
+	public MedicalRecord getMedicalRecordById(String idMedicalRecord);
 
 }

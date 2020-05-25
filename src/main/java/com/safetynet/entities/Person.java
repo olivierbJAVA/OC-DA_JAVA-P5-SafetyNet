@@ -3,7 +3,7 @@ package com.safetynet.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Person {
-	
+
 	@JsonIgnore
 	private String idPerson;
 	private String firstName;
@@ -13,13 +13,13 @@ public class Person {
 	private String zip;
 	private String phone;
 	private String email;
-	
+
 	public Person() {
 		super();
 	}
 
-	public Person(String idPerson, String firstName, String lastName, String address, String city, String zip, String phone,
-			String email) {
+	public Person(String idPerson, String firstName, String lastName, String address, String city, String zip,
+			String phone, String email) {
 		super();
 		this.idPerson = idPerson;
 		this.firstName = firstName;
@@ -34,48 +34,63 @@ public class Person {
 	public String getIdPerson() {
 		return idPerson;
 	}
+
 	public void setIdPerson(String idPerson) {
 		this.idPerson = idPerson;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 	public String getZip() {
 		return zip;
 	}
+
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}

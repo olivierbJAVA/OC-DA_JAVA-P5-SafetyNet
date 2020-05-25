@@ -21,13 +21,13 @@ public class PersonDaoHashmapImpl implements IPersonDao {
 	}
 
 	@Override
-	public void deletePerson(String idPerson) {
-		persons.remove(idPerson);
+	public Person deletePerson(String idPerson) {
+		return persons.remove(idPerson);
 	}
 
 	@Override
-	public void updatePerson(Person person) {
-		persons.put(person.getIdPerson(), person);
+	public Person updatePerson(Person person) {
+		return persons.put(person.getIdPerson(), person);
 	}
 
 	@Override
@@ -38,10 +38,10 @@ public class PersonDaoHashmapImpl implements IPersonDao {
 
 	@Override
 	public Person getPersonById(String idPerson) {
-		for (Map.Entry<String,Person> mapentry : persons.entrySet()) {
-			if(mapentry.getKey().equals(idPerson)) {
+		for (Map.Entry<String, Person> mapentry : persons.entrySet()) {
+			if (mapentry.getKey().equals(idPerson)) {
 				return mapentry.getValue();
-			}	
+			}
 		}
 		return null;
 	}
