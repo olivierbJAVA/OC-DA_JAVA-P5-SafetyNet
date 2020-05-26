@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Firestation {
 
-	@JsonIgnore
+	//@JsonIgnore
 	private String idFirestation;
 	private String address;
 	private String nbStation;
@@ -39,8 +39,8 @@ public class Firestation {
 	public String getStation() {
 		return nbStation;
 	}
-	public void setStation(String station) {
-		this.nbStation = station;
+	public void setStation(String nbStation) {
+		this.nbStation = nbStation;
 	}
 
 }

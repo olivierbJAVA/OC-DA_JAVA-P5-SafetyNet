@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import com.safetynet.util.IInputReader;
+import com.safetynet.util.JsonFileInputReaderImpl;
+
 @SpringBootApplication
 public class SafetyNetApplication {
 
@@ -33,7 +36,15 @@ public class SafetyNetApplication {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
-
+			
+			//initialisation : possibilité 1 (appelé au lancement du programme)
+			//OB : @Autowired ne fonctionne pas ici
+			//@Autowired
+			//IInputReader inputReader;
+			
+			IInputReader jsonFileInputReaderImpl = new JsonFileInputReaderImpl();
+			jsonFileInputReaderImpl.readIntitialListPersons();
+			
 		};
 	}
 

@@ -56,4 +56,9 @@ public class FirestationModelImpl implements IFirestationModel {
 		return firestationDao.getFirestationById(idFirestation);
 	}
 
+	@Override
+	public Firestation getFirestationByAdress(String adressFirestation) {
+		return firestationDao.getFirestationByAdress(adressFirestation);
+	}
+
 }

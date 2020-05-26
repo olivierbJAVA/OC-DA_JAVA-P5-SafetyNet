@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.dao.FirestationDaoHashmapImpl;
 import com.safetynet.dao.FirestationDaoTreemapImpl;
 import com.safetynet.dao.MedicalRecordDaoHashmapImpl;
 import com.safetynet.dao.PersonDaoHashmapImpl;
@@ -74,7 +75,7 @@ public class JsonFileInputReaderImpl implements IInputReader {
 			Iterator<JsonNode> iteratorFirestations = jsonNodeFirestations.elements();
 
 			FirestationModelImpl firestationModel = new FirestationModelImpl();
-			firestationModel.setFirestationDao(new FirestationDaoTreemapImpl());
+			firestationModel.setFirestationDao(new FirestationDaoHashmapImpl());
 
 			ObjectMapper mapperFirestations = new ObjectMapper();
 			Firestation firestation;

@@ -22,6 +22,7 @@ import com.safetynet.entities.Firestation;
 import com.safetynet.entities.MedicalRecord;
 import com.safetynet.entities.Person;
 import com.safetynet.model.IFirestationModel;
+import com.safetynet.model.IMedicalRecordModel;
 import com.safetynet.model.IPersonModel;
 import com.safetynet.util.IInputReader;
 import com.safetynet.util.JsonFileInputReaderImpl;
@@ -37,19 +38,28 @@ public class SafetyNetController {
 	@Autowired
 	private IFirestationModel firestationModel;
 	
+	@Autowired
+	private IMedicalRecordModel medicalRecordModel;
+
+	
 	// @Autowired
 	// private IInputReader jsonFileInputReader;
 
 	// private static List<Person> listPersons;
-	private List<Person> listPersons;
-	private static List<Firestation> listFirestations;
+	//private List<Person> listPersons;
+	private List<Firestation> listFirestations;
 	private List<MedicalRecord> listMedicalRecords;
 
 	// @Autowired
 	public SafetyNetController(IInputReader inputReader) {
 		logger.info("Constructeur SafetyNetController info");
-		this.listPersons = inputReader.readIntitialListPersons();
+		//this.listPersons = inputReader.readIntitialListPersons();
+		
+		//initialisation : possibilité 4 (appelé dans le constructeur du controller)
+		//inputReader.readIntitialListPersons();
+		
 		this.listFirestations = inputReader.readIntitialListFirestations();
+		
 		this.listMedicalRecords = inputReader.readIntitialListMedicalRecords();
 	}
 
@@ -92,9 +102,11 @@ public class SafetyNetController {
 		personToAdd.setEmail(person.getEmail());
 
 		personModel.addPerson(personToAdd);
-		listPersons = personModel.getAllPersons();
+		//listPersons = personModel.getAllPersons();
 
-		if (!listPersons.contains(personToAdd)) {
+		
+		//if (!listPersons.contains(personToAdd)) {
+		if (!personModel.getAllPersons().contains(personToAdd)) {
 			logger.error("Error : person not added");
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -124,7 +136,7 @@ public class SafetyNetController {
 		personToUpdate.setEmail(person.getEmail());
 
 		Person personUpdated = personModel.updatePerson(personToUpdate);
-		listPersons = personModel.getAllPersons();
+		//listPersons = personModel.getAllPersons();
 		/*
 		if (!personUpdated.getAddress().equals(personToUpdate.getAddress())) {
 			logger.error("Error : person not updated");
@@ -144,9 +156,10 @@ public class SafetyNetController {
 		}
 
 		Person personDeleted = personModel.deletePerson(id);
-		listPersons = personModel.getAllPersons();
+		//listPersons = personModel.getAllPersons();
 
-		if (listPersons.contains(personDeleted)) {
+		//if (listPersons.contains(personDeleted)) {
+		if (personModel.getAllPersons().contains(personDeleted)) {
 			logger.error("Error : person not deleted");
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -160,9 +173,9 @@ public class SafetyNetController {
 	//firestations
 	@GetMapping(value = "/firestations")
 	public ResponseEntity<Collection<Firestation>> getAllFirestations() {
-		//Collection<Firestation> firestations = firestationModel.getAllFirestations();
+		Collection<Firestation> firestations = firestationModel.getAllFirestations();
 		logger.info("Success : firestations list found");
-		return new ResponseEntity<>(listFirestations, HttpStatus.FOUND);
+		return new ResponseEntity<>(firestations, HttpStatus.FOUND);
 	}
 	
 	@PostMapping(value = "/firestations")
@@ -195,10 +208,37 @@ public class SafetyNetController {
 		// return new ResponseEntity<>(personAdded, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	@PutMapping(value = "/firestations/{adress}")
+	public ResponseEntity<Firestation> updateFirestation(@PathVariable String adress, @RequestBody Firestation firestation) {
 
+		Firestation firestationToUpdate = firestationModel.getFirestationByAdress(adress);
+
+		if (firestationToUpdate == null) {
+			logger.error("Error : firestation adress does not exist");
+			return new ResponseEntity<>(firestation, HttpStatus.NOT_FOUND);
+		}
+
+		firestationToUpdate.setStation(firestation.getStation());
+		firestationToUpdate.setIdFirestation(firestation.getAddress()+firestation.getStation());
+		
+		Firestation firestationUpdated = firestationModel.updateFirestation(firestationToUpdate);
+		listFirestations = firestationModel.getAllFirestations();
+
+		return new ResponseEntity<>(firestationUpdated, HttpStatus.OK);
+	}
+	
+	
+	/*
 	@GetMapping(value = "/MedicalRecords")
 	public List<MedicalRecord> listMedicalRecords() {
 		return listMedicalRecords;
 	}
-
+	*/
+	@GetMapping(value = "/medicalRecords")
+	public ResponseEntity<Collection<MedicalRecord>> getAllMedicalRecords() {
+		Collection<MedicalRecord> medicalRecords = medicalRecordModel.getAllMedicalRecords();
+		logger.info("Success : mdeicalRecrods list found");
+		return new ResponseEntity<>(medicalRecords, HttpStatus.FOUND);
+	}
+	
 }

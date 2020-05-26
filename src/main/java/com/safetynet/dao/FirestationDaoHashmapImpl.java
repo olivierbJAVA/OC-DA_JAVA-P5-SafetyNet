@@ -45,4 +45,15 @@ public class FirestationDaoHashmapImpl implements IFirestationDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public Firestation getFirestationByAdress(String adressFirestation) {
+		for (Map.Entry<String, Firestation> mapentry : firestations.entrySet()) {
+			if (mapentry.getValue().getAddress().equals(adressFirestation)) {
+				return mapentry.getValue();
+			}
+		}
+		return null;
+	}
+
 }
