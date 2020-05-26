@@ -56,4 +56,12 @@ public class MedicalRecordModelImpl implements IMedicalRecordModel {
 	public MedicalRecord getMedicalRecordById(String idMedicalRecord) {
 		return medicalRecordDao.getMedicalRecordById(idMedicalRecord);
 	}
+	
+	@Override
+	public boolean medicalRecordInList(MedicalRecord medicalRecord) {
+		if (medicalRecordDao.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {
+			return false;
+		}
+		return true;
+	}
 }

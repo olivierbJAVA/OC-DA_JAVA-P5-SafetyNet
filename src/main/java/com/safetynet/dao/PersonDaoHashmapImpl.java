@@ -19,31 +19,18 @@ import com.safetynet.util.JsonFileInputReaderImpl;
 public class PersonDaoHashmapImpl implements IPersonDao {
 
 	private static Map<String, Person> persons = new HashMap<>();
-	
+
 	/*
+	@Autowired
+	IInputReader inputReader;
+		
 	//initialisation : possibilité 2 (méthode init appelée après la construction du bean)
 	@PostConstruct
 	public void init() {
-		//OB : @Autowired ne fonctionne pas ici
-		//@Autowired
-		//IInputReader inputReader;
-		
-		IInputReader jsonFileInputReaderImpl = new JsonFileInputReaderImpl();
-		jsonFileInputReaderImpl.readIntitialListPersons();
+		inputReader.readIntitialListPersons();
 	}
 	*/
-	/*
-	//initialisation : possibilité 3 (static)
-	static {
-			//OB : @Autowired ne fonctionne pas ici
-			//@Autowired
-			//IInputReader inputReader;
-			
-			IInputReader jsonFileInputReaderImpl = new JsonFileInputReaderImpl();
-			jsonFileInputReaderImpl.readIntitialListPersons();
-	}
-	*/
-	
+
 	@Override
 	public Person addPerson(Person person) {
 		return persons.put(person.getIdPerson(), person);

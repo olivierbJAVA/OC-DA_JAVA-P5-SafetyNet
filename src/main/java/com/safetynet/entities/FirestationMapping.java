@@ -1,31 +1,18 @@
 package com.safetynet.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+public class FirestationMapping {
 
-public class Firestation {
-
-	//@JsonIgnore
-	private String idFirestation;
 	private String address;
 	private String nbStation;
 
-	public Firestation() {
+	public FirestationMapping() {
 		super();
 	}
 
-	public Firestation(String idFirestation, String address, String nbStation) {
+	public FirestationMapping(String address, String nbStation) {
 		super();
-		this.idFirestation = idFirestation;
 		this.address = address;
 		this.nbStation = nbStation;
-	}
-
-	public String getIdFirestation() {
-		return idFirestation;
-	}
-
-	public void setIdFirestation(String idFirestation) {
-		this.idFirestation = idFirestation;
 	}
 
 	public String getAddress() {
@@ -39,6 +26,7 @@ public class Firestation {
 	public String getStation() {
 		return nbStation;
 	}
+
 	public void setStation(String nbStation) {
 		this.nbStation = nbStation;
 	}

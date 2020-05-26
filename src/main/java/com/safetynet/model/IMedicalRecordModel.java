@@ -14,4 +14,6 @@ public interface IMedicalRecordModel {
 	public List<MedicalRecord> getAllMedicalRecords();
 
 	public MedicalRecord getMedicalRecordById(String idMedicalRecord);
+
+	public boolean medicalRecordInList(MedicalRecord medicalRecord);
 }

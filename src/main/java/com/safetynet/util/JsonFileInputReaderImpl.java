@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.dao.FirestationDaoHashmapImpl;
-import com.safetynet.dao.FirestationDaoTreemapImpl;
+import com.safetynet.dao.FirestationMappingDaoHashmapImpl;
+import com.safetynet.dao.FirestationMappingDaoTreemapImpl;
 import com.safetynet.dao.MedicalRecordDaoHashmapImpl;
 import com.safetynet.dao.PersonDaoHashmapImpl;
-import com.safetynet.entities.Firestation;
+import com.safetynet.entities.FirestationMapping;
 import com.safetynet.entities.MedicalRecord;
 import com.safetynet.entities.Person;
-import com.safetynet.model.FirestationModelImpl;
+import com.safetynet.model.FirestationMappingModelImpl;
 import com.safetynet.model.MedicalRecordModelImpl;
 import com.safetynet.model.PersonModelImpl;
 
@@ -65,8 +65,8 @@ public class JsonFileInputReaderImpl implements IInputReader {
 		return personList;
 	}
 
-	public List<Firestation> readIntitialListFirestations() {
-		List<Firestation> firestationList;
+	public List<FirestationMapping> readIntitialListFirestationMappings() {
+		List<FirestationMapping> firestationList;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(new File("data.json"));
@@ -74,24 +74,24 @@ public class JsonFileInputReaderImpl implements IInputReader {
 			JsonNode jsonNodeFirestations = rootNode.path("firestations");
 			Iterator<JsonNode> iteratorFirestations = jsonNodeFirestations.elements();
 
-			FirestationModelImpl firestationModel = new FirestationModelImpl();
-			firestationModel.setFirestationDao(new FirestationDaoHashmapImpl());
+			FirestationMappingModelImpl firestationModel = new FirestationMappingModelImpl();
+			firestationModel.setFirestationMappingDao(new FirestationMappingDaoHashmapImpl());
 
 			ObjectMapper mapperFirestations = new ObjectMapper();
-			Firestation firestation;
+			FirestationMapping firestation;
 			int numFirestation = 0;
 			while (iteratorFirestations.hasNext()) {
 				firestation = mapperFirestations.treeToValue(jsonNodeFirestations.get(numFirestation),
-						Firestation.class);
-				firestation.setIdFirestation(jsonNodeFirestations.get(numFirestation).get("address").asText()
-						+ jsonNodeFirestations.get(numFirestation).get("station").asText());
-				firestationModel.addFirestation(firestation);
+						FirestationMapping.class);
+				firestation.setAddress(jsonNodeFirestations.get(numFirestation).get("address").asText()
+					);
+				firestationModel.addFirestationMapping(firestation);
 				numFirestation++;
 				iteratorFirestations.next();
 			}
 
 			// pretty print
-			firestationList = firestationModel.getAllFirestations();
+			firestationList = firestationModel.getAllFirestationMappings();
 			String prettyFirestations = mapperFirestations.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(firestationList);
 			System.out.println(prettyFirestations);

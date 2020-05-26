@@ -14,4 +14,6 @@ public interface IPersonModel {
 	public List<Person> getAllPersons();
 
 	public Person getPersonById(String idPerson);
+
+	public boolean personInList(Person person);
 }

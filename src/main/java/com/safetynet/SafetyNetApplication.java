@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,9 @@ import com.safetynet.util.JsonFileInputReaderImpl;
 public class SafetyNetApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
+
+	@Autowired
+	IInputReader inputReader;
 	
 	public static void main(String[] args) {
 		logger.info("INFO : Launch SafetyNet");
@@ -38,13 +42,9 @@ public class SafetyNetApplication {
 			}
 			
 			//initialisation : possibilité 1 (appelé au lancement du programme)
-			//OB : @Autowired ne fonctionne pas ici
-			//@Autowired
-			//IInputReader inputReader;
-			
-			IInputReader jsonFileInputReaderImpl = new JsonFileInputReaderImpl();
-			jsonFileInputReaderImpl.readIntitialListPersons();
-			
+			inputReader.readIntitialListPersons();
+			inputReader.readIntitialListFirestationMappings();
+			inputReader.readIntitialListMedicalRecords();
 		};
 	}
 

@@ -62,4 +62,11 @@ public class PersonModelImpl implements IPersonModel {
 		return personDao.getPersonById(idPerson);
 	}
 
+	@Override
+	public boolean personInList(Person person) {
+		if (personDao.getPersonById(person.getFirstName() + person.getLastName()) == null) {
+			return false;
+		}
+		return true;
+	}
 }
