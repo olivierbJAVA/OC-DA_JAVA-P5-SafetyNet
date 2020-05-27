@@ -7,18 +7,17 @@ import org.springframework.stereotype.Component;
 
 import com.safetynet.dao.IMedicalRecordDao;
 import com.safetynet.entities.MedicalRecord;
-import com.safetynet.entities.Person;
 
 @Component
 public class MedicalRecordModelImpl implements IMedicalRecordModel {
 
 	@Autowired
 	private IMedicalRecordDao medicalRecordDao;
-	
+
 	public MedicalRecordModelImpl() {
 		super();
 	}
-	
+
 	public MedicalRecordModelImpl(IMedicalRecordDao medicalRecordDao) {
 		super();
 		this.medicalRecordDao = medicalRecordDao;
@@ -51,12 +50,12 @@ public class MedicalRecordModelImpl implements IMedicalRecordModel {
 	public List<MedicalRecord> getAllMedicalRecords() {
 		return medicalRecordDao.getAllMedicalRecords();
 	}
-	
+
 	@Override
 	public MedicalRecord getMedicalRecordById(String idMedicalRecord) {
 		return medicalRecordDao.getMedicalRecordById(idMedicalRecord);
 	}
-	
+
 	@Override
 	public boolean medicalRecordInList(MedicalRecord medicalRecord) {
 		if (medicalRecordDao.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {

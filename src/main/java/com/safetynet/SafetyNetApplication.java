@@ -11,8 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import com.safetynet.util.IInputReader;
-import com.safetynet.util.JsonFileInputReaderImpl;
+import com.safetynet.util.IInitializeLists;
 
 @SpringBootApplication
 public class SafetyNetApplication {
@@ -20,8 +19,8 @@ public class SafetyNetApplication {
 	private static final Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
 
 	@Autowired
-	IInputReader inputReader;
-	
+	private IInitializeLists initLists;
+
 	public static void main(String[] args) {
 		logger.info("INFO : Launch SafetyNet");
 
@@ -40,11 +39,9 @@ public class SafetyNetApplication {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
-			
-			//initialisation : possibilité 1 (appelé au lancement du programme)
-			inputReader.readIntitialListPersons();
-			inputReader.readIntitialListFirestationMappings();
-			inputReader.readIntitialListMedicalRecords();
+
+			// initialisation : possibilité 1 (appelé au lancement du programme)
+			//initLists.initializeLists();
 		};
 	}
 

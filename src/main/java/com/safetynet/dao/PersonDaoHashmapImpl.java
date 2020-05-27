@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.entities.Person;
-import com.safetynet.util.IInputReader;
-import com.safetynet.util.JsonFileInputReaderImpl;
+import com.safetynet.util.IInitializeLists;
+import com.safetynet.util.JsonFileInitializeListsImpl;
 
 @Component
 public class PersonDaoHashmapImpl implements IPersonDao {

@@ -8,7 +8,7 @@ public class MedicalRecord {
 	private String idMedicalRecord;
 	private String firstName;
 	private String lastName;
-	private String birthdate;
+	private String birthdate; //date non supportée en JSON
 	private String[] medications;
 	private String[] allergies;
 

@@ -23,7 +23,7 @@ import com.safetynet.entities.Person;
 import com.safetynet.model.IFirestationMappingModel;
 import com.safetynet.model.IMedicalRecordModel;
 import com.safetynet.model.IPersonModel;
-import com.safetynet.util.IInputReader;
+import com.safetynet.util.IInitializeLists;
 
 @RestController
 public class SafetyNetEndpointsController {
@@ -41,42 +41,40 @@ public class SafetyNetEndpointsController {
 
 	
 	// @Autowired
-	// private IInputReader jsonFileInputReader;
+	//private IInitializeLists initLists;
 
-	// private static List<Person> listPersons;
-	/*
-	private List<Person> listPersons;
-	private List<Firestation> listFirestations;
-	private List<MedicalRecord> listMedicalRecords;
-	*/
 	// @Autowired
-	public SafetyNetEndpointsController(IInputReader inputReader) {
-		logger.info("Constructeur SafetyNetController info");
-		//this.listPersons = inputReader.readIntitialListPersons();
+	public SafetyNetEndpointsController(IInitializeLists initLists) {
 		
+		logger.info("Constructeur SafetyNetController info");
 		//initialisation : possibilité 3 (appelé dans le constructeur du controller)
-		//inputReader.readIntitialListPersons();
-		//inputReader.readIntitialListFirestationMappings();
-		//inputReader.readIntitialListMedicalRecords();
+		//initLists.initializeLists();
 	}
 
 	//persons
 	@GetMapping(value = "/persons")
 	public ResponseEntity<List<Person>> getAllPersons() {
+		
 		List<Person> persons = personModel.getAllPersons();
+		
 		logger.info("Success : persons list found");
+		
 		return new ResponseEntity<>(persons, HttpStatus.FOUND);
 	}
 
 	@GetMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
+		
 		Person personToGet = personModel.getPersonById(id);
+		
 		if (personToGet == null) {
 			logger.error("Error : person not found");
 			// return ResponseEntity.noContent().build();
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		
 		logger.info("Success : person found");
+		
 		return new ResponseEntity<>(personToGet, HttpStatus.FOUND);
 	}
 
@@ -164,8 +162,11 @@ public class SafetyNetEndpointsController {
 	//firestation mappings
 	@GetMapping(value = "/firestations")
 	public ResponseEntity<List<FirestationMapping>> getAllFirestationMappings() {
+		
 		List<FirestationMapping> firestationMappings = firestationMappingModel.getAllFirestationMappings();
+		
 		logger.info("Success : firestation mappings list found");
+		
 		return new ResponseEntity<>(firestationMappings, HttpStatus.FOUND);
 	}
 	
@@ -215,6 +216,7 @@ public class SafetyNetEndpointsController {
 	
 	@DeleteMapping(value = "/firestations/{address}")
 	public ResponseEntity<Void> deleteFirestationMapping(@PathVariable(value = "address") String address) {
+		
 		FirestationMapping firestationMappingToDelete = firestationMappingModel.getFirestationMappingByAdress(address);
 
 		if (firestationMappingToDelete == null) {
@@ -238,19 +240,26 @@ public class SafetyNetEndpointsController {
 	//medicalRecords
 	@GetMapping(value = "/medicalRecords")
 	public ResponseEntity<List<MedicalRecord>> getAllMedicalRecords() {
+		
 		List<MedicalRecord> medicalRecords = medicalRecordModel.getAllMedicalRecords();
+		
 		logger.info("Success : medicalRecords list found");
+		
 		return new ResponseEntity<>(medicalRecords, HttpStatus.FOUND);
 	}
 	
 	@GetMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<MedicalRecord> getMedicalRecordById(@PathVariable String id) {
+		
 		MedicalRecord medicalRecordToGet = medicalRecordModel.getMedicalRecordById(id);
+		
 		if (medicalRecordToGet == null) {
 			logger.error("Error : medicalRecord not found");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		
 		logger.info("Success : medicalRecord found");
+		
 		return new ResponseEntity<>(medicalRecordToGet, HttpStatus.FOUND);
 	}
 	
@@ -305,6 +314,7 @@ public class SafetyNetEndpointsController {
 	
 	@DeleteMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable(value = "id") String id) {
+		
 		MedicalRecord medicalRecordToDelete = medicalRecordModel.getMedicalRecordById(id);
 
 		if (medicalRecordToDelete == null) {
@@ -320,6 +330,7 @@ public class SafetyNetEndpointsController {
 		}
 
 		logger.info("Success : medicalRecord deleted");
+		
 		return new ResponseEntity<>(HttpStatus.GONE);
 	}
 	
