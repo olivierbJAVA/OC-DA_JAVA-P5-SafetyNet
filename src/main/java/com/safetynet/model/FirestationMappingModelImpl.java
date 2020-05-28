@@ -17,20 +17,20 @@ public class FirestationMappingModelImpl implements IFirestationMappingModel {
 	public FirestationMappingModelImpl() {
 		super();
 	}
-	/*
+
 	public FirestationMappingModelImpl(IFirestationMappingDao firestationMappingDao) {
 		super();
 		this.firestationMappingDao = firestationMappingDao;
 	}
-	*/
+
 	public IFirestationMappingDao getFirestationMappingDao() {
 		return firestationMappingDao;
 	}
-	/*
+
 	public void setFirestationMappingDao(IFirestationMappingDao firestationMappingDao) {
 		this.firestationMappingDao = firestationMappingDao;
 	}
-	*/
+
 	@Override
 	public FirestationMapping addFirestationMapping(FirestationMapping firestationMapping) {
 		return firestationMappingDao.addFirestationMapping(firestationMapping);

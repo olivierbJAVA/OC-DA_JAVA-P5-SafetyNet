@@ -23,7 +23,6 @@ import com.safetynet.entities.Person;
 import com.safetynet.model.IFirestationMappingModel;
 import com.safetynet.model.IMedicalRecordModel;
 import com.safetynet.model.IPersonModel;
-import com.safetynet.util.IInitializeLists;
 
 @RestController
 public class SafetyNetEndpointsController {
@@ -40,16 +39,6 @@ public class SafetyNetEndpointsController {
 	private IMedicalRecordModel medicalRecordModel;
 
 	
-	// @Autowired
-	//private IInitializeLists initLists;
-
-	// @Autowired
-	public SafetyNetEndpointsController(IInitializeLists initLists) {
-		
-		logger.info("Constructeur SafetyNetController info");
-		//initialisation : possibilité 3 (appelé dans le constructeur du controller)
-		//initLists.initializeLists();
-	}
 
 	//persons
 	@GetMapping(value = "/persons")

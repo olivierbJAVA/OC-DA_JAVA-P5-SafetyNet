@@ -41,8 +41,11 @@ public class SafetyNetUrlsController {
 			
 		List<Person> persons = personModel.getAllPersons();
 				
-		List<String> listEmailF = persons.stream().filter(xx->xx.getCity().equals(city)).map(Person::getEmail).distinct().collect(Collectors.toList());		
-		List<String> listEmail = persons.stream().filter(xx->xx.getCity().equals(city)).map(xx->xx.getEmail()).distinct().collect(Collectors.toList());		
+		//List<String> listEmailF = persons.stream().filter(xx->xx.getCity().equals(city)).map(Person::getEmail).distinct().collect(Collectors.toList());		
+		List<String> listEmail = persons.stream()
+				.filter(xx->xx.getCity().equals(city))
+				.map(xx->xx.getEmail()).distinct()
+				.collect(Collectors.toList());		
 		
 		for(String email : listEmail) {
 			System.out.println(email);
@@ -59,21 +62,42 @@ public class SafetyNetUrlsController {
 		public ResponseEntity<List<String>> getPhoneAlert(@RequestParam String firestation) {
 				
 			List<Person> persons = personModel.getAllPersons();
-			List<FirestationMapping> firestationMappings = firestationMappingModel.getAllFirestationMappings();
+			List<FirestationMapping> firestationMappings = 
+					firestationMappingModel.getAllFirestationMappings();
 			
 			//Stream<String> address = firestationMappings.stream().filter(xx->xx.getStation().equals(firestationNumber)).map(xx->xx.getAddress());
 			
-			List<String> address = firestationMappings.stream().filter(xx->xx.getStation().equals(firestation)).map(xx->xx.getAddress()).collect(Collectors.toList());
+			List<String> address = firestationMappings.stream()
+					.filter(xx->xx.getStation().equals(firestation))
+					.map(xx->xx.getAddress())
+					.collect(Collectors.toList());
 			
-			List<String> phone = persons.stream().map(xx->xx.getPhone()).collect(Collectors.toList());
+			//address correspond à toutes les addresses de la firestation demandée
+			/*
+			for(String adress : address) {
+				List<String> toto = persons.forEach(person -> person.getAddress().equals(adress));
+			}
+				
+			
+
+				List<String> phones = persons.stream()
+						.filter(xx->xx.getAddress().equals(adress))
+						.map(xx->xx.getPhone()).collect(Collectors.toList());
+			}
+			*/
 			
 			
 			//List<String> result = persons.stream().filter(xx->xx.getAddress().matchAny(address)).map(xx->xx.getPhone()).collect(Collectors.toList());
 			
-				
+			/*
 			for(String adress : address) {
 				System.out.println(adress);
 			}
+			
+			for(String phone : phones) {
+				System.out.println(phone);
+			}
+			*/
 			return new ResponseEntity<>(address, HttpStatus.FOUND);
 
 			//List<String> result = persons.stream().map(xx->xx.getCity()).filter(xx->xx.equals(city)).collect(Collectors.toList(Person::getEmail));		
