@@ -42,7 +42,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	ObjectMapper mapper;
 	// ObjectMapper mapper = new ObjectMapper();
 
-	// initialisation : possibilité 2 (appelé après la construction de cet objet)
+	// initialisation : possibilité 1 (appelé après la construction de cet objet)
 	@PostConstruct
 	public void initializeLists() {
 

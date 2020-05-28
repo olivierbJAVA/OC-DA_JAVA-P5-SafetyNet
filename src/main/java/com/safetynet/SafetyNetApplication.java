@@ -40,7 +40,7 @@ public class SafetyNetApplication {
 				System.out.println(beanName);
 			}
 
-			// initialisation : possibilité 1 (appelé au lancement du programme)
+			// initialisation : possibilité 2 (appelé au lancement du programme)
 			//initLists.initializeLists();
 		};
 	}
