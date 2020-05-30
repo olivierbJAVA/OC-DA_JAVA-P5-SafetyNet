@@ -1,8 +1,8 @@
-package com.safetynet.model;
+package com.safetynet.model.endpoints;
 
 import java.util.List;
 
-import com.safetynet.entities.Person;
+import com.safetynet.entities.endpoints.Person;
 
 public interface IPersonModel {
 	public Person addPerson(Person person);
@@ -15,5 +15,9 @@ public interface IPersonModel {
 
 	public Person getPersonById(String idPerson);
 
-	public boolean personInList(Person person);
+	public boolean personExist(Person person);
+
+	public boolean addressExist(String address);
+
+	public boolean cityExist(String city);
 }

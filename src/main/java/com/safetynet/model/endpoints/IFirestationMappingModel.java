@@ -1,8 +1,8 @@
-package com.safetynet.model;
+package com.safetynet.model.endpoints;
 
 import java.util.List;
 
-import com.safetynet.entities.FirestationMapping;
+import com.safetynet.entities.endpoints.FirestationMapping;
 
 public interface IFirestationMappingModel {
 	public FirestationMapping addFirestationMapping(FirestationMapping firestationMapping);
@@ -15,5 +15,8 @@ public interface IFirestationMappingModel {
 
 	public FirestationMapping getFirestationMappingByAdress(String adressFirestation);
 
-	boolean firestationMappingInList(FirestationMapping firestationMapping);
+	public FirestationMapping getFirestationMappingByFirestationNumber(int firestationNumber);
+	
+	boolean firestationMappingExist(FirestationMapping firestationMapping);
+
 }

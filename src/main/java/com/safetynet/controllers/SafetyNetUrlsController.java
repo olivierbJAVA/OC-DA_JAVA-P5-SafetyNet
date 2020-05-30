@@ -2,7 +2,6 @@ package com.safetynet.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynet.entities.FirestationMapping;
-import com.safetynet.entities.MedicalRecord;
-import com.safetynet.entities.Person;
-import com.safetynet.model.IFirestationMappingModel;
-import com.safetynet.model.IMedicalRecordModel;
-import com.safetynet.model.IPersonModel;
+import com.safetynet.entities.endpoints.Person;
+import com.safetynet.entities.urls.ChildAlert;
+import com.safetynet.entities.urls.Fire;
+import com.safetynet.entities.urls.Firestation;
+import com.safetynet.model.endpoints.IFirestationMappingModel;
+import com.safetynet.model.endpoints.IPersonModel;
+import com.safetynet.model.urls.IResponseUrlsModel;
 
 @RestController
 public class SafetyNetUrlsController {
@@ -26,106 +26,73 @@ public class SafetyNetUrlsController {
 	private static final Logger logger = LoggerFactory.getLogger(SafetyNetUrlsController.class);
 
 	@Autowired
-	private IPersonModel personModel;
+	private IResponseUrlsModel responseModel;
 
 	@Autowired
 	private IFirestationMappingModel firestationMappingModel;
-	
-	@Autowired
-	private IMedicalRecordModel medicalRecordModel;
 
-	
+	@Autowired
+	private IPersonModel personModel;
+
+	// http://localhost:8080/firestation?stationNumber=<station_number>
+	@GetMapping(value = "/firestation")
+	public ResponseEntity<Firestation> responseFirestation(@RequestParam int stationNumber) {
+
+		if (firestationMappingModel.getFirestationMappingByFirestationNumber(stationNumber) == null) {
+			logger.error("Error : no mapping exist for this firestation");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Firestation responseFirestation = responseModel.responseFirestation(stationNumber);
+
+		return new ResponseEntity<>(responseFirestation, HttpStatus.OK);
+	}
+
+	// http://localhost:8080/childAlert?address=<address>
+	@GetMapping(value = "/childAlert")
+	public ResponseEntity<ChildAlert> responseChildAlert(@RequestParam String address) {
+
+		if (!personModel.addressExist(address)) {
+			logger.error("Error : address does not exist");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		ChildAlert responseChildAlert = responseModel.responseChildAlert(address);
+
+		return new ResponseEntity<>(responseChildAlert, HttpStatus.OK);
+
+	}
+
+	// http://localhost:8080/fire?address=<address>
+	@GetMapping(value = "/fire")
+	public ResponseEntity<Fire> responseFire(@RequestParam String address) {
+
+		if (!personModel.addressExist(address)) {
+			logger.error("Error : address does not exist");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Fire responseFire = responseModel.responseFire(address);
+
+		return new ResponseEntity<>(responseFire, HttpStatus.OK);
+
+	}
+
 	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
 	public ResponseEntity<List<String>> getCommunityEmail(@RequestParam String city) {
-			
-		List<Person> persons = personModel.getAllPersons();
-				
-		//List<String> listEmailF = persons.stream().filter(xx->xx.getCity().equals(city)).map(Person::getEmail).distinct().collect(Collectors.toList());		
-		List<String> listEmail = persons.stream()
-				.filter(xx->xx.getCity().equals(city))
-				.map(xx->xx.getEmail()).distinct()
-				.collect(Collectors.toList());		
-		
-		for(String email : listEmail) {
-			System.out.println(email);
-		}
-		return new ResponseEntity<>(listEmail, HttpStatus.FOUND);
 
-		//List<String> result = persons.stream().map(xx->xx.getCity()).filter(xx->xx.equals(city)).collect(Collectors.toList(Person::getEmail));		
-		//List<Person> result = persons.stream().filter(xx->xx.getCity().equals(city)).collect(Collectors.toList());		
-	
+		if (!personModel.cityExist(city)) {
+			logger.error("Error : city does not exist");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		List<Person> listPersons = personModel.getAllPersons();
+
+		List<String> listEmails = listPersons.stream().filter(x -> x.getCity().equals(city)).map(Person::getEmail)
+				.distinct().collect(Collectors.toList());
+
+		return new ResponseEntity<>(listEmails, HttpStatus.FOUND);
 	}
 
-	//http://localhost:8080/phoneAlert?firestation=<firestation_number>
-		@GetMapping(value = "/phoneAlert")
-		public ResponseEntity<List<String>> getPhoneAlert(@RequestParam String firestation) {
-				
-			List<Person> persons = personModel.getAllPersons();
-			List<FirestationMapping> firestationMappings = 
-					firestationMappingModel.getAllFirestationMappings();
-			
-			//Stream<String> address = firestationMappings.stream().filter(xx->xx.getStation().equals(firestationNumber)).map(xx->xx.getAddress());
-			
-			List<String> address = firestationMappings.stream()
-					.filter(xx->xx.getStation().equals(firestation))
-					.map(xx->xx.getAddress())
-					.collect(Collectors.toList());
-			
-			//address correspond à toutes les addresses de la firestation demandée
-			/*
-			for(String adress : address) {
-				List<String> toto = persons.forEach(person -> person.getAddress().equals(adress));
-			}
-				
-			
-
-				List<String> phones = persons.stream()
-						.filter(xx->xx.getAddress().equals(adress))
-						.map(xx->xx.getPhone()).collect(Collectors.toList());
-			}
-			*/
-			
-			
-			//List<String> result = persons.stream().filter(xx->xx.getAddress().matchAny(address)).map(xx->xx.getPhone()).collect(Collectors.toList());
-			
-			/*
-			for(String adress : address) {
-				System.out.println(adress);
-			}
-			
-			for(String phone : phones) {
-				System.out.println(phone);
-			}
-			*/
-			return new ResponseEntity<>(address, HttpStatus.FOUND);
-
-			//List<String> result = persons.stream().map(xx->xx.getCity()).filter(xx->xx.equals(city)).collect(Collectors.toList(Person::getEmail));		
-			//List<Person> result = persons.stream().filter(xx->xx.getCity().equals(city)).collect(Collectors.toList());		
-		
-		}
-	
-	/*
-	//http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
-	@GetMapping(value = "/personInfo")
-	public ResponseEntity<List<String>> getPersonById(@RequestParam String firstName, String lastName) {
-			
-		List<Person> persons = personModel.getAllPersons();
-		List<MedicalRecord> medicalRecord = medicalRecordModel.getAllMedicalRecords();
-		
-		medicalRecord.stream().map(xx->xx.getBirthdate().to)
-		
-		List<String> result = persons.stream().filter(xx->xx.getCity().equals(city)).map(Person::getEmail).distinct().collect(Collectors.toList());		
-		List<String> result3 = persons.stream().filter(xx->xx.getCity().equals(city)).map(xx->xx.getEmail()).distinct().collect(Collectors.toList());		
-		
-		for(String email : result3) {
-			System.out.println(email);
-		}
-		return new ResponseEntity<>(result3, HttpStatus.FOUND);
-
-		//List<String> result = persons.stream().map(xx->xx.getCity()).filter(xx->xx.equals(city)).collect(Collectors.toList(Person::getEmail));		
-		//List<Person> result = persons.stream().filter(xx->xx.getCity().equals(city)).collect(Collectors.toList());		
-	
-	}
-	*/
 }

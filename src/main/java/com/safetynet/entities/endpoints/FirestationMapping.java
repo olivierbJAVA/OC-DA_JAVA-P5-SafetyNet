@@ -1,15 +1,15 @@
-package com.safetynet.entities;
+package com.safetynet.entities.endpoints;
 
 public class FirestationMapping {
 
 	private String address;
-	private String nbStation;
+	private int nbStation;
 
 	public FirestationMapping() {
 		super();
 	}
 
-	public FirestationMapping(String address, String nbStation) {
+	public FirestationMapping(String address, int nbStation) {
 		super();
 		this.address = address;
 		this.nbStation = nbStation;
@@ -23,11 +23,11 @@ public class FirestationMapping {
 		this.address = address;
 	}
 
-	public String getStation() {
+	public int getStation() {
 		return nbStation;
 	}
 
-	public void setStation(String nbStation) {
+	public void setStation(int nbStation) {
 		this.nbStation = nbStation;
 	}
 

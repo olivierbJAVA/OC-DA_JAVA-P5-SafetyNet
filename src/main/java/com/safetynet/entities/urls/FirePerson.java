@@ -1,38 +1,27 @@
-package com.safetynet.entities;
+package com.safetynet.entities.urls;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+public class FirePerson {
 
-public class MedicalRecord {
-
-	@JsonIgnore
-	private String idMedicalRecord;
 	private String firstName;
 	private String lastName;
-	private String birthdate;
+	private String phone;
+	private long age;
 	private String[] medications;
 	private String[] allergies;
-
-	public MedicalRecord() {
+	
+	public FirePerson() {
 		super();
 	}
-
-	public MedicalRecord(String idMedicalRecord, String firstName, String lastName, String birthdate,
-			String[] medications, String[] allergies) {
+	
+	public FirePerson(String firstName, String lastName, String phone, long age, String[] medications,
+			String[] allergies) {
 		super();
-		this.idMedicalRecord = idMedicalRecord;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.birthdate = birthdate;
+		this.phone = phone;
+		this.age = age;
 		this.medications = medications;
 		this.allergies = allergies;
-	}
-
-	public String getIdMedicalRecord() {
-		return idMedicalRecord;
-	}
-
-	public void setIdMedicalRecord(String idMedicalRecord) {
-		this.idMedicalRecord = idMedicalRecord;
 	}
 
 	public String getFirstName() {
@@ -51,12 +40,20 @@ public class MedicalRecord {
 		this.lastName = lastName;
 	}
 
-	public String getBirthdate() {
-		return birthdate;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public long getAge() {
+		return age;
+	}
+
+	public void setAge(long age) {
+		this.age = age;
 	}
 
 	public String[] getMedications() {
@@ -74,5 +71,5 @@ public class MedicalRecord {
 	public void setAllergies(String[] allergies) {
 		this.allergies = allergies;
 	}
-
+	
 }

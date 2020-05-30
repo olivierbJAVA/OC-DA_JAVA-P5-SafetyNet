@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.safetynet.entities.Person;
+import com.safetynet.entities.endpoints.Person;
 
 @Component
 public class PersonDaoHashmapImpl implements IPersonDao {
@@ -45,5 +45,15 @@ public class PersonDaoHashmapImpl implements IPersonDao {
 		}
 		return null;
 	}
-
+	/*
+	@Override
+	public boolean addressExist(String address) {
+		for (Map.Entry<String, Person> mapentry : persons.entrySet()) {
+			if (mapentry.getValue().getAddress().equals(address)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	*/
 }

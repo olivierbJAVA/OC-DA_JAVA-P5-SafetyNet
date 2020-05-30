@@ -2,7 +2,7 @@ package com.safetynet.dao;
 
 import java.util.List;
 
-import com.safetynet.entities.MedicalRecord;
+import com.safetynet.entities.endpoints.MedicalRecord;
 
 public interface IMedicalRecordDao {
 	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);

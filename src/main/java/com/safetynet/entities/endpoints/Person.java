@@ -1,4 +1,4 @@
-package com.safetynet.entities;
+package com.safetynet.entities.endpoints;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

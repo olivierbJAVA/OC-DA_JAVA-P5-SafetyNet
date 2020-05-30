@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.safetynet.entities.MedicalRecord;
+import com.safetynet.entities.endpoints.MedicalRecord;
 
 @Component
 public class MedicalRecordDaoHashmapImpl implements IMedicalRecordDao {

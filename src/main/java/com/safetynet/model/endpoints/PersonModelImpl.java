@@ -1,6 +1,8 @@
-package com.safetynet.model;
+package com.safetynet.model.endpoints;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.dao.IPersonDao;
-import com.safetynet.entities.Person;
+import com.safetynet.entities.endpoints.Person;
 
 @Component
 public class PersonModelImpl implements IPersonModel {
@@ -63,10 +65,32 @@ public class PersonModelImpl implements IPersonModel {
 	}
 
 	@Override
-	public boolean personInList(Person person) {
+	public boolean personExist(Person person) {
 		if (personDao.getPersonById(person.getFirstName() + person.getLastName()) == null) {
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean addressExist(String address) {
+		List<Person> persons = personDao.getAllPersons();
+		for(Person person : persons) {
+			if(person.getAddress().equals(address)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean cityExist(String city) {
+		List<Person> persons = personDao.getAllPersons();
+		for(Person person : persons) {
+			if(person.getCity().equals(city)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -1,4 +1,4 @@
-package com.safetynet.model;
+package com.safetynet.model.endpoints;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.dao.IMedicalRecordDao;
-import com.safetynet.entities.MedicalRecord;
+import com.safetynet.entities.endpoints.MedicalRecord;
 
 @Component
 public class MedicalRecordModelImpl implements IMedicalRecordModel {
@@ -57,7 +57,7 @@ public class MedicalRecordModelImpl implements IMedicalRecordModel {
 	}
 
 	@Override
-	public boolean medicalRecordInList(MedicalRecord medicalRecord) {
+	public boolean medicalRecordExist(MedicalRecord medicalRecord) {
 		if (medicalRecordDao.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {
 			return false;
 		}

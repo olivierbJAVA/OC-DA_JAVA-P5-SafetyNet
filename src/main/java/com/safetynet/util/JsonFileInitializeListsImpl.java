@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.entities.FirestationMapping;
-import com.safetynet.entities.MedicalRecord;
-import com.safetynet.entities.Person;
-import com.safetynet.model.IFirestationMappingModel;
-import com.safetynet.model.IMedicalRecordModel;
-import com.safetynet.model.IPersonModel;
+import com.safetynet.entities.endpoints.FirestationMapping;
+import com.safetynet.entities.endpoints.MedicalRecord;
+import com.safetynet.entities.endpoints.Person;
+import com.safetynet.model.endpoints.IFirestationMappingModel;
+import com.safetynet.model.endpoints.IMedicalRecordModel;
+import com.safetynet.model.endpoints.IPersonModel;
 
 @Component
 public class JsonFileInitializeListsImpl implements IInitializeLists {
@@ -37,16 +37,18 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 	// InputStream input = new FileInputStream("data.json");
 
+	/*
 	// OB : doit-on faire Autowired pour cet objet ?
 	@Autowired
 	ObjectMapper mapper;
-	// ObjectMapper mapper = new ObjectMapper();
+	*/
 
 	// initialisation : possibilité 1 (appelé après la construction de cet objet)
 	@PostConstruct
 	public void initializeLists() {
 
 		try {
+			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(new File("data.json"));
 
 			// initial persons list

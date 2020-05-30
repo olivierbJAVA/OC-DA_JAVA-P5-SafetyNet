@@ -1,4 +1,4 @@
-package com.safetynet.model;
+package com.safetynet.model.endpoints;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.safetynet.dao.IFirestationMappingDao;
-import com.safetynet.entities.FirestationMapping;
+import com.safetynet.entities.endpoints.FirestationMapping;
 
 @Component
 public class FirestationMappingModelImpl implements IFirestationMappingModel {
@@ -37,8 +37,8 @@ public class FirestationMappingModelImpl implements IFirestationMappingModel {
 	}
 
 	@Override
-	public FirestationMapping deleteFirestationMapping(String addressFirestation) {
-		return firestationMappingDao.deleteFirestationMapping(addressFirestation);
+	public FirestationMapping deleteFirestationMapping(String firestationAddress) {
+		return firestationMappingDao.deleteFirestationMapping(firestationAddress);
 	}
 
 	@Override
@@ -52,12 +52,17 @@ public class FirestationMappingModelImpl implements IFirestationMappingModel {
 	}
 
 	@Override
-	public FirestationMapping getFirestationMappingByAdress(String adressFirestation) {
-		return firestationMappingDao.getFirestationMappingByAdress(adressFirestation);
+	public FirestationMapping getFirestationMappingByAdress(String firestationAddress) {
+		return firestationMappingDao.getFirestationMappingByAdress(firestationAddress);
 	}
 
 	@Override
-	public boolean firestationMappingInList(FirestationMapping firestationMapping) {
+	public FirestationMapping getFirestationMappingByFirestationNumber(int firestationNumber) {
+		return firestationMappingDao.getFirestationMappingByStationNumber(firestationNumber);
+	}
+		
+	@Override
+	public boolean firestationMappingExist(FirestationMapping firestationMapping) {
 		if (firestationMappingDao.getFirestationMappingByAdress(firestationMapping.getAddress()) == null) {
 			return false;
 		}

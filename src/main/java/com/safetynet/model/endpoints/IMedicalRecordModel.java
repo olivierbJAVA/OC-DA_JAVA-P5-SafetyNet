@@ -1,8 +1,8 @@
-package com.safetynet.model;
+package com.safetynet.model.endpoints;
 
 import java.util.List;
 
-import com.safetynet.entities.MedicalRecord;
+import com.safetynet.entities.endpoints.MedicalRecord;
 
 public interface IMedicalRecordModel {
 	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);
@@ -15,5 +15,5 @@ public interface IMedicalRecordModel {
 
 	public MedicalRecord getMedicalRecordById(String idMedicalRecord);
 
-	public boolean medicalRecordInList(MedicalRecord medicalRecord);
+	public boolean medicalRecordExist(MedicalRecord medicalRecord);
 }
