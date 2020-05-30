@@ -16,6 +16,7 @@ import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.ChildAlert;
 import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.Firestation;
+import com.safetynet.entities.urls.Flood;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 import com.safetynet.model.endpoints.IPersonModel;
 import com.safetynet.model.urls.IResponseUrlsModel;
@@ -78,6 +79,21 @@ public class SafetyNetUrlsController {
 
 	}
 
+	// http://localhost:8080/flood/station?station=<a list of station_numbers>
+	@GetMapping(value = "/flood/station")
+	public ResponseEntity<Flood> responseFlood(@RequestParam int station) {
+
+		if (firestationMappingModel.getFirestationMappingByFirestationNumber(station) == null) {
+			logger.error("Error : no mapping exist for this firestation");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		Flood responseFlood = responseModel.responseFlood(station);
+
+		return new ResponseEntity<>(responseFlood, HttpStatus.OK);
+	}
+	
+	
 	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
 	public ResponseEntity<List<String>> getCommunityEmail(@RequestParam String city) {

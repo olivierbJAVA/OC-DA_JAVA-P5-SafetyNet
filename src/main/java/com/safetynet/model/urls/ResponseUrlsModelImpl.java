@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +19,8 @@ import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.FirePerson;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.FirestationPerson;
+import com.safetynet.entities.urls.Flood;
+import com.safetynet.entities.urls.FloodPerson;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 import com.safetynet.model.endpoints.IMedicalRecordModel;
 import com.safetynet.model.endpoints.IPersonModel;
@@ -65,14 +70,12 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 					nbAdults++;
 				}
 			}
-
 			responseFirestation.setFirestationPersons(responseFirestationListPersons);
 			responseFirestation.setNbAdults(nbAdults);
 			responseFirestation.setNbChilds(nbChilds);
 		}
-
+		
 		return responseFirestation;
-
 	}
 
 	@Override
@@ -109,7 +112,6 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 					otherHouseholdMember.setEmail(personInList.getEmail());
 					responseChildAlertListHouseholdMembers.add(otherHouseholdMember);
 				}
-
 				responseChildAlert.setChildAlertChilds(responseChildAlertListChilds);
 				responseChildAlert.setChildAlertHouseholdMembers(responseChildAlertListHouseholdMembers);
 			}
@@ -155,12 +157,61 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 				responseFirePerson.add(firePerson);
 			}
-
 		}
-
 		responseFire.setFirePersons(responseFirePerson);
 
 		return responseFire;
+	}
+
+	@Override
+	public Flood responseFlood(int stationNumber) {
+
+		Flood responseFlood = new Flood();
+
+		Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
+
+		List<Person> listAllPersons = personModel.getAllPersons();
+
+		Set<String> listAllAddress = personModel.getAllAddress();
+
+		for (String address : listAllAddress) {
+
+			List<FloodPerson> responseListFloodPersons = new ArrayList<>();
+			
+			if (firestationMappingModel.getFirestationMappingByAdress(address).getStation() == stationNumber) {
+
+				for (Person personInList : listAllPersons) {
+
+					if (personInList.getAddress().equals(address)) {
+
+						FloodPerson responseFloodPerson = new FloodPerson();
+
+						long personAge = getPersonAge(personInList);
+
+						responseFloodPerson.setFirstName(personInList.getFirstName());
+						responseFloodPerson.setLastName(personInList.getLastName());
+						responseFloodPerson.setPhone(personInList.getPhone());
+
+						responseFloodPerson.setAge(personAge);
+
+						responseFloodPerson.setMedications(medicalRecordModel
+								.getMedicalRecordById(
+										responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
+								.getMedications());
+						responseFloodPerson.setAllergies(medicalRecordModel
+								.getMedicalRecordById(
+										responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
+								.getAllergies());
+
+						responseListFloodPersons.add(responseFloodPerson);
+					}
+				}
+				responseMapFloodPersons.put(address, responseListFloodPersons);
+			}
+		}
+		responseFlood.setMapFloodPersons(responseMapFloodPersons);
+
+		return responseFlood;
 	}
 
 	private long getPersonAge(Person person) {

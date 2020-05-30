@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Firestation {
 
-	@JsonProperty("PersonsCoveredByFirestation")
+	@JsonProperty("PersonsCoveredByThisFirestation")
 	private List<FirestationPerson> firestationPersons;
 
 	@JsonProperty("NumberOfAdults")

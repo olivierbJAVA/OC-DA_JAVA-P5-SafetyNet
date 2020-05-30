@@ -1,6 +1,7 @@
 package com.safetynet.model.endpoints;
 
 import java.util.List;
+import java.util.Set;
 
 import com.safetynet.entities.endpoints.Person;
 
@@ -20,4 +21,6 @@ public interface IPersonModel {
 	public boolean addressExist(String address);
 
 	public boolean cityExist(String city);
+
+	public Set<String> getAllAddress();
 }

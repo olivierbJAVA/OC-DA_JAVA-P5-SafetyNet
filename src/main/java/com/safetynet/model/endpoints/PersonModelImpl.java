@@ -1,8 +1,8 @@
 package com.safetynet.model.endpoints;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,26 +71,37 @@ public class PersonModelImpl implements IPersonModel {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean addressExist(String address) {
 		List<Person> persons = personDao.getAllPersons();
-		for(Person person : persons) {
-			if(person.getAddress().equals(address)) {
+		for (Person person : persons) {
+			if (person.getAddress().equals(address)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean cityExist(String city) {
 		List<Person> persons = personDao.getAllPersons();
-		for(Person person : persons) {
-			if(person.getCity().equals(city)) {
+		for (Person person : persons) {
+			if (person.getCity().equals(city)) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	@Override
+	public Set<String> getAllAddress() {
+		Set<String> address = new HashSet<>();
+		List<Person> persons = personDao.getAllPersons();
+		for (Person person : persons) {
+			address.add(person.getAddress());
+		}
+		return address;
+	}
+
 }
