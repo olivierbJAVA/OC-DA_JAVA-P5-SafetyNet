@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.safetynet.entities.endpoints.Person;
 
-@Component
+@Repository
 public class PersonDaoHashmapImpl implements IPersonDao {
 
 	private static Map<String, Person> persons = new HashMap<>();
@@ -46,14 +46,9 @@ public class PersonDaoHashmapImpl implements IPersonDao {
 		return null;
 	}
 	/*
-	@Override
-	public boolean addressExist(String address) {
-		for (Map.Entry<String, Person> mapentry : persons.entrySet()) {
-			if (mapentry.getValue().getAddress().equals(address)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	*/
+	 * @Override public boolean addressExist(String address) { for
+	 * (Map.Entry<String, Person> mapentry : persons.entrySet()) { if
+	 * (mapentry.getValue().getAddress().equals(address)) { return true; } } return
+	 * false; }
+	 */
 }

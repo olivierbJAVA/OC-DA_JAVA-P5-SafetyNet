@@ -7,12 +7,12 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.endpoints.Person;
 
-@Component
+@Service
 public class PersonModelImpl implements IPersonModel {
 
 	private static final Logger logger = LoggerFactory.getLogger(PersonModelImpl.class);
@@ -70,6 +70,17 @@ public class PersonModelImpl implements IPersonModel {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean idPersonExist(String idPerson) {
+		List<Person> persons = personDao.getAllPersons();
+		for (Person person : persons) {
+			if (person.getIdPerson().equals(idPerson)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

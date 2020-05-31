@@ -37,7 +37,9 @@ public class SafetyNetEndpointsPersonsController {
 
 		return new ResponseEntity<>(persons, HttpStatus.FOUND);
 	}
-
+	
+	/*
+	//V1 : sans message d'erreur
 	@GetMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
 
@@ -50,6 +52,45 @@ public class SafetyNetEndpointsPersonsController {
 		}
 
 		logger.info("Success : person found");
+
+		return new ResponseEntity<>(personToGet, HttpStatus.FOUND);
+	}
+	*/
+	/*
+	//V2 : avec message d'erreur mais ResponsEntity non paramétré
+	@GetMapping(value = "/persons/{id}")
+	public ResponseEntity getPersonById(@PathVariable String id) {
+
+		Person personToGet = personModel.getPersonById(id);
+
+		if (personToGet == null) {
+			logger.error("Error : person not found");
+			// return ResponseEntity.noContent().build();
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("Error : person not found");
+		}
+
+		logger.info("Success : person found");
+
+		return ResponseEntity
+				.status(HttpStatus.FOUND)
+				.body(personToGet);
+	}
+	*/
+	//V3 : avec message d'erreur et ResponseEntity paramétré par un ? ou Object
+	@GetMapping(value = "/persons/{id}")
+	public ResponseEntity<?> getPersonById(@PathVariable String id) {
+
+		Person personToGet = personModel.getPersonById(id);
+
+		if (personToGet == null) {
+			logger.error("Error : person {} not found",id);
+			// return ResponseEntity.noContent().build();
+			return new ResponseEntity<>("Error : person not found", HttpStatus.NOT_FOUND);
+		}
+
+		logger.info("Success : person {} found",id);
 
 		return new ResponseEntity<>(personToGet, HttpStatus.FOUND);
 	}

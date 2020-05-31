@@ -3,12 +3,12 @@ package com.safetynet.model.endpoints;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.safetynet.dao.IFirestationMappingDao;
 import com.safetynet.entities.endpoints.FirestationMapping;
 
-@Component
+@Service
 public class FirestationMappingModelImpl implements IFirestationMappingModel {
 
 	@Autowired
@@ -60,7 +60,7 @@ public class FirestationMappingModelImpl implements IFirestationMappingModel {
 	public FirestationMapping getFirestationMappingByFirestationNumber(int firestationNumber) {
 		return firestationMappingDao.getFirestationMappingByStationNumber(firestationNumber);
 	}
-		
+
 	@Override
 	public boolean firestationMappingExist(FirestationMapping firestationMapping) {
 		if (firestationMappingDao.getFirestationMappingByAdress(firestationMapping.getAddress()) == null) {

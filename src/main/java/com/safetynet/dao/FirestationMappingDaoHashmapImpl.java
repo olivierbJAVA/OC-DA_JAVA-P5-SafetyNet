@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
 
-@Component
+@Repository
 public class FirestationMappingDaoHashmapImpl implements IFirestationMappingDao {
 
 	private static Map<String, FirestationMapping> firestationMappings = new HashMap<>();
@@ -45,11 +45,11 @@ public class FirestationMappingDaoHashmapImpl implements IFirestationMappingDao 
 		}
 		return null;
 	}
-	
+
 	@Override
 	public FirestationMapping getFirestationMappingByStationNumber(int firestationNumber) {
 		for (Map.Entry<String, FirestationMapping> mapentry : firestationMappings.entrySet()) {
-			if (mapentry.getValue().getStation()==firestationNumber) {
+			if (mapentry.getValue().getStation() == firestationNumber) {
 				return mapentry.getValue();
 			}
 		}

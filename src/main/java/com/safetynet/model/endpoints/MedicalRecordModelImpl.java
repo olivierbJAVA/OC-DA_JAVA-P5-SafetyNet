@@ -3,12 +3,12 @@ package com.safetynet.model.endpoints;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.safetynet.dao.IMedicalRecordDao;
 import com.safetynet.entities.endpoints.MedicalRecord;
 
-@Component
+@Service
 public class MedicalRecordModelImpl implements IMedicalRecordModel {
 
 	@Autowired

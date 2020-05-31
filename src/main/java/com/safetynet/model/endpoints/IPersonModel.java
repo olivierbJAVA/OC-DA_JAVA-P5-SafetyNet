@@ -18,6 +18,8 @@ public interface IPersonModel {
 
 	public boolean personExist(Person person);
 
+	public boolean idPersonExist(String idPerson);
+
 	public boolean addressExist(String address);
 
 	public boolean cityExist(String city);

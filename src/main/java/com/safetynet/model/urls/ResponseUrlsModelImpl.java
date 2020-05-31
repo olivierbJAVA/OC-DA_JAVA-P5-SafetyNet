@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.ChildAlert;
@@ -21,11 +21,13 @@ import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.FirestationPerson;
 import com.safetynet.entities.urls.Flood;
 import com.safetynet.entities.urls.FloodPerson;
+import com.safetynet.entities.urls.PersonInfo;
+import com.safetynet.entities.urls.PersonInfoSameName;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 import com.safetynet.model.endpoints.IMedicalRecordModel;
 import com.safetynet.model.endpoints.IPersonModel;
 
-@Component
+@Service
 public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 	@Autowired
@@ -74,7 +76,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 			responseFirestation.setNbAdults(nbAdults);
 			responseFirestation.setNbChilds(nbChilds);
 		}
-		
+
 		return responseFirestation;
 	}
 
@@ -143,12 +145,10 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 				FirePerson firePerson = new FirePerson();
 
-				long personAge = getPersonAge(personInList);
-
 				firePerson.setFirstName(personInList.getFirstName());
 				firePerson.setLastName(personInList.getLastName());
 				firePerson.setPhone(personInList.getPhone());
-				firePerson.setAge(personAge);
+				firePerson.setAge(getPersonAge(personInList));
 
 				firePerson.setMedications(medicalRecordModel
 						.getMedicalRecordById(firePerson.getFirstName() + firePerson.getLastName()).getMedications());
@@ -177,7 +177,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		for (String address : listAllAddress) {
 
 			List<FloodPerson> responseListFloodPersons = new ArrayList<>();
-			
+
 			if (firestationMappingModel.getFirestationMappingByAdress(address).getStation() == stationNumber) {
 
 				for (Person personInList : listAllPersons) {
@@ -186,13 +186,10 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 						FloodPerson responseFloodPerson = new FloodPerson();
 
-						long personAge = getPersonAge(personInList);
-
 						responseFloodPerson.setFirstName(personInList.getFirstName());
 						responseFloodPerson.setLastName(personInList.getLastName());
 						responseFloodPerson.setPhone(personInList.getPhone());
-
-						responseFloodPerson.setAge(personAge);
+						responseFloodPerson.setAge(getPersonAge(personInList));
 
 						responseFloodPerson.setMedications(medicalRecordModel
 								.getMedicalRecordById(
@@ -212,6 +209,61 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		responseFlood.setMapFloodPersons(responseMapFloodPersons);
 
 		return responseFlood;
+	}
+
+	// http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
+	@Override
+	public PersonInfo responsePersonInfo(String firstName, String lastName) {
+
+		PersonInfo responsePersonInfo = new PersonInfo();
+
+		List<Person> listAllPersons = personModel.getAllPersons();
+
+		for (Person personInList : listAllPersons) {
+
+			if (personInList.getIdPerson().equals(firstName + lastName)) {
+
+				responsePersonInfo.setFirstName(firstName);
+				responsePersonInfo.setLastName(lastName);
+				responsePersonInfo.setAge(getPersonAge(personInList));
+				responsePersonInfo.setEmail(personInList.getEmail());
+
+				responsePersonInfo.setMedications(medicalRecordModel
+						.getMedicalRecordById(responsePersonInfo.getFirstName() + responsePersonInfo.getLastName())
+						.getMedications());
+				responsePersonInfo.setAllergies(medicalRecordModel
+						.getMedicalRecordById(responsePersonInfo.getFirstName() + responsePersonInfo.getLastName())
+						.getAllergies());
+
+				List<PersonInfoSameName> responsePersonInfoListOtherPersonsSameName = new ArrayList<>();
+
+				for (Person personInListWithSameName : listAllPersons) {
+
+					if (personInListWithSameName.getLastName().equals(responsePersonInfo.getLastName())
+							&& !personInListWithSameName.getFirstName().equals(responsePersonInfo.getFirstName())) {
+
+						PersonInfoSameName responsePersonInfoOtherPersonSameName = new PersonInfoSameName();
+
+						responsePersonInfoOtherPersonSameName.setFirstName(personInListWithSameName.getFirstName());
+						responsePersonInfoOtherPersonSameName.setLastName(personInListWithSameName.getLastName());
+						responsePersonInfoOtherPersonSameName.setAge(getPersonAge(personInListWithSameName));
+						responsePersonInfoOtherPersonSameName.setEmail(personInListWithSameName.getEmail());
+
+						responsePersonInfoOtherPersonSameName.setMedications(medicalRecordModel.getMedicalRecordById(
+								personInListWithSameName.getFirstName() + personInListWithSameName.getLastName())
+								.getMedications());
+						responsePersonInfoOtherPersonSameName.setAllergies(medicalRecordModel.getMedicalRecordById(
+								personInListWithSameName.getFirstName() + personInListWithSameName.getLastName())
+								.getAllergies());
+
+						responsePersonInfoListOtherPersonsSameName.add(responsePersonInfoOtherPersonSameName);
+					}
+				}
+				responsePersonInfo.setOtherPersonsWithSameName(responsePersonInfoListOtherPersonsSameName);
+			}
+		}
+
+		return responsePersonInfo;
 	}
 
 	private long getPersonAge(Person person) {

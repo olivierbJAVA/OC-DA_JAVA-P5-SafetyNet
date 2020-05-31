@@ -7,7 +7,7 @@ import com.safetynet.entities.endpoints.Person;
 
 public class ChildAlert {
 
-	@JsonProperty("ChildsAtThisAddress")
+	@JsonProperty("ChildsLivingAtThisAddress")
 	private List<ChildAlertChild> childAlertChilds;
 
 	@JsonProperty("OtherHouseholdMembers")

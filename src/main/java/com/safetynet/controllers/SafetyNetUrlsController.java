@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.ChildAlert;
 import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.Flood;
+import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 import com.safetynet.model.endpoints.IPersonModel;
 import com.safetynet.model.urls.IResponseUrlsModel;
@@ -92,8 +94,21 @@ public class SafetyNetUrlsController {
 
 		return new ResponseEntity<>(responseFlood, HttpStatus.OK);
 	}
-	
-	
+
+	// http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
+	@GetMapping(value = "/personInfo")
+	public ResponseEntity<PersonInfo> responsePersonInfo(String firstName, String lastName) {
+
+		if (!personModel.idPersonExist(firstName+lastName)) {
+			logger.error("Error : person does not exist");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		PersonInfo responsePersonInfo = responseModel.responsePersonInfo(firstName, lastName);
+
+		return new ResponseEntity<>(responsePersonInfo, HttpStatus.OK);
+	}
+
 	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
 	public ResponseEntity<List<String>> getCommunityEmail(@RequestParam String city) {
@@ -110,5 +125,19 @@ public class SafetyNetUrlsController {
 
 		return new ResponseEntity<>(listEmails, HttpStatus.FOUND);
 	}
-
+	/*
+	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
+	@GetMapping(value = "/phoneAlert")
+	public void getPhoneAlert(@RequestParam int firestation) {
+			
+		List<Person> persons = personModel.getAllPersons();
+		List<FirestationMapping> firestationMappings = firestationMappingModel.getAllFirestationMappings();
+		
+		List<String> address = firestationMappings.stream()
+				.filter(xx->xx.getStation().equals(firestation))
+				.map(xx->xx.getAddress())
+				.collect(Collectors.toList());
+		
+	}
+	*/
 }

@@ -7,13 +7,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
+import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import com.safetynet.util.IInitializeLists;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @SpringBootApplication
+@EnableSwagger2
 public class SafetyNetApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
@@ -25,6 +30,11 @@ public class SafetyNetApplication {
 		logger.info("INFO : Launch SafetyNet");
 
 		SpringApplication.run(SafetyNetApplication.class, args);
+	}
+
+	@Bean
+	public HttpTraceRepository httpTraceRepository() {
+		return new InMemoryHttpTraceRepository();
 	}
 
 	@Bean
@@ -41,7 +51,7 @@ public class SafetyNetApplication {
 			}
 
 			// initialisation : possibilité 2 (appelé au lancement du programme)
-			//initLists.initializeLists();
+			// initLists.initializeLists();
 		};
 	}
 

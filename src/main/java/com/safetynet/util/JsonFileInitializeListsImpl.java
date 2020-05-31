@@ -1,6 +1,7 @@
 package com.safetynet.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -9,7 +10,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,7 @@ import com.safetynet.model.endpoints.IFirestationMappingModel;
 import com.safetynet.model.endpoints.IMedicalRecordModel;
 import com.safetynet.model.endpoints.IPersonModel;
 
-@Component
+@Service
 public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 	private static final Logger logger = LoggerFactory.getLogger("JsonInputFileReader");
@@ -37,11 +38,8 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 	// InputStream input = new FileInputStream("data.json");
 
-	/*
 	// OB : doit-on faire Autowired pour cet objet ?
-	@Autowired
-	ObjectMapper mapper;
-	*/
+	// @Autowired ObjectMapper mapper;
 
 	// initialisation : possibilité 1 (appelé après la construction de cet objet)
 	@PostConstruct
@@ -49,16 +47,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			JsonNode rootNode = mapper.readTree(new File("data.json"));
+			JsonNode rootNode = mapper.readTree(new File("./data.json"));
 
 			// initial persons list
 			JsonNode jsonNodePersons = rootNode.path("persons");
 			Iterator<JsonNode> iteratorPersons = jsonNodePersons.elements();
 
 			// Pas possible ici ?
-			/*
-			 * @Autowired IPersonModel personModel;
-			 */
+			// @Autowired IPersonModel personModel;
 			Person person;
 			int numPerson = 0;
 			while (iteratorPersons.hasNext()) {
@@ -117,7 +113,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 					.writeValueAsString(medicalRecordModel.getAllMedicalRecords());
 			System.out.println(prettyMedicalRecords);
 
-		} catch (IOException e) {
+		} catch (FileNotFoundException e) {
+			logger.error("Error JSON initialization file not found" + e.toString());
+			System.out.println(
+					"Error : JSON initialization file not found. To solve the issue please name the Json initialization file 'data.json' and put it in the same directory that the SafetyNet jar file");
+			System.exit(0);
+		}
+
+		catch (IOException e) {
 			logger.error("Error in lists initialization " + e.toString());
 			System.exit(0);
 		}
