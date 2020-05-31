@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
+import com.safetynet.exception.RessourceAlreadyExistException;
+import com.safetynet.exception.RessourceNotFoundException;
+import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 
 @RestController
@@ -44,7 +47,8 @@ public class SafetyNetEndpointsFirestationsController {
 
 		if (firestationMappingModel.firestationMappingExist(firestationMapping)) {
 			logger.error("Error : firestation mapping already exist");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
+					firestationMapping.getAddress());
 		}
 
 		FirestationMapping firestationMappingToAdd = new FirestationMapping();
@@ -56,7 +60,7 @@ public class SafetyNetEndpointsFirestationsController {
 
 		if (!firestationMappingModel.firestationMappingExist(firestationMappingToAdd)) {
 			logger.error("Error : firestation mapping not added");
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : firestation mapping added");
@@ -74,7 +78,7 @@ public class SafetyNetEndpointsFirestationsController {
 
 		if (firestationMappingToUpdate == null) {
 			logger.error("Error : firestation mapping adress does not exist");
-			return new ResponseEntity<>(firestationMapping, HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		firestationMappingToUpdate.setStation(firestationMapping.getStation());
@@ -92,14 +96,14 @@ public class SafetyNetEndpointsFirestationsController {
 
 		if (firestationMappingToDelete == null) {
 			logger.error("Error : firestation mapping address does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		FirestationMapping firestationMappingDeleted = firestationMappingModel.deleteFirestationMapping(address);
 
 		if (firestationMappingModel.firestationMappingExist(firestationMappingDeleted)) {
 			logger.error("Error : firestation mapping not deleted");
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : firestation mapping deleted");

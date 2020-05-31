@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.entities.endpoints.MedicalRecord;
+import com.safetynet.exception.RessourceAlreadyExistException;
+import com.safetynet.exception.RessourceNotFoundException;
+import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.model.endpoints.IMedicalRecordModel;
 
 @RestController
@@ -45,7 +48,7 @@ public class SafetyNetEndpointsMedicalRecordsController {
 
 		if (medicalRecordToGet == null) {
 			logger.error("Error : medicalRecord not found");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		logger.info("Success : medicalRecord found");
@@ -58,7 +61,8 @@ public class SafetyNetEndpointsMedicalRecordsController {
 
 		if (medicalRecordModel.medicalRecordExist(medicalRecord)) {
 			logger.error("Error : medicalRecord already exist");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
+					medicalRecord.getFirstName() + medicalRecord.getLastName());
 		}
 
 		MedicalRecord medicalRecordToAdd = new MedicalRecord();
@@ -73,7 +77,7 @@ public class SafetyNetEndpointsMedicalRecordsController {
 
 		if (!medicalRecordModel.medicalRecordExist(medicalRecordToAdd)) {
 			logger.error("Error : medicalRecord not added");
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : medicalRecord added");
@@ -91,7 +95,7 @@ public class SafetyNetEndpointsMedicalRecordsController {
 
 		if (medicalRecordToUpdate == null) {
 			logger.error("Error : medicalRecord does not exist");
-			return new ResponseEntity<>(medicalRecord, HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		medicalRecordToUpdate.setBirthdate(medicalRecord.getBirthdate());
@@ -110,14 +114,14 @@ public class SafetyNetEndpointsMedicalRecordsController {
 
 		if (medicalRecordToDelete == null) {
 			logger.error("Error : medicalRecord does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		MedicalRecord medicalRecordDeleted = medicalRecordModel.deleteMedicalRecord(id);
 
 		if (medicalRecordModel.medicalRecordExist(medicalRecordDeleted)) {
 			logger.error("Error : medicalRecord not deleted");
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : medicalRecord deleted");

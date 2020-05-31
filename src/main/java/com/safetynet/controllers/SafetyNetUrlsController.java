@@ -1,6 +1,7 @@
 package com.safetynet.controllers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.ChildAlert;
 import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.Flood;
 import com.safetynet.entities.urls.PersonInfo;
+import com.safetynet.exception.RessourceNotFoundException;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 import com.safetynet.model.endpoints.IPersonModel;
 import com.safetynet.model.urls.IResponseUrlsModel;
@@ -43,7 +44,8 @@ public class SafetyNetUrlsController {
 
 		if (firestationMappingModel.getFirestationMappingByFirestationNumber(stationNumber) == null) {
 			logger.error("Error : no mapping exist for this firestation");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					String.valueOf(stationNumber));
 		}
 
 		Firestation responseFirestation = responseModel.responseFirestation(stationNumber);
@@ -57,7 +59,7 @@ public class SafetyNetUrlsController {
 
 		if (!personModel.addressExist(address)) {
 			logger.error("Error : address does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		ChildAlert responseChildAlert = responseModel.responseChildAlert(address);
@@ -72,7 +74,7 @@ public class SafetyNetUrlsController {
 
 		if (!personModel.addressExist(address)) {
 			logger.error("Error : address does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		Fire responseFire = responseModel.responseFire(address);
@@ -87,7 +89,8 @@ public class SafetyNetUrlsController {
 
 		if (firestationMappingModel.getFirestationMappingByFirestationNumber(station) == null) {
 			logger.error("Error : no mapping exist for this firestation");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					String.valueOf(station));
 		}
 
 		Flood responseFlood = responseModel.responseFlood(station);
@@ -99,9 +102,10 @@ public class SafetyNetUrlsController {
 	@GetMapping(value = "/personInfo")
 	public ResponseEntity<PersonInfo> responsePersonInfo(String firstName, String lastName) {
 
-		if (!personModel.idPersonExist(firstName+lastName)) {
+		if (!personModel.idPersonExist(firstName + lastName)) {
 			logger.error("Error : person does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					firstName + lastName);
 		}
 
 		PersonInfo responsePersonInfo = responseModel.responsePersonInfo(firstName, lastName);
@@ -115,7 +119,7 @@ public class SafetyNetUrlsController {
 
 		if (!personModel.cityExist(city)) {
 			logger.error("Error : city does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", city);
 		}
 
 		List<Person> listPersons = personModel.getAllPersons();
@@ -125,19 +129,19 @@ public class SafetyNetUrlsController {
 
 		return new ResponseEntity<>(listEmails, HttpStatus.FOUND);
 	}
-	/*
+
 	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
 	@GetMapping(value = "/phoneAlert")
-	public void getPhoneAlert(@RequestParam int firestation) {
-			
-		List<Person> persons = personModel.getAllPersons();
-		List<FirestationMapping> firestationMappings = firestationMappingModel.getAllFirestationMappings();
-		
-		List<String> address = firestationMappings.stream()
-				.filter(xx->xx.getStation().equals(firestation))
-				.map(xx->xx.getAddress())
-				.collect(Collectors.toList());
-		
+	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam int firestation) {
+
+		if (firestationMappingModel.getFirestationMappingByFirestationNumber(firestation) == null) {
+			logger.error("Error : no mapping exist for this firestation");
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					String.valueOf(firestation));
+		}
+
+		Set<String> responsePhoneAlert = responseModel.responsePhoneAlert(firestation);
+
+		return new ResponseEntity<>(responsePhoneAlert, HttpStatus.OK);
 	}
-	*/
 }

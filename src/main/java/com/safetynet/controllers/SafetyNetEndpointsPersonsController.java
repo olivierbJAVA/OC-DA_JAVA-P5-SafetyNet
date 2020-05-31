@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.entities.endpoints.Person;
+import com.safetynet.exception.RessourceAlreadyExistException;
+import com.safetynet.exception.RessourceNotFoundException;
+import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.model.endpoints.IPersonModel;
 
 @RestController
@@ -78,6 +81,7 @@ public class SafetyNetEndpointsPersonsController {
 				.body(personToGet);
 	}
 	*/
+	/*
 	//V3 : avec message d'erreur et ResponseEntity paramétré par un ? ou Object
 	@GetMapping(value = "/persons/{id}")
 	public ResponseEntity<?> getPersonById(@PathVariable String id) {
@@ -94,13 +98,30 @@ public class SafetyNetEndpointsPersonsController {
 
 		return new ResponseEntity<>(personToGet, HttpStatus.FOUND);
 	}
+	*/
+	//V4 : en lancant une exception
+	@GetMapping(value = "/persons/{id}")
+	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
 
+		Person personToGet = personModel.getPersonById(id);
+
+		if (personToGet == null) {
+			logger.error("Error : person {} not found",id);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
+		}
+
+		logger.info("Success : person {} found",id);
+
+		return new ResponseEntity<>(personToGet, HttpStatus.FOUND);
+	}
+	
 	@PostMapping(value = "/persons")
 	public ResponseEntity<Person> addPerson(@RequestBody Person person) {
 
 		if (personModel.personExist(person)) {
 			logger.error("Error : person already exist");
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
+					person.getFirstName() + person.getLastName());
 		}
 
 		Person personToAdd = new Person();
@@ -117,7 +138,7 @@ public class SafetyNetEndpointsPersonsController {
 
 		if (!personModel.personExist(personToAdd)) {
 			logger.error("Error : person not added");
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : person added");
@@ -135,7 +156,7 @@ public class SafetyNetEndpointsPersonsController {
 
 		if (personToUpdate == null) {
 			logger.error("Error : person does not exist");
-			return new ResponseEntity<>(person, HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		personToUpdate.setAddress(person.getAddress());
@@ -159,14 +180,14 @@ public class SafetyNetEndpointsPersonsController {
 
 		if (personToDelete == null) {
 			logger.error("Error : person does not exist");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		Person personDeleted = personModel.deletePerson(id);
 
 		if (personModel.personExist(personDeleted)) {
 			logger.error("Error : person not deleted");
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : person deleted");

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -264,6 +265,25 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		}
 
 		return responsePersonInfo;
+	}
+
+	@Override
+	public Set<String> responsePhoneAlert(int firestation) {
+
+		Set<String> responsePhoneAlert = new HashSet<>();
+
+		List<Person> listAllPersons = personModel.getAllPersons();
+
+		for (Person personInList : listAllPersons) {
+
+			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
+					.getStation()) == firestation) {
+
+				responsePhoneAlert.add(personInList.getPhone());
+
+			}
+		}
+		return responsePhoneAlert;
 	}
 
 	private long getPersonAge(Person person) {

@@ -1,5 +1,7 @@
 package com.safetynet.model.urls;
 
+import java.util.Set;
+
 import com.safetynet.entities.urls.ChildAlert;
 import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.Firestation;
@@ -17,4 +19,6 @@ public interface IResponseUrlsModel {
 	public Flood responseFlood(int stationNumber);
 
 	public PersonInfo responsePersonInfo(String firstName, String lastName);
+
+	public Set<String> responsePhoneAlert(int firestation);
 }
