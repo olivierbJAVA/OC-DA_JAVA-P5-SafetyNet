@@ -46,7 +46,7 @@ public class SafetyNetEndpointsMedicalRecordsController {
 
 		MedicalRecord medicalRecordToGet = medicalRecordModel.getMedicalRecordById(id);
 
-		if (medicalRecordToGet == null) {
+		if (medicalRecordModel.getMedicalRecordById(id) == null) {
 			logger.error("Error : medicalRecord not found");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
@@ -65,24 +65,18 @@ public class SafetyNetEndpointsMedicalRecordsController {
 					medicalRecord.getFirstName() + medicalRecord.getLastName());
 		}
 
-		MedicalRecord medicalRecordToAdd = new MedicalRecord();
-		medicalRecordToAdd.setIdMedicalRecord(medicalRecord.getFirstName() + medicalRecord.getLastName());
-		medicalRecordToAdd.setFirstName(medicalRecord.getFirstName());
-		medicalRecordToAdd.setLastName(medicalRecord.getLastName());
-		medicalRecordToAdd.setBirthdate(medicalRecord.getBirthdate());
-		medicalRecordToAdd.setMedications(medicalRecord.getMedications());
-		medicalRecordToAdd.setAllergies(medicalRecord.getAllergies());
+		medicalRecord.setIdMedicalRecord(medicalRecord.getFirstName() + medicalRecord.getLastName());
 
-		medicalRecordModel.addMedicalRecord(medicalRecordToAdd);
+		medicalRecordModel.addMedicalRecord(medicalRecord);
 
-		if (!medicalRecordModel.medicalRecordExist(medicalRecordToAdd)) {
+		if (!medicalRecordModel.medicalRecordExist(medicalRecord)) {
 			logger.error("Error : medicalRecord not added");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : medicalRecord added");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(medicalRecordToAdd.getIdMedicalRecord()).toUri();
+				.buildAndExpand(medicalRecord.getIdMedicalRecord()).toUri();
 
 		return ResponseEntity.created(location).build();
 	}
@@ -91,28 +85,22 @@ public class SafetyNetEndpointsMedicalRecordsController {
 	public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable String id,
 			@RequestBody MedicalRecord medicalRecord) {
 
-		MedicalRecord medicalRecordToUpdate = medicalRecordModel.getMedicalRecordById(id);
-
-		if (medicalRecordToUpdate == null) {
+		if (medicalRecordModel.getMedicalRecordById(id) == null) {
 			logger.error("Error : medicalRecord does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		medicalRecordToUpdate.setBirthdate(medicalRecord.getBirthdate());
-		medicalRecordToUpdate.setMedications(medicalRecord.getMedications());
-		medicalRecordToUpdate.setAllergies(medicalRecord.getAllergies());
+		medicalRecord.setIdMedicalRecord(id);
 
-		MedicalRecord medicalRecordUpdated = medicalRecordModel.updateMedicalRecord(medicalRecordToUpdate);
+		medicalRecordModel.updateMedicalRecord(medicalRecord);
 
-		return new ResponseEntity<>(medicalRecordUpdated, HttpStatus.OK);
+		return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable(value = "id") String id) {
 
-		MedicalRecord medicalRecordToDelete = medicalRecordModel.getMedicalRecordById(id);
-
-		if (medicalRecordToDelete == null) {
+		if (medicalRecordModel.getMedicalRecordById(id) == null) {
 			logger.error("Error : medicalRecord does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
+import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.exception.RessourceAlreadyExistException;
 import com.safetynet.exception.RessourceNotFoundException;
-import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 
 @RestController
@@ -51,21 +51,16 @@ public class SafetyNetEndpointsFirestationsController {
 					firestationMapping.getAddress());
 		}
 
-		FirestationMapping firestationMappingToAdd = new FirestationMapping();
+		firestationMappingModel.addFirestationMapping(firestationMapping);
 
-		firestationMappingToAdd.setAddress(firestationMapping.getAddress());
-		firestationMappingToAdd.setStation(firestationMapping.getStation());
-
-		firestationMappingModel.addFirestationMapping(firestationMappingToAdd);
-
-		if (!firestationMappingModel.firestationMappingExist(firestationMappingToAdd)) {
+		if (!firestationMappingModel.firestationMappingExist(firestationMapping)) {
 			logger.error("Error : firestation mapping not added");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : firestation mapping added");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(firestationMappingToAdd.getAddress()).toUri();
+				.buildAndExpand(firestationMapping.getAddress()).toUri();
 
 		return ResponseEntity.created(location).build();
 	}
@@ -74,27 +69,20 @@ public class SafetyNetEndpointsFirestationsController {
 	public ResponseEntity<FirestationMapping> updateFirestationMapping(@PathVariable String address,
 			@RequestBody FirestationMapping firestationMapping) {
 
-		FirestationMapping firestationMappingToUpdate = firestationMappingModel.getFirestationMappingByAdress(address);
-
-		if (firestationMappingToUpdate == null) {
+		if (firestationMappingModel.getFirestationMappingByAdress(address) == null) {
 			logger.error("Error : firestation mapping adress does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
-		firestationMappingToUpdate.setStation(firestationMapping.getStation());
+		firestationMappingModel.updateFirestationMapping(firestationMapping);
 
-		FirestationMapping firestationMappingUpdated = firestationMappingModel
-				.updateFirestationMapping(firestationMappingToUpdate);
-
-		return new ResponseEntity<>(firestationMappingUpdated, HttpStatus.OK);
+		return new ResponseEntity<>(firestationMapping, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/firestations/{address}")
 	public ResponseEntity<Void> deleteFirestationMapping(@PathVariable(value = "address") String address) {
 
-		FirestationMapping firestationMappingToDelete = firestationMappingModel.getFirestationMappingByAdress(address);
-
-		if (firestationMappingToDelete == null) {
+		if (firestationMappingModel.getFirestationMappingByAdress(address) == null) {
 			logger.error("Error : firestation mapping address does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}

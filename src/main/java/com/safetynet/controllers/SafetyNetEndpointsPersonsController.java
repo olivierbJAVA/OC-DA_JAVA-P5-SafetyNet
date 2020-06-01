@@ -124,26 +124,18 @@ public class SafetyNetEndpointsPersonsController {
 					person.getFirstName() + person.getLastName());
 		}
 
-		Person personToAdd = new Person();
-		personToAdd.setIdPerson(person.getFirstName() + person.getLastName());
-		personToAdd.setFirstName(person.getFirstName());
-		personToAdd.setLastName(person.getLastName());
-		personToAdd.setAddress(person.getAddress());
-		personToAdd.setCity(person.getCity());
-		personToAdd.setZip(person.getZip());
-		personToAdd.setPhone(person.getPhone());
-		personToAdd.setEmail(person.getEmail());
+		person.setIdPerson(person.getFirstName()+person.getLastName());
 
-		personModel.addPerson(personToAdd);
+		personModel.addPerson(person);
 
-		if (!personModel.personExist(personToAdd)) {
+		if (!personModel.personExist(person)) {
 			logger.error("Error : person not added");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : person added");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(personToAdd.getIdPerson()).toUri();
+				.buildAndExpand(person.getIdPerson()).toUri();
 
 		return ResponseEntity.created(location).build();
 		// return new ResponseEntity<>(personAdded, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -152,33 +144,27 @@ public class SafetyNetEndpointsPersonsController {
 	@PutMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody Person person) {
 
-		Person personToUpdate = personModel.getPersonById(id);
-
-		if (personToUpdate == null) {
+		if (personModel.getPersonById(id) == null) {
 			logger.error("Error : person does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		personToUpdate.setAddress(person.getAddress());
-		personToUpdate.setCity(person.getCity());
-		personToUpdate.setZip(person.getZip());
-		personToUpdate.setPhone(person.getPhone());
-		personToUpdate.setEmail(person.getEmail());
+		person.setIdPerson(id);
 
-		Person personUpdated = personModel.updatePerson(personToUpdate);
+		//Person personUpdated = personModel.updatePerson(person);
+		personModel.updatePerson(person);
 		/*
 		 * if (!personUpdated.getAddress().equals(personToUpdate.getAddress())) {
 		 * logger.error("Error : person not updated"); return new
 		 * ResponseEntity<>(person, HttpStatus.INTERNAL_SERVER_ERROR); }
 		 */
-		return new ResponseEntity<>(personUpdated, HttpStatus.OK);
+		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/persons/{id}")
 	public ResponseEntity<Void> deletePerson(@PathVariable(value = "id") String id) {
-		Person personToDelete = personModel.getPersonById(id);
 
-		if (personToDelete == null) {
+		if (personModel.getPersonById(id) == null) {
 			logger.error("Error : person does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
