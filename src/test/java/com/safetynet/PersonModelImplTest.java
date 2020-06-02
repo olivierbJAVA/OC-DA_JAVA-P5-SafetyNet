@@ -41,19 +41,19 @@ public class PersonModelImplTest {
 	private IPersonModel personModelImplUnderTest;
 
 	@MockBean
-	private IPersonDao personDao;
+	private IPersonDao mockPersonDao;
 
 	@Test
 	public void addPerson() {
 		Person personToAdd = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		when(personDao.addPerson(personToAdd)).thenReturn(null);
+		when(mockPersonDao.addPerson(personToAdd)).thenReturn(null);
 
 		personModelImplUnderTest.addPerson(personToAdd);
 
 		ArgumentCaptor<Person> argumentCaptorPerson = ArgumentCaptor.forClass(Person.class);
-		verify(personDao, times(1)).addPerson(argumentCaptorPerson.capture());
+		verify(mockPersonDao, times(1)).addPerson(argumentCaptorPerson.capture());
 
 		Person agrumentPersonCaptured = argumentCaptorPerson.getValue();
 		assertEquals(personToAdd, agrumentPersonCaptured);
@@ -66,12 +66,12 @@ public class PersonModelImplTest {
 				"0696469887", "bs@email.com");
 
 		// personModelImplUnderTest.addPerson(personToDelete);
-		when(personDao.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
+		when(mockPersonDao.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
 
 		personModelImplUnderTest.deletePerson(personToDelete.getIdPerson());
 
 		ArgumentCaptor<String> argumentCaptorIdPerson = ArgumentCaptor.forClass(String.class);
-		Mockito.verify(personDao, times(1)).deletePerson(argumentCaptorIdPerson.capture());
+		Mockito.verify(mockPersonDao, times(1)).deletePerson(argumentCaptorIdPerson.capture());
 
 		String argumentIdPersonCaptured = argumentCaptorIdPerson.getValue();
 		assertEquals(personToDelete.getIdPerson(), argumentIdPersonCaptured);
@@ -87,14 +87,14 @@ public class PersonModelImplTest {
 		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
 				"0696469887", "bs@email.com");
 
-		when(personDao.updatePerson(personToUpdate)).thenReturn(personBeforeUpdate);
+		when(mockPersonDao.updatePerson(personToUpdate)).thenReturn(personBeforeUpdate);
 
 		// personModelImplUnderTest.addPerson(personToUpdate);
 
 		personModelImplUnderTest.updatePerson(personToUpdate);
 
 		ArgumentCaptor<Person> argumentCaptorPerson = ArgumentCaptor.forClass(Person.class);
-		verify(personDao, times(1)).updatePerson(argumentCaptorPerson.capture());
+		verify(mockPersonDao, times(1)).updatePerson(argumentCaptorPerson.capture());
 
 		Person agrumentPersonCaptured = argumentCaptorPerson.getValue();
 		assertEquals(personToUpdate, agrumentPersonCaptured);
@@ -109,12 +109,12 @@ public class PersonModelImplTest {
 
 		// personModelImplUnderTest.addPerson(personToGet);
 
-		when(personDao.getPersonById(personToGet.getIdPerson())).thenReturn(personToGet);
+		when(mockPersonDao.getPersonById(personToGet.getIdPerson())).thenReturn(personToGet);
 
 		personModelImplUnderTest.getPersonById(personToGet.getIdPerson());
 
 		ArgumentCaptor<String> argumentCaptorIdPerson = ArgumentCaptor.forClass(String.class);
-		verify(personDao, times(1)).getPersonById(argumentCaptorIdPerson.capture());
+		verify(mockPersonDao, times(1)).getPersonById(argumentCaptorIdPerson.capture());
 
 		String argumentIdPersonCaptured = argumentCaptorIdPerson.getValue();
 		assertEquals(personToGet.getIdPerson(), argumentIdPersonCaptured);
@@ -135,11 +135,11 @@ public class PersonModelImplTest {
 		allPersons.add(personTest2);
 		allPersons.add(personTest3);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		personModelImplUnderTest.getAllPersons();
 
-		verify(personDao, times(1)).getAllPersons();
+		verify(mockPersonDao, times(1)).getAllPersons();
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class PersonModelImplTest {
 		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		when(personDao.getPersonById(personTest.getIdPerson())).thenReturn(personTest);
+		when(mockPersonDao.getPersonById(personTest.getIdPerson())).thenReturn(personTest);
 
 		assertTrue(personModelImplUnderTest.personExist(personTest));
 	}
@@ -157,7 +157,7 @@ public class PersonModelImplTest {
 		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		when(personDao.getPersonById(personTest.getIdPerson())).thenReturn(null);
+		when(mockPersonDao.getPersonById(personTest.getIdPerson())).thenReturn(null);
 
 		assertFalse(personModelImplUnderTest.personExist(personTest));
 	}
@@ -170,7 +170,7 @@ public class PersonModelImplTest {
 		List<Person> allPersons = new ArrayList<>();
 		allPersons.add(personTest);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertTrue(personModelImplUnderTest.idPersonExist(personTest.getIdPerson()));
 	}
@@ -183,7 +183,7 @@ public class PersonModelImplTest {
 		List<Person> allPersons = new ArrayList<>();
 		allPersons.add(personTest);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertFalse(personModelImplUnderTest.idPersonExist("PersonNotExist"));
 	}
@@ -196,7 +196,7 @@ public class PersonModelImplTest {
 		List<Person> allPersons = new ArrayList<>();
 		allPersons.add(personTest);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertTrue(personModelImplUnderTest.addressExist(personTest.getAddress()));
 	}
@@ -209,7 +209,7 @@ public class PersonModelImplTest {
 		List<Person> allPersons = new ArrayList<>();
 		allPersons.add(personTest);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertFalse(personModelImplUnderTest.addressExist("AddressNotExist"));
 	}
@@ -222,7 +222,7 @@ public class PersonModelImplTest {
 		List<Person> allPersons = new ArrayList<>();
 		allPersons.add(personTest);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertTrue(personModelImplUnderTest.cityExist(personTest.getCity()));
 	}
@@ -236,7 +236,7 @@ public class PersonModelImplTest {
 		List<Person> allPersons = new ArrayList<>();
 		allPersons.add(personTest);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertFalse(personModelImplUnderTest.cityExist("CityNotExist"));
 	}
@@ -255,7 +255,7 @@ public class PersonModelImplTest {
 		allPersons.add(personTest2);
 		allPersons.add(personTest3);
 
-		when(personDao.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
 		assertThat(personModelImplUnderTest.getAllAddress()).containsExactlyInAnyOrder("address1", "address2",
 				"address3");
