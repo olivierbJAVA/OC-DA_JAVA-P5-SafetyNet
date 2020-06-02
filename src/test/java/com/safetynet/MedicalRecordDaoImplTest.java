@@ -1,9 +1,12 @@
 package com.safetynet;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +24,8 @@ public class MedicalRecordDaoImplTest {
 	@Autowired
 	private MedicalRecordDaoImpl medicalRecordDaoImplUnderTest;
 
-	@BeforeAll
-	private static void setUp() throws Exception {
-
-	}
-
 	@BeforeEach
-	private void setUpPerTest() throws Exception {
+	private void setUpPerTest() {
 
 		List<MedicalRecord> medicalRecords = medicalRecordDaoImplUnderTest.getAllMedicalRecords();
 		for (MedicalRecord medicalRecord : medicalRecords) {
@@ -44,7 +42,8 @@ public class MedicalRecordDaoImplTest {
 
 		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecordToAdd);
 
-		Assertions.assertEquals("BertrandSimon", medicalRecordDaoImplUnderTest
+		assertNotNull(medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()));
+		assertEquals("BertrandSimon", medicalRecordDaoImplUnderTest
 				.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()).getIdMedicalRecord());
 
 	}
@@ -59,8 +58,7 @@ public class MedicalRecordDaoImplTest {
 
 		medicalRecordDaoImplUnderTest.deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
 
-		Assertions.assertNull(
-				medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord()));
+		assertNull(medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord()));
 
 	}
 
@@ -78,7 +76,7 @@ public class MedicalRecordDaoImplTest {
 
 		medicalRecordDaoImplUnderTest.updateMedicalRecord(medicalRecordUpdated);
 
-		Assertions.assertEquals("10/05/1980", medicalRecordDaoImplUnderTest
+		assertEquals("10/05/1980", medicalRecordDaoImplUnderTest
 				.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord()).getBirthdate());
 
 	}
@@ -95,14 +93,15 @@ public class MedicalRecordDaoImplTest {
 		MedicalRecord medicalRecordGet = medicalRecordDaoImplUnderTest
 				.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord());
 
-		Assertions.assertEquals("BertrandSimon", medicalRecordGet.getIdMedicalRecord());
+		assertNotNull(medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord()));
+		assertEquals("BertrandSimon", medicalRecordGet.getIdMedicalRecord());
 
 	}
 
 	@Test
 	public void getMedicalRecordById_whenMedicalRecordNotExist() {
 
-		Assertions.assertNull(medicalRecordDaoImplUnderTest.getMedicalRecordById("BertrandSimon"));
+		assertNull(medicalRecordDaoImplUnderTest.getMedicalRecordById("BertrandSimon"));
 
 	}
 
@@ -124,7 +123,8 @@ public class MedicalRecordDaoImplTest {
 
 		List<MedicalRecord> listAllMedicalRecords = medicalRecordDaoImplUnderTest.getAllMedicalRecords();
 
-		Assertions.assertEquals(3, listAllMedicalRecords.size());
+		assertEquals(3, listAllMedicalRecords.size());
+		assertThat(listAllMedicalRecords).containsExactlyInAnyOrder(medicalRecord1, medicalRecord2, medicalRecord3);
 
 	}
 

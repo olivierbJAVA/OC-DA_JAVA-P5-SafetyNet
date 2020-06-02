@@ -24,9 +24,9 @@ import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.model.endpoints.IMedicalRecordModel;
 
 @RestController
-public class SafetyNetEndpointsMedicalRecordsController {
+public class EndpointMedicalRecordsController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SafetyNetEndpointsMedicalRecordsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(EndpointMedicalRecordsController.class);
 
 	@Autowired
 	private IMedicalRecordModel medicalRecordModel;

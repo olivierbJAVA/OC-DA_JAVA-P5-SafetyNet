@@ -36,12 +36,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	@Autowired
 	IMedicalRecordModel medicalRecordModel;
 
-	// InputStream input = new FileInputStream("data.json");
-
 	// OB : doit-on faire Autowired pour cet objet ?
 	// @Autowired ObjectMapper mapper;
 
-	// initialisation : possibilité 1 (appelé après la construction de cet objet)
 	@PostConstruct
 	public void initializeLists() {
 

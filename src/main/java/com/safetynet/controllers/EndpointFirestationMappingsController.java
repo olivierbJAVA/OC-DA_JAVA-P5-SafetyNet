@@ -24,9 +24,9 @@ import com.safetynet.exception.RessourceNotFoundException;
 import com.safetynet.model.endpoints.IFirestationMappingModel;
 
 @RestController
-public class SafetyNetEndpointsFirestationsController {
+public class EndpointFirestationMappingsController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SafetyNetEndpointsFirestationsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(EndpointFirestationMappingsController.class);
 
 	@Autowired
 	private IFirestationMappingModel firestationMappingModel;

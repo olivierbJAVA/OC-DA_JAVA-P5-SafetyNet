@@ -1,14 +1,12 @@
 package com.safetynet;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.BeforeAll;
+
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,13 +33,8 @@ public class PersonDaoImplTest {
 	@Autowired
 	private IPersonDao personDaoImplUnderTest;
 
-	@BeforeAll
-	private static void setUp() throws Exception {
-
-	}
-
 	@BeforeEach
-	private void setUpPerTest() throws Exception {
+	private void setUpPerTest() {
 
 		List<Person> persons = personDaoImplUnderTest.getAllPersons();
 		for (Person person : persons) {
@@ -57,8 +50,8 @@ public class PersonDaoImplTest {
 
 		personDaoImplUnderTest.addPerson(personToAdd);
 
-		assertEquals("BertrandSimon",
-				personDaoImplUnderTest.getPersonById(personToAdd.getIdPerson()).getIdPerson());
+		assertNotNull(personDaoImplUnderTest.getPersonById(personToAdd.getIdPerson()));
+		assertEquals("BertrandSimon", personDaoImplUnderTest.getPersonById(personToAdd.getIdPerson()).getIdPerson());
 
 	}
 
@@ -87,8 +80,7 @@ public class PersonDaoImplTest {
 
 		personDaoImplUnderTest.updatePerson(personUpdated);
 
-		assertEquals("Marseille",
-				personDaoImplUnderTest.getPersonById(personToUpdate.getIdPerson()).getCity());
+		assertEquals("Marseille", personDaoImplUnderTest.getPersonById(personToUpdate.getIdPerson()).getCity());
 
 	}
 
@@ -102,6 +94,7 @@ public class PersonDaoImplTest {
 
 		Person personGet = personDaoImplUnderTest.getPersonById(personToGet.getIdPerson());
 
+		assertNotNull(personDaoImplUnderTest.getPersonById(personToGet.getIdPerson()));
 		assertEquals("BertrandSimon", personGet.getIdPerson());
 
 	}
@@ -109,7 +102,7 @@ public class PersonDaoImplTest {
 	@Test
 	public void getPersonById_whenPersonNotExist() {
 
-		assertNull(personDaoImplUnderTest.getPersonById("BertrandSimon"));
+		assertNull(personDaoImplUnderTest.getPersonById("PersonNotExist"));
 
 	}
 
@@ -122,11 +115,6 @@ public class PersonDaoImplTest {
 		Person person3 = new Person("BertrandSimon3", "Bertrand", "Simon3", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		List<Person> personsTest = new ArrayList<>();
-		personsTest.add(person1);
-		personsTest.add(person2);
-		personsTest.add(person3);
-		
 		personDaoImplUnderTest.addPerson(person1);
 		personDaoImplUnderTest.addPerson(person2);
 		personDaoImplUnderTest.addPerson(person3);
@@ -134,8 +122,7 @@ public class PersonDaoImplTest {
 		List<Person> listAllPersons = personDaoImplUnderTest.getAllPersons();
 
 		assertEquals(3, listAllPersons.size());
-		//Assertions.assertEquals(personsTest, listAllPersons);
-		assertThat(listAllPersons).contains(person1,person2,person3);
+		assertThat(listAllPersons).containsExactlyInAnyOrder(person1, person2, person3);
 	}
 
 }

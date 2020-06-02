@@ -25,9 +25,9 @@ import com.safetynet.model.endpoints.IPersonModel;
 import com.safetynet.model.urls.IResponseUrlsModel;
 
 @RestController
-public class SafetyNetUrlsController {
+public class UrlsController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SafetyNetUrlsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(UrlsController.class);
 
 	@Autowired
 	private IResponseUrlsModel responseModel;
