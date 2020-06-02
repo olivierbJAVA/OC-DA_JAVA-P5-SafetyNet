@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.safetynet.entities.endpoints.FirestationMapping;
 
 @Repository
-public class FirestationMappingDaoHashmapImpl implements IFirestationMappingDao {
+public class FirestationMappingDaoImpl implements IFirestationMappingDao {
 
 	private static Map<String, FirestationMapping> firestationMappings = new HashMap<>();
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.safetynet.entities.endpoints.MedicalRecord;
 
 @Repository
-public class MedicalRecordDaoHashmapImpl implements IMedicalRecordDao {
+public class MedicalRecordDaoImpl implements IMedicalRecordDao {
 
 	private static Map<String, MedicalRecord> medicalRecords = new HashMap<>();
 

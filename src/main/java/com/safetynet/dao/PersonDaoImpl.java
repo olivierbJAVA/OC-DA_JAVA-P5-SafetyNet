@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.safetynet.entities.endpoints.Person;
 
 @Repository
-public class PersonDaoHashmapImpl implements IPersonDao {
+public class PersonDaoImpl implements IPersonDao {
 
 	private static Map<String, Person> persons = new HashMap<>();
 
