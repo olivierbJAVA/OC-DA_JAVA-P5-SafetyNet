@@ -15,7 +15,7 @@ public interface IFirestationMappingModel {
 
 	public FirestationMapping getFirestationMappingByAdress(String adressFirestation);
 
-	public FirestationMapping getFirestationMappingByFirestationNumber(int firestationNumber);
+	public FirestationMapping getFirestationMappingByIdStation(String idFirestation);
 	
 	boolean firestationMappingExist(FirestationMapping firestationMapping);
 

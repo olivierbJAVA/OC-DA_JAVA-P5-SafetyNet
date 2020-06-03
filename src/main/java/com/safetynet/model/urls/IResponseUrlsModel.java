@@ -10,15 +10,15 @@ import com.safetynet.entities.urls.PersonInfo;
 
 public interface IResponseUrlsModel {
 
-	public Firestation responseFirestation(int stationNumber);
+	public Firestation responseFirestation(String idStation);
 
 	public ChildAlert responseChildAlert(String address);
 
 	public Fire responseFire(String address);
 
-	public Flood responseFlood(int stationNumber);
+	public Flood responseFlood(String idStation);
 
 	public PersonInfo responsePersonInfo(String firstName, String lastName);
 
-	public Set<String> responsePhoneAlert(int firestation);
+	public Set<String> responsePhoneAlert(String idStation);
 }

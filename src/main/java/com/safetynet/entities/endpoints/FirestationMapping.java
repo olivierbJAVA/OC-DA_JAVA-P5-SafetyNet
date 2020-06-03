@@ -3,16 +3,16 @@ package com.safetynet.entities.endpoints;
 public class FirestationMapping {
 
 	private String address;
-	private int nbStation;
+	private String station;
 
 	public FirestationMapping() {
 		super();
 	}
 
-	public FirestationMapping(String address, int nbStation) {
+	public FirestationMapping(String address, String station) {
 		super();
 		this.address = address;
-		this.nbStation = nbStation;
+		this.station = station;
 	}
 
 	public String getAddress() {
@@ -23,12 +23,13 @@ public class FirestationMapping {
 		this.address = address;
 	}
 
-	public int getStation() {
-		return nbStation;
+	public String getStation() {
+		return station;
 	}
 
-	public void setStation(int nbStation) {
-		this.nbStation = nbStation;
+	public void setStation(String station) {
+		this.station = station;
 	}
 
 }
+

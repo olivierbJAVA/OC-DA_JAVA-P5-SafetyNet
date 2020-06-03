@@ -41,7 +41,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 	private IMedicalRecordModel medicalRecordModel;
 
 	@Override
-	public Firestation responseFirestation(int stationNumber) {
+	public Firestation responseFirestation(String idStation) {
 
 		Firestation responseFirestation = new Firestation();
 
@@ -55,7 +55,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		for (Person personInList : listAllPersons) {
 
 			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
-					.getStation()) == stationNumber) {
+					.getStation()).equals(idStation)) {
 
 				FirestationPerson responseFirestationPerson = new FirestationPerson();
 				responseFirestationPerson.setFirstName(personInList.getFirstName());
@@ -128,7 +128,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 	}
 
 	@Override
-	public Set<String> responsePhoneAlert(int firestation) {
+	public Set<String> responsePhoneAlert(String idStation) {
 
 		Set<String> responsePhoneAlert = new HashSet<>();
 
@@ -137,7 +137,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		for (Person personInList : listAllPersons) {
 
 			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
-					.getStation()) == firestation) {
+					.getStation()).equals(idStation)) {
 
 				responsePhoneAlert.add(personInList.getPhone());
 
@@ -155,9 +155,9 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		List<Person> listAllPersons = personModel.getAllPersons();
 
-		int nbStation = firestationMappingModel.getFirestationMappingByAdress(address).getStation();
+		String idStation = firestationMappingModel.getFirestationMappingByAdress(address).getStation();
 
-		responseFire.setNbStation(nbStation);
+		responseFire.setIdStation(idStation);
 
 		for (Person personInList : listAllPersons) {
 
@@ -184,7 +184,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 	}
 
 	@Override
-	public Flood responseFlood(int stationNumber) {
+	public Flood responseFlood(String idStation) {
 
 		Flood responseFlood = new Flood();
 
@@ -198,7 +198,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 			List<FloodPerson> responseListFloodPersons = new ArrayList<>();
 
-			if (firestationMappingModel.getFirestationMappingByAdress(address).getStation() == stationNumber) {
+			if (firestationMappingModel.getFirestationMappingByAdress(address).getStation().equals(idStation)) {
 
 				for (Person personInList : listAllPersons) {
 

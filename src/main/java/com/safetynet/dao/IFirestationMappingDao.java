@@ -15,5 +15,5 @@ public interface IFirestationMappingDao {
 
 	public FirestationMapping getFirestationMappingByAdress(String adressFirestation);
 
-	public FirestationMapping getFirestationMappingByStationNumber(int firestationNumber);
+	public FirestationMapping getFirestationMappingByIdStation(String idFirestation);
 }

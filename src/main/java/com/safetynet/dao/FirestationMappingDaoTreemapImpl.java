@@ -42,11 +42,11 @@ public class FirestationMappingDaoTreemapImpl implements IFirestationMappingDao 
 		}
 		return null;
 	}
-	
+
 	@Override
-	public FirestationMapping getFirestationMappingByStationNumber(int firestationNumber) {
+	public FirestationMapping getFirestationMappingByIdStation(String idStation) {
 		for (Map.Entry<String, FirestationMapping> mapentry : firestationMappings.entrySet()) {
-			if (mapentry.getValue().getStation()==firestationNumber) {
+			if ((mapentry.getValue().getStation()).equals(idStation)) {
 				return mapentry.getValue();
 			}
 		}

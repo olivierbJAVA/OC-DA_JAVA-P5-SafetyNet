@@ -1,6 +1,7 @@
 package com.safetynet;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -24,20 +25,22 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.controllers.EndpointPersonsController;
 import com.safetynet.entities.endpoints.Person;
 import com.safetynet.model.endpoints.IPersonModel;
 
-//@ExtendWith(SpringExtension.class)
 @WebMvcTest(EndpointPersonsController.class)
 public class EndpointPersonsControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
+	//@Autowired
+	//ObjectMapper objectMapper;
+	
 	@MockBean
 	private IPersonModel mockPersonModel;
 
@@ -45,25 +48,27 @@ public class EndpointPersonsControllerTest {
 	@Test
 	public void getAllPersons() throws Exception {
 
-		Person personTest1 = new Person("BertrandSimon", "Bertrand", "Simon", "address1", "Paris", "75000",
+		Person personToGet1 = new Person("BertrandSimon1", "Bertrand", "Simon1", "address1", "Paris", "75000",
 				"0696469887", "bs@email.com");
-		Person personTest2 = new Person("BertrandSimon", "Bertrand", "Simon", "address2", "Paris", "75000",
+		Person personToGet2 = new Person("BertrandSimon2", "Bertrand", "Simon2", "address2", "Paris", "75000",
 				"0696469887", "bs@email.com");
-		Person personTest3 = new Person("BertrandSimon", "Bertrand", "Simon", "address3", "Paris", "75000",
+		Person personToGet3 = new Person("BertrandSimon3", "Bertrand", "Simon3", "address3", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		List<Person> allPersons = new ArrayList<>();
-		allPersons.add(personTest1);
-		allPersons.add(personTest2);
-		allPersons.add(personTest3);
+		List<Person> allPersonsToGet = new ArrayList<>();
+		allPersonsToGet.add(personToGet1);
+		allPersonsToGet.add(personToGet2);
+		allPersonsToGet.add(personToGet3);
 
-		when(mockPersonModel.getAllPersons()).thenReturn(allPersons);
+		when(mockPersonModel.getAllPersons()).thenReturn(allPersonsToGet);
 
 		mockMvc.perform(get("/persons")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isFound())
-				.andExpect(content().contentType("application/json"));
-				//.andExpect(jsonPath("$.firstName", is(personToGet.getFirstName())));
+				.andExpect(content().contentType("application/json"))
+				.andExpect(jsonPath("$[0].lastName", is(personToGet1.getLastName())))
+				.andExpect(jsonPath("$[1].lastName", is(personToGet2.getLastName())))
+				.andExpect(jsonPath("$[2].lastName", is(personToGet3.getLastName())));
 		
 		verify(mockPersonModel, times(1)).getAllPersons();
 	}
@@ -77,7 +82,7 @@ public class EndpointPersonsControllerTest {
 
 		when(mockPersonModel.getPersonById(personToGet.getIdPerson())).thenReturn(personToGet);
 
-		mockMvc.perform(get("/persons/{id}", "BertrandSimon")
+		mockMvc.perform(get("/persons/{id}", personToGet.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isFound())
 				.andExpect(jsonPath("$.firstName", is(personToGet.getFirstName())));
@@ -94,7 +99,7 @@ public class EndpointPersonsControllerTest {
 
 		when(mockPersonModel.getPersonById(personToGet.getIdPerson())).thenReturn(null);
 		
-		mockMvc.perform(get("/persons/{id}", "BertrandSimon")
+		mockMvc.perform(get("/persons/{id}", personToGet.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 		
@@ -109,19 +114,21 @@ public class EndpointPersonsControllerTest {
 				"0696469887", "bs@email.com");
 
 		when(mockPersonModel.personExist(any(Person.class))).thenReturn(false).thenReturn(true);
-
 		when(mockPersonModel.addPerson(personToAdd)).thenReturn(null);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(personToAdd);
-
-		mockMvc.perform(post("/persons")
+		
+		MvcResult mvcResult = mockMvc.perform(post("/persons")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
-				.andExpect(status().isCreated());
+				.content(objectMapper.writeValueAsString(personToAdd)))
+				.andExpect(status().isCreated())
+				.andReturn();
 		
 		verify(mockPersonModel, times(2)).personExist(any(Person.class));
 		verify(mockPersonModel, times(1)).addPerson(any(Person.class));
+	
+		String actualResponseHeaderLocation = mvcResult.getResponse().getHeader("Location");
+		assertEquals("http://localhost/persons/BertrandSimon", actualResponseHeaderLocation);
 	}
 	
 	// @PostMapping(value = "/persons")
@@ -134,11 +141,10 @@ public class EndpointPersonsControllerTest {
 		when(mockPersonModel.personExist(any(Person.class))).thenReturn(true);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(personToAdd);
 		
 		mockMvc.perform(post("/persons")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
+				.content(objectMapper.writeValueAsString(personToAdd)))
 				.andExpect(status().isBadRequest());
 		
 		verify(mockPersonModel, times(1)).personExist(any(Person.class));
@@ -156,11 +162,10 @@ public class EndpointPersonsControllerTest {
 		when(mockPersonModel.addPerson(personToAdd)).thenReturn(null);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(personToAdd);
-
+		
 		mockMvc.perform(post("/persons")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
+				.content(objectMapper.writeValueAsString(personToAdd)))
 				.andExpect(status().isInternalServerError());
 
 		verify(mockPersonModel, times(2)).personExist(any(Person.class));
@@ -174,21 +179,20 @@ public class EndpointPersonsControllerTest {
 		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
+		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Courcelles", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		
 		when(mockPersonModel.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate);
 		when(mockPersonModel.updatePerson(personUpdated)).thenReturn(personToUpdate);
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(personUpdated);
-
+		
 		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
+				.content(objectMapper.writeValueAsString(personUpdated)))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.city", is(personUpdated.getCity())));
-		
+				.andExpect(jsonPath("$.address", is(personUpdated.getAddress())));
+
 		verify(mockPersonModel, times(1)).getPersonById(anyString());
 		verify(mockPersonModel, times(1)).updatePerson(any(Person.class));
 	}
@@ -200,17 +204,16 @@ public class EndpointPersonsControllerTest {
 		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
+		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Courcelles", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		
 		when(mockPersonModel.getPersonById(personToUpdate.getIdPerson())).thenReturn(null);
-	
-		ObjectMapper objectMapper = new ObjectMapper();
-		String json = objectMapper.writeValueAsString(personUpdated);
 
+		ObjectMapper objectMapper = new ObjectMapper();
+		
 		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(json))
+				.content(objectMapper.writeValueAsString(personUpdated)))
 				.andExpect(status().isNotFound());
 		
 		verify(mockPersonModel, times(1)).getPersonById(anyString());
@@ -225,9 +228,8 @@ public class EndpointPersonsControllerTest {
 				"0696469887", "bs@email.com");
 
 		when(mockPersonModel.getPersonById(personToDelete.getIdPerson())).thenReturn(personToDelete);
-		when(mockPersonModel.personExist(personToDelete)).thenReturn(false);
-		
 		when(mockPersonModel.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
+		when(mockPersonModel.personExist(personToDelete)).thenReturn(false);
 
 		mockMvc.perform(delete("/persons/{id}", personToDelete.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON))
@@ -246,9 +248,6 @@ public class EndpointPersonsControllerTest {
 				"0696469887", "bs@email.com");
 
 		when(mockPersonModel.getPersonById(personToDelete.getIdPerson())).thenReturn(null);
-		when(mockPersonModel.personExist(personToDelete)).thenReturn(false);
-		
-		when(mockPersonModel.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
 
 		mockMvc.perform(delete("/persons/{id}", personToDelete.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON))
@@ -267,10 +266,9 @@ public class EndpointPersonsControllerTest {
 				"0696469887", "bs@email.com");
 
 		when(mockPersonModel.getPersonById(personToDelete.getIdPerson())).thenReturn(personToDelete);
+		when(mockPersonModel.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
 		when(mockPersonModel.personExist(personToDelete)).thenReturn(true);
 		
-		when(mockPersonModel.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
-
 		mockMvc.perform(delete("/persons/{id}", personToDelete.getIdPerson())
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isInternalServerError());

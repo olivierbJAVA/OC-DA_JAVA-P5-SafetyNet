@@ -57,8 +57,8 @@ public class FirestationMappingModelImpl implements IFirestationMappingModel {
 	}
 
 	@Override
-	public FirestationMapping getFirestationMappingByFirestationNumber(int firestationNumber) {
-		return firestationMappingDao.getFirestationMappingByStationNumber(firestationNumber);
+	public FirestationMapping getFirestationMappingByIdStation(String idFirestation) {
+		return firestationMappingDao.getFirestationMappingByIdStation(idFirestation);
 	}
 
 	@Override

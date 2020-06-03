@@ -40,9 +40,9 @@ public class UrlsController {
 
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")
-	public ResponseEntity<Firestation> responseFirestation(@RequestParam int stationNumber) {
+	public ResponseEntity<Firestation> responseFirestation(@RequestParam String stationNumber) {
 
-		if (firestationMappingModel.getFirestationMappingByFirestationNumber(stationNumber) == null) {
+		if (firestationMappingModel.getFirestationMappingByIdStation(stationNumber) == null) {
 			logger.error("Error : no mapping exist for this firestation");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					String.valueOf(stationNumber));
@@ -70,9 +70,9 @@ public class UrlsController {
 
 	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
 	@GetMapping(value = "/phoneAlert")
-	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam int firestation) {
+	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam String firestation) {
 
-		if (firestationMappingModel.getFirestationMappingByFirestationNumber(firestation) == null) {
+		if (firestationMappingModel.getFirestationMappingByIdStation(firestation) == null) {
 			logger.error("Error : no mapping exist for this firestation");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					String.valueOf(firestation));
@@ -100,9 +100,9 @@ public class UrlsController {
 
 	// http://localhost:8080/flood/station?station=<station_number>
 	@GetMapping(value = "/flood/station")
-	public ResponseEntity<Flood> responseFlood(@RequestParam int station) {
+	public ResponseEntity<Flood> responseFlood(@RequestParam String station) {
 
-		if (firestationMappingModel.getFirestationMappingByFirestationNumber(station) == null) {
+		if (firestationMappingModel.getFirestationMappingByIdStation(station) == null) {
 			logger.error("Error : no mapping exist for this firestation");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					String.valueOf(station));

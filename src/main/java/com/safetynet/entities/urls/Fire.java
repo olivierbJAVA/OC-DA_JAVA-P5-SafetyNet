@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Fire {
 
-	@JsonProperty("StationNumberForThisAddress")
-	private int nbStation;
-	
+	@JsonProperty("StationIdForThisAddress")
+	private String idStation;
+
 	@JsonProperty("PersonsLivingAtThisAddress")
 	private List<FirePerson> firePersons;
 
@@ -16,18 +16,18 @@ public class Fire {
 		super();
 	}
 
-	public Fire(int nbStation, List<FirePerson> firePersons) {
+	public Fire(String idStation, List<FirePerson> firePersons) {
 		super();
-		this.nbStation = nbStation;
+		this.idStation = idStation;
 		this.firePersons = firePersons;
 	}
 
-	public int getNbStation() {
-		return nbStation;
+	public String getIdStation() {
+		return idStation;
 	}
 
-	public void setNbStation(int nbStation) {
-		this.nbStation = nbStation;
+	public void setIdStation(String idStation) {
+		this.idStation = idStation;
 	}
 
 	public List<FirePerson> getFirePersons() {
@@ -37,5 +37,4 @@ public class Fire {
 	public void setFirePersons(List<FirePerson> firePersons) {
 		this.firePersons = firePersons;
 	}
-	
 }
