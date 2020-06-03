@@ -68,6 +68,21 @@ public class UrlsController {
 
 	}
 
+	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
+	@GetMapping(value = "/phoneAlert")
+	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam int firestation) {
+
+		if (firestationMappingModel.getFirestationMappingByFirestationNumber(firestation) == null) {
+			logger.error("Error : no mapping exist for this firestation");
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					String.valueOf(firestation));
+		}
+
+		Set<String> responsePhoneAlert = responseModel.responsePhoneAlert(firestation);
+
+		return new ResponseEntity<>(responsePhoneAlert, HttpStatus.OK);
+	}
+
 	// http://localhost:8080/fire?address=<address>
 	@GetMapping(value = "/fire")
 	public ResponseEntity<Fire> responseFire(@RequestParam String address) {
@@ -83,7 +98,7 @@ public class UrlsController {
 
 	}
 
-	// http://localhost:8080/flood/station?station=<a list of station_numbers>
+	// http://localhost:8080/flood/station?station=<station_number>
 	@GetMapping(value = "/flood/station")
 	public ResponseEntity<Flood> responseFlood(@RequestParam int station) {
 
@@ -130,18 +145,4 @@ public class UrlsController {
 		return new ResponseEntity<>(listEmails, HttpStatus.FOUND);
 	}
 
-	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
-	@GetMapping(value = "/phoneAlert")
-	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam int firestation) {
-
-		if (firestationMappingModel.getFirestationMappingByFirestationNumber(firestation) == null) {
-			logger.error("Error : no mapping exist for this firestation");
-			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
-					String.valueOf(firestation));
-		}
-
-		Set<String> responsePhoneAlert = responseModel.responsePhoneAlert(firestation);
-
-		return new ResponseEntity<>(responsePhoneAlert, HttpStatus.OK);
-	}
 }

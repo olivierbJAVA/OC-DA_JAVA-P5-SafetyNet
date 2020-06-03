@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +61,8 @@ public class EndpointPersonsControllerTest {
 
 		mockMvc.perform(get("/persons")
 				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isFound());
+				.andExpect(status().isFound())
+				.andExpect(content().contentType("application/json"));
 				//.andExpect(jsonPath("$.firstName", is(personToGet.getFirstName())));
 		
 		verify(mockPersonModel, times(1)).getAllPersons();

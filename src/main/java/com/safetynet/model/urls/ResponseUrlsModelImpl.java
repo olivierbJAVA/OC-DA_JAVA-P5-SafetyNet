@@ -73,10 +73,10 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 					nbAdults++;
 				}
 			}
-			responseFirestation.setFirestationPersons(responseFirestationListPersons);
-			responseFirestation.setNbAdults(nbAdults);
-			responseFirestation.setNbChilds(nbChilds);
 		}
+		responseFirestation.setFirestationPersons(responseFirestationListPersons);
+		responseFirestation.setNbAdults(nbAdults);
+		responseFirestation.setNbChilds(nbChilds);
 
 		return responseFirestation;
 	}
@@ -115,16 +115,35 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 					otherHouseholdMember.setEmail(personInList.getEmail());
 					responseChildAlertListHouseholdMembers.add(otherHouseholdMember);
 				}
-				responseChildAlert.setChildAlertChilds(responseChildAlertListChilds);
-				responseChildAlert.setChildAlertHouseholdMembers(responseChildAlertListHouseholdMembers);
 			}
 		}
+		responseChildAlert.setChildAlertChilds(responseChildAlertListChilds);
+		responseChildAlert.setChildAlertHouseholdMembers(responseChildAlertListHouseholdMembers);
 
 		if (responseChildAlertListChilds.isEmpty()) {
 			return null;
 		}
 
 		return responseChildAlert;
+	}
+
+	@Override
+	public Set<String> responsePhoneAlert(int firestation) {
+
+		Set<String> responsePhoneAlert = new HashSet<>();
+
+		List<Person> listAllPersons = personModel.getAllPersons();
+
+		for (Person personInList : listAllPersons) {
+
+			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
+					.getStation()) == firestation) {
+
+				responsePhoneAlert.add(personInList.getPhone());
+
+			}
+		}
+		return responsePhoneAlert;
 	}
 
 	@Override
@@ -173,9 +192,9 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		List<Person> listAllPersons = personModel.getAllPersons();
 
-		Set<String> listAllAddress = personModel.getAllAddress();
+		Set<String> allAddress = personModel.getAllAddress();
 
-		for (String address : listAllAddress) {
+		for (String address : allAddress) {
 
 			List<FloodPerson> responseListFloodPersons = new ArrayList<>();
 
@@ -212,7 +231,6 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		return responseFlood;
 	}
 
-	// http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
 	@Override
 	public PersonInfo responsePersonInfo(String firstName, String lastName) {
 
@@ -226,6 +244,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 				responsePersonInfo.setFirstName(firstName);
 				responsePersonInfo.setLastName(lastName);
+				responsePersonInfo.setAddress(personInList.getAddress());
 				responsePersonInfo.setAge(getPersonAge(personInList));
 				responsePersonInfo.setEmail(personInList.getEmail());
 
@@ -247,6 +266,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 						responsePersonInfoOtherPersonSameName.setFirstName(personInListWithSameName.getFirstName());
 						responsePersonInfoOtherPersonSameName.setLastName(personInListWithSameName.getLastName());
+						responsePersonInfoOtherPersonSameName.setAddress(personInListWithSameName.getAddress());
 						responsePersonInfoOtherPersonSameName.setAge(getPersonAge(personInListWithSameName));
 						responsePersonInfoOtherPersonSameName.setEmail(personInListWithSameName.getEmail());
 
@@ -265,25 +285,6 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		}
 
 		return responsePersonInfo;
-	}
-
-	@Override
-	public Set<String> responsePhoneAlert(int firestation) {
-
-		Set<String> responsePhoneAlert = new HashSet<>();
-
-		List<Person> listAllPersons = personModel.getAllPersons();
-
-		for (Person personInList : listAllPersons) {
-
-			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
-					.getStation()) == firestation) {
-
-				responsePhoneAlert.add(personInList.getPhone());
-
-			}
-		}
-		return responsePhoneAlert;
 	}
 
 	private long getPersonAge(Person person) {

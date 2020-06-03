@@ -4,6 +4,7 @@ public class PersonInfoSameName {
 
 	private String firstName;
 	private String lastName;
+	private String address;
 	private long age;
 	private String email;
 	private String[] medications;
@@ -13,11 +14,12 @@ public class PersonInfoSameName {
 		super();
 	}
 
-	public PersonInfoSameName(String firstName, String lastName, long age, String email, String[] medications,
-			String[] allergies) {
+	public PersonInfoSameName(String firstName, String lastName, String address, long age, String email,
+			String[] medications, String[] allergies) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.address = address;
 		this.age = age;
 		this.email = email;
 		this.medications = medications;
@@ -38,6 +40,14 @@ public class PersonInfoSameName {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public long getAge() {

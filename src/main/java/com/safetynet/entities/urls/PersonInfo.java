@@ -3,24 +3,26 @@ package com.safetynet.entities.urls;
 import java.util.List;
 
 public class PersonInfo {
-	
+
 	private String firstName;
 	private String lastName;
+	private String address;
 	private long age;
 	private String email;
 	private String[] medications;
 	private String[] allergies;
 	private List<PersonInfoSameName> otherPersonsWithSameName;
-	
+
 	public PersonInfo() {
 		super();
 	}
 
-	public PersonInfo(String firstName, String lastName, long age, String email, String[] medications,
+	public PersonInfo(String firstName, String lastName, String address, long age, String email, String[] medications,
 			String[] allergies, List<PersonInfoSameName> otherPersonsWithSameName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.address = address;
 		this.age = age;
 		this.email = email;
 		this.medications = medications;
@@ -42,6 +44,14 @@ public class PersonInfo {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public long getAge() {
@@ -83,5 +93,5 @@ public class PersonInfo {
 	public void setOtherPersonsWithSameName(List<PersonInfoSameName> otherPersonsWithSameName) {
 		this.otherPersonsWithSameName = otherPersonsWithSameName;
 	}
-	
+
 }
