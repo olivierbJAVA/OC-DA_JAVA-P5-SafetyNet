@@ -1,5 +1,6 @@
 package com.safetynet;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
@@ -17,20 +18,25 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.safetynet.entities.endpoints.Person;
 
-//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@SpringBootTest
 class SafetyNetApplicationTests {
 
+	@LocalServerPort
+	private int port;
+	
 	@Autowired
 	private TestRestTemplate restTemplate;
 	
-	private static final String URL = "http://localhost:8080";
+	//private static final String URL = "http://localhost:8080";
+	private String URL = "http://localhost:"+String.valueOf(port);
 	
 	private String getURLWithPort(String uri) {
 		return URL + uri;
@@ -59,22 +65,15 @@ class SafetyNetApplicationTests {
 		allPersonsToGet.add(personToGet1);
 		allPersonsToGet.add(personToGet2);
 		allPersonsToGet.add(personToGet3);
-
+		
+		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",String.class)).contains("Server response : OK");
+		
+		/*
 		ResponseEntity<Object> responseEntity = restTemplate.getForEntity(getURLWithPort("/persons"), Object.class);
 		assertNotNull(responseEntity);
 		
-		/*
-		when(mockPersonModel.getAllPersons()).thenReturn(allPersonsToGet);
-
-		mockMvc.perform(get("/persons")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isFound())
-				.andExpect(content().contentType("application/json"))
-				.andExpect(jsonPath("$[0].lastName", is(personToGet1.getLastName())))
-				.andExpect(jsonPath("$[1].lastName", is(personToGet2.getLastName())))
-				.andExpect(jsonPath("$[2].lastName", is(personToGet3.getLastName())));
-				
-		verify(mockPersonModel, times(1)).getAllPersons();
+		ResponseEntity<Object> responseEntity = restTemplate.getForEntity("http://localhost:" + String.valueOf(port) + "/persons"), Object.class);
+		assertNotNull(responseEntity);
 		*/
 	}
 	
