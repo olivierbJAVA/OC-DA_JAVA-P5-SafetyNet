@@ -1,80 +1,103 @@
 package com.safetynet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.endpoints.Person;
+import com.safetynet.entities.urls.Firestation;
+import com.safetynet.entities.urls.FirestationPerson;
+import com.safetynet.util.IInitializeLists;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 //@SpringBootTest
 class SafetyNetApplicationTests {
-
+		
 	@LocalServerPort
 	private int port;
 	
 	@Autowired
-	private TestRestTemplate restTemplate;
+	private TestRestTemplate testRestTemplate;
 	
-	//private static final String URL = "http://localhost:8080";
-	private String URL = "http://localhost:"+String.valueOf(port);
+	@Autowired
+	private IInitializeLists initializeList;
 	
-	private String getURLWithPort(String uri) {
-		return URL + uri;
+	@Autowired
+	private IPersonDao personDaoImpl;
+	
+	@BeforeEach
+	public void setupPerTest() {
+		List<Person> persons = personDaoImpl.getAllPersons();
+		for (Person person : persons) {
+			personDaoImpl.deletePerson(person.getIdPerson());
+		}
+		initializeList.initializeLists();	
 	}
-	
 	
 	/*
 	@Test
 	void contextLoads() {
-		
 	}
 	*/
 	
-	// @GetMapping(value = "/persons")
+	// @GetMapping("/")
 	@Test
-	public void getAllPersons() throws Exception {
+	public void testDefaultController() throws Exception {
 
-		Person personToGet1 = new Person("BertrandSimon1", "Bertrand", "Simon1", "address1", "Paris", "75000",
-				"0696469887", "bs@email.com");
-		Person personToGet2 = new Person("BertrandSimon2", "Bertrand", "Simon2", "address2", "Paris", "75000",
-				"0696469887", "bs@email.com");
-		Person personToGet3 = new Person("BertrandSimon3", "Bertrand", "Simon3", "address3", "Paris", "75000",
-				"0696469887", "bs@email.com");
-
-		List<Person> allPersonsToGet = new ArrayList<>();
-		allPersonsToGet.add(personToGet1);
-		allPersonsToGet.add(personToGet2);
-		allPersonsToGet.add(personToGet3);
-		
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/",String.class)).contains("Server response : OK");
+		assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/",String.class)).contains("Server response : OK");
 		
 		/*
-		ResponseEntity<Object> responseEntity = restTemplate.getForEntity(getURLWithPort("/persons"), Object.class);
-		assertNotNull(responseEntity);
-		
 		ResponseEntity<Object> responseEntity = restTemplate.getForEntity("http://localhost:" + String.valueOf(port) + "/persons"), Object.class);
 		assertNotNull(responseEntity);
 		*/
+	}
+	
+	// http://localhost:8080/firestation?stationNumber=<station_number>
+	@Test
+	public void getUrlFirestation() throws Exception {
+
+		FirestationPerson firestationPerson1 = new FirestationPerson("Jonanathan", "Marrack", "29 15th St",
+				"841-874-6513");
+		FirestationPerson firestationPerson2 = new FirestationPerson("Warren", "Zemicks", "892 Downing Ct",
+				"841-874-7512");
+		FirestationPerson firestationPerson3 = new FirestationPerson("Eric", "Cadigan", "951 LoneTree Rd",
+				"841-874-7458");
+		FirestationPerson firestationPerson4 = new FirestationPerson("Sophia", "Zemicks", "892 Downing Ct",
+				"841-874-7878");
+		FirestationPerson firestationPerson5 = new FirestationPerson("Zach", "Zemicks", "892 Downing Ct",
+				"841-874-7512");
+
+		List<FirestationPerson> firestationPersons = new ArrayList<>();
+		firestationPersons.add(firestationPerson1);
+		firestationPersons.add(firestationPerson2);
+		firestationPersons.add(firestationPerson3);
+		firestationPersons.add(firestationPerson4);
+		firestationPersons.add(firestationPerson5);
+		
+		Firestation firestationUrlResponse = new Firestation();
+		firestationUrlResponse.setFirestationPersons(firestationPersons);
+		firestationUrlResponse.setNbAdults(4);
+		firestationUrlResponse.setNbChilds(1);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		//String actualResponseBody = mvcResult.getResponse().getContentAsString();
+		assertEquals(objectMapper.writeValueAsString(firestationUrlResponse),
+				this.testRestTemplate.getForObject("http://localhost:" + port + "/firestation?stationNumber=2",String.class) );
+
 	}
 	
 }

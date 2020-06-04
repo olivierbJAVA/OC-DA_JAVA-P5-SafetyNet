@@ -44,8 +44,7 @@ public class UrlsController {
 
 		if (firestationMappingModel.getFirestationMappingByIdStation(stationNumber) == null) {
 			logger.error("Error : no mapping exist for this firestation");
-			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
-					String.valueOf(stationNumber));
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", stationNumber);
 		}
 
 		Firestation responseFirestation = responseModel.responseFirestation(stationNumber);
@@ -74,8 +73,7 @@ public class UrlsController {
 
 		if (firestationMappingModel.getFirestationMappingByIdStation(firestation) == null) {
 			logger.error("Error : no mapping exist for this firestation");
-			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
-					String.valueOf(firestation));
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", firestation);
 		}
 
 		Set<String> responsePhoneAlert = responseModel.responsePhoneAlert(firestation);
@@ -104,8 +102,7 @@ public class UrlsController {
 
 		if (firestationMappingModel.getFirestationMappingByIdStation(station) == null) {
 			logger.error("Error : no mapping exist for this firestation");
-			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
-					String.valueOf(station));
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", station);
 		}
 
 		Flood responseFlood = responseModel.responseFlood(station);

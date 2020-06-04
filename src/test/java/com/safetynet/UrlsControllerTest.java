@@ -1,6 +1,7 @@
 package com.safetynet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -76,7 +77,7 @@ public class UrlsControllerTest {
 
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@Test
-	public void getUrlFirestation() throws Exception {
+	public void getUrlFirestation_whenStationExist() throws Exception {
 
 		FirestationPerson firestationPerson1 = new FirestationPerson("Jonanathan", "Marrack", "29 15th St",
 				"841-874-6513");
@@ -89,7 +90,7 @@ public class UrlsControllerTest {
 		FirestationPerson firestationPerson5 = new FirestationPerson("Zach", "Zemicks", "892 Downing Ct",
 				"841-874-7512");
 
-		List<FirestationPerson> firestationPersons = new ArrayList<FirestationPerson>();
+		List<FirestationPerson> firestationPersons = new ArrayList<>();
 		firestationPersons.add(firestationPerson1);
 		firestationPersons.add(firestationPerson2);
 		firestationPersons.add(firestationPerson3);
@@ -128,4 +129,17 @@ public class UrlsControllerTest {
 		// assertThat(objectMapper.writeValueAsString(firestationUrlResponse)).isEqualTo(actualResponseBody);
 	}
 
+	@Test
+	public void getUrlFirestation_whenStationNotExist() throws Exception {
+
+		when(mockFirestationMappingModel.getFirestationMappingByIdStation("2")).thenReturn(null);
+
+		mockMvc.perform(get("/firestation")
+				.contentType(MediaType.APPLICATION_JSON)
+				.param("stationNumber", "2"))
+				.andExpect(status().isNotFound());
+
+		verify(mockFirestationMappingModel, times(1)).getFirestationMappingByIdStation("2");
+		verify(mockResponseUrlsModel, never()).responseFirestation("2");
+	}
 }
