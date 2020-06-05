@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.safetynet.entities.urls.FirePerson;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.FirestationPerson;
 import com.safetynet.entities.urls.Flood;
+import com.safetynet.entities.urls.FloodStation;
 import com.safetynet.entities.urls.FloodPerson;
 import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.entities.urls.PersonInfoSameName;
@@ -54,8 +56,8 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		for (Person personInList : listAllPersons) {
 
-			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
-					.getStation()).equals(idStation)) {
+			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress()).getStation())
+					.equals(idStation)) {
 
 				FirestationPerson responseFirestationPerson = new FirestationPerson();
 				responseFirestationPerson.setFirstName(personInList.getFirstName());
@@ -136,8 +138,8 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		for (Person personInList : listAllPersons) {
 
-			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress())
-					.getStation()).equals(idStation)) {
+			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress()).getStation())
+					.equals(idStation)) {
 
 				responsePhoneAlert.add(personInList.getPhone());
 
@@ -184,22 +186,34 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 	}
 
 	@Override
-	public Flood responseFlood(String idStation) {
+	public Flood responseFlood(String[] idsStation) {
 
+		//Map<String, FloodStation> listFlood
 		Flood responseFlood = new Flood();
 
-		Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
+		Map<String, FloodStation> responseMapFloodStations = new HashMap<>();
+		
+		//Map<String, List<FloodPerson>>
+		//FloodStation responseFloodStation = new FloodStation();
+		
+		//Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
 
 		List<Person> listAllPersons = personModel.getAllPersons();
 
 		Set<String> allAddress = personModel.getAllAddress();
 
+	for(int i=0;i<idsStation.length;i++) {	
+		
+		Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
+		
+		FloodStation responseFloodStation = new FloodStation();
+		
 		for (String address : allAddress) {
 
 			List<FloodPerson> responseListFloodPersons = new ArrayList<>();
 
-			if (firestationMappingModel.getFirestationMappingByAdress(address).getStation().equals(idStation)) {
-
+			if ((firestationMappingModel.getFirestationMappingByAdress(address).getStation()).equals(idsStation[i])) {
+				
 				for (Person personInList : listAllPersons) {
 
 					if (personInList.getAddress().equals(address)) {
@@ -226,9 +240,22 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 				responseMapFloodPersons.put(address, responseListFloodPersons);
 			}
 		}
-		responseFlood.setMapFloodPersons(responseMapFloodPersons);
+		//responseFlood.setMapFloodPersons(responseMapFloodPersons);
+		
+		responseFloodStation.setMapFloodPersons(responseMapFloodPersons );
+		
+		responseMapFloodStations.put(idsStation[i], responseFloodStation);
+		
+	}
+	//responseFloodStation.setMapFloodPersons(responseMapFloodPersons );
+	
+	//responseListFloodStations.put(idsStation[i],responseFloodStation);
 
-		return responseFlood;
+
+	
+	responseFlood.setMapFloodStations(responseMapFloodStations);
+	
+	return responseFlood;
 	}
 
 	@Override
@@ -285,6 +312,17 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 		}
 
 		return responsePersonInfo;
+	}
+
+	@Override
+	public List<String> responseCommunityEmail(String city) {
+
+		List<Person> listPersons = personModel.getAllPersons();
+
+		List<String> responseCommunityEmail = listPersons.stream().filter(person -> person.getCity().equals(city))
+				.map(Person::getEmail).distinct().collect(Collectors.toList());
+
+		return responseCommunityEmail;
 	}
 
 	private long getPersonAge(Person person) {

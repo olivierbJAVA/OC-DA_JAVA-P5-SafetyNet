@@ -1,31 +1,30 @@
 package com.safetynet.entities.urls;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Flood {
 
-	@JsonProperty("PersonsCoverdedByThisFirestationOrderedByAddress")
-	private Map<String, List<FloodPerson>> mapFloodPersons = new HashMap<>();
+	@JsonProperty("Firestation")
+	private Map<String, FloodStation> mapFloodStations = new HashMap<>();
 
 	public Flood() {
 		super();
 	}
 
-	public Flood(Map<String, List<FloodPerson>> mapFloodPersons) {
+	public Flood(Map<String, FloodStation> mapFloodStations) {
 		super();
-		this.mapFloodPersons = mapFloodPersons;
+		this.mapFloodStations = mapFloodStations;
 	}
 
-	public Map<String, List<FloodPerson>> getMapFloodPersons() {
-		return mapFloodPersons;
+	public Map<String, FloodStation> getMapFloodStations() {
+		return mapFloodStations;
 	}
 
-	public void setMapFloodPersons(Map<String, List<FloodPerson>> mapFloodPersons) {
-		this.mapFloodPersons = mapFloodPersons;
+	public void setMapFloodStations(Map<String, FloodStation> mapFloodStations) {
+		this.mapFloodStations = mapFloodStations;
 	}
-			
+
 }

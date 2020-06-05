@@ -74,6 +74,11 @@ public class EndpointFirestationMappingsController {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
+		if (firestationMappingModel.getFirestationMappingByAdress(firestationMapping.getAddress()) == null) {
+			logger.error("Error : firestation mapping adress does not exist");
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", firestationMapping.getAddress());
+		}
+		
 		firestationMappingModel.updateFirestationMapping(firestationMapping);
 
 		return new ResponseEntity<>(firestationMapping, HttpStatus.OK);

@@ -2,7 +2,6 @@ package com.safetynet.controllers;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.ChildAlert;
 import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.Firestation;
@@ -96,13 +94,16 @@ public class UrlsController {
 
 	}
 
-	// http://localhost:8080/flood/station?station=<station_number>
+	// http://localhost:8080/flood/station?stations=<a list of station_numbers>
 	@GetMapping(value = "/flood/station")
-	public ResponseEntity<Flood> responseFlood(@RequestParam String station) {
+	public ResponseEntity<Flood> responseFlood(@RequestParam String[] station) {
 
-		if (firestationMappingModel.getFirestationMappingByIdStation(station) == null) {
-			logger.error("Error : no mapping exist for this firestation");
-			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", station);
+		for (int i = 0; i < station.length; i++) {
+
+			if (firestationMappingModel.getFirestationMappingByIdStation(station[i]) == null) {
+				logger.error("Error : no mapping exist for this firestation");
+				throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", station[i]);
+			}
 		}
 
 		Flood responseFlood = responseModel.responseFlood(station);
@@ -127,19 +128,16 @@ public class UrlsController {
 
 	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
-	public ResponseEntity<List<String>> getCommunityEmail(@RequestParam String city) {
+	public ResponseEntity<List<String>> responseCommunityEmail(@RequestParam String city) {
 
 		if (!personModel.cityExist(city)) {
 			logger.error("Error : city does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", city);
 		}
 
-		List<Person> listPersons = personModel.getAllPersons();
+		List<String> responseCommunityEmail = responseModel.responseCommunityEmail(city);
 
-		List<String> listEmails = listPersons.stream().filter(x -> x.getCity().equals(city)).map(Person::getEmail)
-				.distinct().collect(Collectors.toList());
-
-		return new ResponseEntity<>(listEmails, HttpStatus.FOUND);
+		return new ResponseEntity<>(responseCommunityEmail, HttpStatus.FOUND);
 	}
 
 }

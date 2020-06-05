@@ -44,7 +44,7 @@ class SafetyNetApplicationTests {
 		for (Person person : persons) {
 			personDaoImpl.deletePerson(person.getIdPerson());
 		}
-		initializeList.initializeLists();	
+		initializeList.getData();	
 	}
 	
 	/*
