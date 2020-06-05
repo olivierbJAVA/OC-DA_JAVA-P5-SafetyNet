@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,15 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.safetynet.dao.MedicalRecordDaoImpl;
 import com.safetynet.entities.endpoints.MedicalRecord;
+import com.safetynet.repository.MedicalRecordRepositoryImpl;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = com.safetynet.dao.MedicalRecordDaoImpl.class)
-public class MedicalRecordDaoImplTest {
+@ContextConfiguration(classes = com.safetynet.repository.MedicalRecordRepositoryImpl.class)
+public class MedicalRecordRepositoryImplTest {
 
 	@Autowired
-	private MedicalRecordDaoImpl medicalRecordDaoImplUnderTest;
+	private MedicalRecordRepositoryImpl medicalRecordDaoImplUnderTest;
 
 	@BeforeEach
 	private void setUpPerTest() {

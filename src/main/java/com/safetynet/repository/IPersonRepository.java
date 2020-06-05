@@ -1,10 +1,10 @@
-package com.safetynet.dao;
+package com.safetynet.repository;
 
 import java.util.List;
 
 import com.safetynet.entities.endpoints.Person;
 
-public interface IPersonDao {
+public interface IPersonRepository {
 	public Person addPerson(Person person);
 
 	public Person deletePerson(String idPerson);

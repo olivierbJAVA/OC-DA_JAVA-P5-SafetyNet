@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,23 +15,23 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.safetynet.dao.IPersonDao;
-import com.safetynet.dao.PersonDaoImpl;
 import com.safetynet.entities.endpoints.Person;
+import com.safetynet.repository.IPersonRepository;
+import com.safetynet.repository.PersonRepositoryImpl;
 
 @ExtendWith(SpringExtension.class)
-public class PersonDaoImplTest {
+public class PersonRepositoryImplTest {
 
 	@TestConfiguration
 	static class PersonDaoImplTestContextConfiguration {
 		@Bean
-		public IPersonDao iPersonDao() {
-			return new PersonDaoImpl();
+		public IPersonRepository iPersonDao() {
+			return new PersonRepositoryImpl();
 		}
 	}
 
 	@Autowired
-	private IPersonDao personDaoImplUnderTest;
+	private IPersonRepository personDaoImplUnderTest;
 
 	@BeforeEach
 	private void setUpPerTest() {

@@ -17,27 +17,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.MedicalRecord;
 import com.safetynet.entities.endpoints.Person;
-import com.safetynet.model.endpoints.IFirestationMappingModel;
-import com.safetynet.model.endpoints.IMedicalRecordModel;
-import com.safetynet.model.endpoints.IPersonModel;
+import com.safetynet.service.endpoints.IFirestationMappingService;
+import com.safetynet.service.endpoints.IMedicalRecordService;
+import com.safetynet.service.endpoints.IPersonService;
+
+
 
 @Service
 public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 	private static final Logger logger = LoggerFactory.getLogger("JsonInputFileReader");
 
-	// A passer en paramètre dans un constructeur ?
 	@Autowired
-	private IPersonModel personModel;
+	private IPersonService personModel;
 
 	@Autowired
-	private IFirestationMappingModel firestationMappingModel;
+	private IFirestationMappingService firestationMappingModel;
 
 	@Autowired
-	private IMedicalRecordModel medicalRecordModel;
-
-	// OB : doit-on faire Autowired pour cet objet ?
-	// @Autowired ObjectMapper mapper;
+	private IMedicalRecordService medicalRecordModel;
 
 	/*
 	// A passer en paramètre dans un constructeur pour les tests ?

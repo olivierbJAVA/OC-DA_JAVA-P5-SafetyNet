@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.repository;
 
 import java.util.List;
 
@@ -12,25 +12,25 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.safetynet.dao.FirestationMappingDaoImpl;
-import com.safetynet.dao.IFirestationMappingDao;
-import com.safetynet.dao.IPersonDao;
-import com.safetynet.dao.PersonDaoImpl;
 import com.safetynet.entities.endpoints.Person;
+import com.safetynet.repository.FirestationMappingRepositoryImpl;
+import com.safetynet.repository.IFirestationMappingRepository;
+import com.safetynet.repository.IPersonRepository;
+import com.safetynet.repository.PersonRepositoryImpl;
 
 @ExtendWith(SpringExtension.class)
-public class FirestationMappingDaoImplTest {
+public class FirestationMappingRepositoryImplTest {
 
 	@TestConfiguration
 	static class FirestationMappingDaoImplTestContextConfiguration {
 		@Bean
-		public IFirestationMappingDao iFirestationsMappingDao() {
-			return new FirestationMappingDaoImpl();
+		public IFirestationMappingRepository iFirestationsMappingDao() {
+			return new FirestationMappingRepositoryImpl();
 		}
 	}
 
 	@Autowired
-	private FirestationMappingDaoImpl firestationMappingDaoImplUnderTest;
+	private FirestationMappingRepositoryImpl firestationMappingDaoImplUnderTest;
 
 	@BeforeAll
 	private static void setUp() throws Exception {

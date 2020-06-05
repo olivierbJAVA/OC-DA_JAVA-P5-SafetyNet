@@ -1,16 +1,19 @@
-package com.safetynet.dao;
+package com.safetynet.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+
+import org.springframework.stereotype.Repository;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
 
-public class FirestationMappingDaoTreemapImpl implements IFirestationMappingDao {
+@Repository
+public class FirestationMappingRepositoryImpl implements IFirestationMappingRepository {
 
-	private static Map<String, FirestationMapping> firestationMappings = new TreeMap<>();
+	private static Map<String, FirestationMapping> firestationMappings = new HashMap<>();
 
 	@Override
 	public FirestationMapping addFirestationMapping(FirestationMapping firestationMapping) {

@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.controllers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.controllers.EndpointPersonsController;
 import com.safetynet.entities.endpoints.Person;
-import com.safetynet.model.endpoints.IPersonModel;
+import com.safetynet.service.endpoints.IPersonService;
 
 @WebMvcTest(EndpointPersonsController.class)
 public class EndpointPersonsControllerTest {
@@ -42,7 +42,7 @@ public class EndpointPersonsControllerTest {
 	//ObjectMapper objectMapper;
 	
 	@MockBean
-	private IPersonModel mockPersonModel;
+	private IPersonService mockPersonModel;
 
 	// @GetMapping(value = "/persons")
 	@Test

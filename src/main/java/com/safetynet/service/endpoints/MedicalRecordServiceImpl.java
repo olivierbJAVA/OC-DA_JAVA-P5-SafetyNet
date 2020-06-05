@@ -1,33 +1,33 @@
-package com.safetynet.model.endpoints;
+package com.safetynet.service.endpoints;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.dao.IMedicalRecordDao;
 import com.safetynet.entities.endpoints.MedicalRecord;
+import com.safetynet.repository.IMedicalRecordRepository;
 
 @Service
-public class MedicalRecordModelImpl implements IMedicalRecordModel {
+public class MedicalRecordServiceImpl implements IMedicalRecordService {
 
 	@Autowired
-	private IMedicalRecordDao medicalRecordDao;
+	private IMedicalRecordRepository medicalRecordDao;
 
-	public MedicalRecordModelImpl() {
+	public MedicalRecordServiceImpl() {
 		super();
 	}
 
-	public MedicalRecordModelImpl(IMedicalRecordDao medicalRecordDao) {
+	public MedicalRecordServiceImpl(IMedicalRecordRepository medicalRecordDao) {
 		super();
 		this.medicalRecordDao = medicalRecordDao;
 	}
 
-	public IMedicalRecordDao getMedicalRecordDao() {
+	public IMedicalRecordRepository getMedicalRecordDao() {
 		return medicalRecordDao;
 	}
 
-	public void setMedicalRecordDao(IMedicalRecordDao medicalRecordDao) {
+	public void setMedicalRecordDao(IMedicalRecordRepository medicalRecordDao) {
 		this.medicalRecordDao = medicalRecordDao;
 	}
 

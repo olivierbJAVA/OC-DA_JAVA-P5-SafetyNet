@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.utils;
 
 public class JsonFileInitializeListsImplTest {
 

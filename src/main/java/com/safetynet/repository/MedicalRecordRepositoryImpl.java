@@ -1,4 +1,4 @@
-package com.safetynet.dao;
+package com.safetynet.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.safetynet.entities.endpoints.MedicalRecord;
 
 @Repository
-public class MedicalRecordDaoImpl implements IMedicalRecordDao {
+public class MedicalRecordRepositoryImpl implements IMedicalRecordRepository {
 
 	private static Map<String, MedicalRecord> medicalRecords = new HashMap<>();
 

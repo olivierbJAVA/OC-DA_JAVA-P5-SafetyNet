@@ -1,11 +1,11 @@
-package com.safetynet.model.endpoints;
+package com.safetynet.service.endpoints;
 
 import java.util.List;
 import java.util.Set;
 
 import com.safetynet.entities.endpoints.Person;
 
-public interface IPersonModel {
+public interface IPersonService {
 	public Person addPerson(Person person);
 
 	public Person deletePerson(String idPerson);

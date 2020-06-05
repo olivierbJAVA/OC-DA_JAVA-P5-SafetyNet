@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.controllers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.never;
@@ -24,18 +24,18 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.controllers.UrlsController;
-import com.safetynet.dao.FirestationMappingDaoImpl;
-import com.safetynet.dao.IFirestationMappingDao;
-import com.safetynet.dao.IPersonDao;
-import com.safetynet.dao.PersonDaoImpl;
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.FirestationPerson;
-import com.safetynet.model.endpoints.FirestationMappingModelImpl;
-import com.safetynet.model.endpoints.IFirestationMappingModel;
-import com.safetynet.model.endpoints.IPersonModel;
-import com.safetynet.model.endpoints.PersonModelImpl;
 import com.safetynet.model.urls.IResponseUrlsModel;
+import com.safetynet.repository.FirestationMappingRepositoryImpl;
+import com.safetynet.repository.IFirestationMappingRepository;
+import com.safetynet.repository.IPersonRepository;
+import com.safetynet.repository.PersonRepositoryImpl;
+import com.safetynet.service.endpoints.FirestationMappingServiceImpl;
+import com.safetynet.service.endpoints.IFirestationMappingService;
+import com.safetynet.service.endpoints.IPersonService;
+import com.safetynet.service.endpoints.PersonServiceImpl;
 
 @WebMvcTest(UrlsController.class)
 public class UrlsControllerTest {
@@ -43,23 +43,23 @@ public class UrlsControllerTest {
 	@TestConfiguration
 	static class UrlsControllerTestContextConfiguration {
 		@Bean
-		public IFirestationMappingModel iFirestationMappingModel() {
-			return new FirestationMappingModelImpl();
+		public IFirestationMappingService iFirestationMappingModel() {
+			return new FirestationMappingServiceImpl();
 		}
 
 		@Bean
-		public IFirestationMappingDao iFirestationMappingDao() {
-			return new FirestationMappingDaoImpl();
+		public IFirestationMappingRepository iFirestationMappingDao() {
+			return new FirestationMappingRepositoryImpl();
 		}
 
 		@Bean
-		public IPersonModel iPersonModel() {
-			return new PersonModelImpl();
+		public IPersonService iPersonModel() {
+			return new PersonServiceImpl();
 		}
 
 		@Bean
-		public IPersonDao iPersonDao() {
-			return new PersonDaoImpl();
+		public IPersonRepository iPersonDao() {
+			return new PersonRepositoryImpl();
 		}
 	}
 
@@ -73,7 +73,7 @@ public class UrlsControllerTest {
 	private IResponseUrlsModel mockResponseUrlsModel;
 
 	@MockBean
-	private IFirestationMappingModel mockFirestationMappingModel;
+	private IFirestationMappingService mockFirestationMappingModel;
 
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@Test

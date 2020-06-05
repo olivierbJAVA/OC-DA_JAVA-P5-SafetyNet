@@ -1,4 +1,4 @@
-package com.safetynet.model.endpoints;
+package com.safetynet.service.endpoints;
 
 import java.util.HashSet;
 import java.util.List;
@@ -9,33 +9,33 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.endpoints.Person;
+import com.safetynet.repository.IPersonRepository;
 
 @Service
-public class PersonModelImpl implements IPersonModel {
+public class PersonServiceImpl implements IPersonService {
 
-	private static final Logger logger = LoggerFactory.getLogger(PersonModelImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
 	@Autowired
-	private IPersonDao personDao;
+	private IPersonRepository personDao;
 
-	public PersonModelImpl() {
+	public PersonServiceImpl() {
 		super();
 		logger.info("Constructeur PersonModelImpl sans arg");
 	}
 
-	public PersonModelImpl(IPersonDao personDao) {
+	public PersonServiceImpl(IPersonRepository personDao) {
 		super();
 		logger.info("Constructeur PersonModelImpl avec arg");
 		this.personDao = personDao;
 	}
 
-	public IPersonDao getPersonDao() {
+	public IPersonRepository getPersonDao() {
 		return personDao;
 	}
 
-	public void setPersonDao(IPersonDao personDao) {
+	public void setPersonDao(IPersonRepository personDao) {
 		this.personDao = personDao;
 	}
 

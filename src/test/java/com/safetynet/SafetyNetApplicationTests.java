@@ -16,10 +16,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.FirestationPerson;
+import com.safetynet.repository.IPersonRepository;
 import com.safetynet.util.IInitializeLists;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -36,7 +36,7 @@ class SafetyNetApplicationTests {
 	private IInitializeLists initializeList;
 	
 	@Autowired
-	private IPersonDao personDaoImpl;
+	private IPersonRepository personDaoImpl;
 	
 	@BeforeEach
 	public void setupPerTest() {

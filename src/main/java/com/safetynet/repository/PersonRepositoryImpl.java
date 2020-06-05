@@ -1,4 +1,4 @@
-package com.safetynet.dao;
+package com.safetynet.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.safetynet.entities.endpoints.Person;
 
 @Repository
-public class PersonDaoImpl implements IPersonDao {
+public class PersonRepositoryImpl implements IPersonRepository {
 
 	private static Map<String, Person> persons = new HashMap<>();
 

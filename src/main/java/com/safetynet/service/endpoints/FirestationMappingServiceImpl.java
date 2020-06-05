@@ -1,33 +1,33 @@
-package com.safetynet.model.endpoints;
+package com.safetynet.service.endpoints;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.safetynet.dao.IFirestationMappingDao;
 import com.safetynet.entities.endpoints.FirestationMapping;
+import com.safetynet.repository.IFirestationMappingRepository;
 
 @Service
-public class FirestationMappingModelImpl implements IFirestationMappingModel {
+public class FirestationMappingServiceImpl implements IFirestationMappingService {
 
 	@Autowired
-	private IFirestationMappingDao firestationMappingDao;
+	private IFirestationMappingRepository firestationMappingDao;
 
-	public FirestationMappingModelImpl() {
+	public FirestationMappingServiceImpl() {
 		super();
 	}
 
-	public FirestationMappingModelImpl(IFirestationMappingDao firestationMappingDao) {
+	public FirestationMappingServiceImpl(IFirestationMappingRepository firestationMappingDao) {
 		super();
 		this.firestationMappingDao = firestationMappingDao;
 	}
 
-	public IFirestationMappingDao getFirestationMappingDao() {
+	public IFirestationMappingRepository getFirestationMappingDao() {
 		return firestationMappingDao;
 	}
 
-	public void setFirestationMappingDao(IFirestationMappingDao firestationMappingDao) {
+	public void setFirestationMappingDao(IFirestationMappingRepository firestationMappingDao) {
 		this.firestationMappingDao = firestationMappingDao;
 	}
 

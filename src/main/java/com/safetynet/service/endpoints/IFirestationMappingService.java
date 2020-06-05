@@ -1,10 +1,10 @@
-package com.safetynet.model.endpoints;
+package com.safetynet.service.endpoints;
 
 import java.util.List;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
 
-public interface IFirestationMappingModel {
+public interface IFirestationMappingService {
 	public FirestationMapping addFirestationMapping(FirestationMapping firestationMapping);
 
 	public FirestationMapping deleteFirestationMapping(String addressFirestation);

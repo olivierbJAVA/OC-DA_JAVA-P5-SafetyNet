@@ -1,10 +1,10 @@
-package com.safetynet.dao;
+package com.safetynet.repository;
 
 import java.util.List;
 
 import com.safetynet.entities.endpoints.MedicalRecord;
 
-public interface IMedicalRecordDao {
+public interface IMedicalRecordRepository {
 	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);
 
 	public MedicalRecord deleteMedicalRecord(String idmedicalRecord);

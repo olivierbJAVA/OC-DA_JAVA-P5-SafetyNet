@@ -20,8 +20,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.safetynet.entities.endpoints.MedicalRecord;
 import com.safetynet.exception.RessourceAlreadyExistException;
 import com.safetynet.exception.RessourceNotFoundException;
+import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.exception.InternalServerErrorException;
-import com.safetynet.model.endpoints.IMedicalRecordModel;
 
 @RestController
 public class EndpointMedicalRecordsController {
@@ -29,7 +29,7 @@ public class EndpointMedicalRecordsController {
 	private static final Logger logger = LoggerFactory.getLogger(EndpointMedicalRecordsController.class);
 
 	@Autowired
-	private IMedicalRecordModel medicalRecordModel;
+	private IMedicalRecordService medicalRecordModel;
 
 	@GetMapping(value = "/medicalRecords")
 	public ResponseEntity<List<MedicalRecord>> getAllMedicalRecords() {

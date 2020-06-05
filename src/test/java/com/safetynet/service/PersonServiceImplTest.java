@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,27 +21,27 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.safetynet.dao.IPersonDao;
 import com.safetynet.entities.endpoints.Person;
-import com.safetynet.model.endpoints.IPersonModel;
-import com.safetynet.model.endpoints.PersonModelImpl;
+import com.safetynet.repository.IPersonRepository;
+import com.safetynet.service.endpoints.IPersonService;
+import com.safetynet.service.endpoints.PersonServiceImpl;
 
 @ExtendWith(SpringExtension.class)
-public class PersonModelImplTest {
+public class PersonServiceImplTest {
 
 	@TestConfiguration
 	static class PersonModelImplTestContextConfiguration {
 		@Bean
-		public IPersonModel iPersonModel() {
-			return new PersonModelImpl();
+		public IPersonService iPersonModel() {
+			return new PersonServiceImpl();
 		}
 	}
 
 	@Autowired
-	private IPersonModel personModelImplUnderTest;
+	private IPersonService personModelImplUnderTest;
 
 	@MockBean
-	private IPersonDao mockPersonDao;
+	private IPersonRepository mockPersonDao;
 
 	@Test
 	public void addPerson() {

@@ -20,9 +20,9 @@ import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.Flood;
 import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.exception.RessourceNotFoundException;
-import com.safetynet.model.endpoints.IFirestationMappingModel;
-import com.safetynet.model.endpoints.IPersonModel;
 import com.safetynet.model.urls.IResponseUrlsModel;
+import com.safetynet.service.endpoints.IFirestationMappingService;
+import com.safetynet.service.endpoints.IPersonService;
 
 @RestController
 public class UrlsController {
@@ -33,10 +33,10 @@ public class UrlsController {
 	private IResponseUrlsModel responseModel;
 
 	@Autowired
-	private IFirestationMappingModel firestationMappingModel;
+	private IFirestationMappingService firestationMappingModel;
 
 	@Autowired
-	private IPersonModel personModel;
+	private IPersonService personModel;
 
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")

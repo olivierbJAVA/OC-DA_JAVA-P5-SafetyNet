@@ -1,10 +1,10 @@
-package com.safetynet.model.endpoints;
+package com.safetynet.service.endpoints;
 
 import java.util.List;
 
 import com.safetynet.entities.endpoints.MedicalRecord;
 
-public interface IMedicalRecordModel {
+public interface IMedicalRecordService {
 	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);
 
 	public MedicalRecord deleteMedicalRecord(String idmedicalRecord);

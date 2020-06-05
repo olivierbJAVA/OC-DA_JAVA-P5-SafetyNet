@@ -24,21 +24,21 @@ import com.safetynet.entities.urls.Flood;
 import com.safetynet.entities.urls.FloodPerson;
 import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.entities.urls.PersonInfoSameName;
-import com.safetynet.model.endpoints.IFirestationMappingModel;
-import com.safetynet.model.endpoints.IMedicalRecordModel;
-import com.safetynet.model.endpoints.IPersonModel;
+import com.safetynet.service.endpoints.IFirestationMappingService;
+import com.safetynet.service.endpoints.IMedicalRecordService;
+import com.safetynet.service.endpoints.IPersonService;
 
 @Service
 public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 	@Autowired
-	private IPersonModel personModel;
+	private IPersonService personModel;
 
 	@Autowired
-	private IFirestationMappingModel firestationMappingModel;
+	private IFirestationMappingService firestationMappingModel;
 
 	@Autowired
-	private IMedicalRecordModel medicalRecordModel;
+	private IMedicalRecordService medicalRecordModel;
 
 	@Override
 	public Firestation responseFirestation(String idStation) {

@@ -21,7 +21,7 @@ import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.exception.InternalServerErrorException;
 import com.safetynet.exception.RessourceAlreadyExistException;
 import com.safetynet.exception.RessourceNotFoundException;
-import com.safetynet.model.endpoints.IFirestationMappingModel;
+import com.safetynet.service.endpoints.IFirestationMappingService;
 
 @RestController
 public class EndpointFirestationMappingsController {
@@ -29,7 +29,7 @@ public class EndpointFirestationMappingsController {
 	private static final Logger logger = LoggerFactory.getLogger(EndpointFirestationMappingsController.class);
 
 	@Autowired
-	private IFirestationMappingModel firestationMappingModel;
+	private IFirestationMappingService firestationMappingModel;
 
 	@GetMapping(value = "/firestations")
 	public ResponseEntity<List<FirestationMapping>> getAllFirestationMappings() {

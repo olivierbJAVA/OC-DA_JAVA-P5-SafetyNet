@@ -1,10 +1,10 @@
-package com.safetynet.dao;
+package com.safetynet.repository;
 
 import java.util.List;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
 
-public interface IFirestationMappingDao {
+public interface IFirestationMappingRepository {
 	public FirestationMapping addFirestationMapping(FirestationMapping firestation);
 
 	public FirestationMapping deleteFirestationMapping(String addressFirestation);

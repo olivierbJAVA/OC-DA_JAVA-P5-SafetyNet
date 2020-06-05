@@ -1,4 +1,4 @@
-package com.safetynet;
+package com.safetynet.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,9 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.MedicalRecord;
 import com.safetynet.entities.endpoints.Person;
-import com.safetynet.model.endpoints.IFirestationMappingModel;
-import com.safetynet.model.endpoints.IMedicalRecordModel;
-import com.safetynet.model.endpoints.IPersonModel;
+import com.safetynet.service.endpoints.IFirestationMappingService;
+import com.safetynet.service.endpoints.IMedicalRecordService;
+import com.safetynet.service.endpoints.IPersonService;
 
 public class ListsInitializationForTests {
 /*
