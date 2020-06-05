@@ -1,9 +1,11 @@
 package com.safetynet;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
@@ -11,6 +13,9 @@ import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import com.safetynet.util.IInitializeLists;
+import com.safetynet.util.JsonFileInitializeListsImpl;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -20,6 +25,10 @@ public class SafetyNetApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(SafetyNetApplication.class);
 
+	/*
+	@Autowired
+	private IInitializeLists initLists;
+	*/
 	public static void main(String[] args) {
 		logger.info("INFO : Launch SafetyNet");
 
@@ -43,6 +52,10 @@ public class SafetyNetApplication {
 			for (String beanName : beanNames) {
 				System.out.println(beanName);
 			}
+			/*
+			JsonFileInitializeListsImpl jsonFileInitializeListsImpl = new  JsonFileInitializeListsImpl(new File("./data.json"));
+			jsonFileInitializeListsImpl.initializeLists();
+			*/
 		};
 	}
 

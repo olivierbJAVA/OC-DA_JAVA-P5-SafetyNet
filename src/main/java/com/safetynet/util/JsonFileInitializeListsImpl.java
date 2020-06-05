@@ -26,24 +26,34 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 	private static final Logger logger = LoggerFactory.getLogger("JsonInputFileReader");
 
-	// A passer en paramètre dans un constructeur pour les tests ?
+	// A passer en paramètre dans un constructeur ?
 	@Autowired
-	IPersonModel personModel;
+	private IPersonModel personModel;
 
 	@Autowired
-	IFirestationMappingModel firestationMappingModel;
+	private IFirestationMappingModel firestationMappingModel;
 
 	@Autowired
-	IMedicalRecordModel medicalRecordModel;
+	private IMedicalRecordModel medicalRecordModel;
 
 	// OB : doit-on faire Autowired pour cet objet ?
 	// @Autowired ObjectMapper mapper;
 
+	/*
+	// A passer en paramètre dans un constructeur pour les tests ?
+	private File jsonInputDataFile;
+	
+	// Constructeur avec les Interface également ? Plus nécessaire avec les @Autowired sur les champs ?
+	public JsonFileInitializeListsImpl(File jsonInputDataFile) {
+		this.jsonInputDataFile = jsonInputDataFile;
+	}
+	*/
 	@PostConstruct
 	public void initializeLists() {
 
 		try {
 			ObjectMapper mapper = new ObjectMapper();
+			//JsonNode rootNode = mapper.readTree(jsonInputDataFile);
 			JsonNode rootNode = mapper.readTree(new File("./data.json"));
 
 			// initial persons list
