@@ -36,55 +36,46 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	@Autowired
 	private IMedicalRecordService medicalRecordModel;
 
-	// JsonNode rootNode=null;
-	/*
-	 * // A passer en paramètre dans un constructeur pour les tests ? private File
-	 * jsonInputDataFile;
-	 * 
-	 * // Constructeur avec les Interface également ? Plus nécessaire avec
-	 * les @Autowired sur les champs ? public JsonFileInitializeListsImpl(File
-	 * jsonInputDataFile) { this.jsonInputDataFile = jsonInputDataFile; }
-	 */
-	@PostConstruct
-	public void getData() {
+	private JsonNode rootNode;
 
-		JsonNode rootNode=null;
+	@PostConstruct
+	public void getInitialData() {
+
+		logger.info("Start data initilization");
+		
+		// JsonNode rootNode = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			// JsonNode rootNode = mapper.readTree(jsonInputDataFile);
-			rootNode = mapper.readTree(new File("./data.json"));
+			this.rootNode = mapper.readTree(new File("./data.json"));
 
 		} catch (FileNotFoundException e) {
-			logger.error("Error JSON initialization file not found" + e.toString());
+			logger.error("Error : JSON initialization file not found" + e.toString());
 			System.out.println(
 					"Error : JSON initialization file not found. To solve the issue please name the Json initialization file 'data.json' and put it in the same directory that the SafetyNet jar file");
 			System.exit(0);
 		}
 
 		catch (IOException e) {
-			logger.error("Error in lists initialization " + e.toString());
+			logger.error("Error : data initialization " + e.toString());
 			System.exit(0);
 		}
 
-		initializeListPersons(rootNode);
-		initializeListFirestationMappings(rootNode);
-		initializeListMedicalRecords(rootNode);
+		initializeDataPersons();
+		initializeDataFirestationMappings();
+		initializeDataMedicalRecords();
 
-		logger.info("Success lists initialization");
+		logger.info("Success : data initialization");
 
 		// this.rootNode=rootNode;
 		// return rootNode;
 	}
 
-	public void initializeListPersons(JsonNode rootNode) {
-		// initial persons list
-		JsonNode jsonNodePersons = rootNode.path("persons");
+	public void initializeDataPersons() {
+		JsonNode jsonNodePersons = this.rootNode.path("persons");
 		Iterator<JsonNode> iteratorPersons = jsonNodePersons.elements();
 
-		// Pas possible ici ?
-		// @Autowired IPersonModel personModel;
 		try {
-
 			ObjectMapper mapper = new ObjectMapper();
 			Person person;
 			int numPerson = 0;
@@ -103,14 +94,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			System.out.println(prettyPersons);
 
 		} catch (Exception e) {
-
+			logger.error("Error : persons data initialization " + e.toString());
 		}
 
+		logger.info("Success : persons data initialization");
 	}
 
-	public void initializeListFirestationMappings(JsonNode rootNode) {
-		// initial firestation mappings list
-		JsonNode jsonNodeFirestationMappings = rootNode.path("firestations");
+	public void initializeDataFirestationMappings() {
+		JsonNode jsonNodeFirestationMappings = this.rootNode.path("firestations");
 		Iterator<JsonNode> iteratorFirestationMappings = jsonNodeFirestationMappings.elements();
 
 		try {
@@ -120,12 +111,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			while (iteratorFirestationMappings.hasNext()) {
 				firestationMapping = mapper.treeToValue(jsonNodeFirestationMappings.get(numFirestationMapping),
 						FirestationMapping.class);
-				/*
-				firestationMapping
-						.setAddress(jsonNodeFirestationMappings.get(numFirestationMapping).get("address").asText());
-				*/
 				firestationMappingModel.addFirestationMapping(firestationMapping);
-				
 				numFirestationMapping++;
 				iteratorFirestationMappings.next();
 			}
@@ -135,14 +121,15 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 					.writeValueAsString(firestationMappingModel.getAllFirestationMappings());
 			System.out.println(prettyFirestations);
 		} catch (Exception e) {
-
+			logger.error("Error : firestationMappings data initialization " + e.toString());
 		}
 
+		logger.info("Success : firestationMappings data initialization");
 	}
 
-	public void initializeListMedicalRecords(JsonNode rootNode) {
-		// initial medical records list
-		JsonNode jsonNodeMedicalRecords = rootNode.path("medicalrecords");
+	// public void initializeDataMedicalRecords(JsonNode rootNode) {
+	public void initializeDataMedicalRecords() {
+		JsonNode jsonNodeMedicalRecords = this.rootNode.path("medicalrecords");
 
 		Iterator<JsonNode> iteratorMedicalRecords = jsonNodeMedicalRecords.elements();
 
@@ -164,9 +151,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 					.writeValueAsString(medicalRecordModel.getAllMedicalRecords());
 			System.out.println(prettyMedicalRecords);
 		} catch (Exception e) {
-
+			logger.error("Error : medicalRecords data initialization " + e.toString());
 		}
 
+		logger.info("Success : medicalRecords data initialization");
 	}
-
 }

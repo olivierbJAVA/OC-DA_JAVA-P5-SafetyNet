@@ -34,9 +34,11 @@ public class EndpointPersonsController {
 	@GetMapping(value = "/persons")
 	public ResponseEntity<List<Person>> getAllPersons() {
 
+		logger.info("Request : GET /persons");
+
 		List<Person> persons = personModel.getAllPersons();
 
-		logger.info("Success : persons list found");
+		logger.info("Success : persons found");
 
 		return new ResponseEntity<>(persons, HttpStatus.FOUND);
 	}
@@ -44,10 +46,11 @@ public class EndpointPersonsController {
 	@GetMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
 
+		logger.info("Request : GET /persons/{}", id);
+
 		Person personToGet = personModel.getPersonById(id);
 
 		if (personToGet == null) {
-			logger.error("Error : person {} not found", id);
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
@@ -59,8 +62,9 @@ public class EndpointPersonsController {
 	@PostMapping(value = "/persons")
 	public ResponseEntity<Person> addPerson(@RequestBody Person person) {
 
+		logger.info("Request : POST /persons");
+
 		if (personModel.personExist(person)) {
-			logger.error("Error : person already exist");
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					person.getFirstName() + person.getLastName());
 		}
@@ -70,11 +74,11 @@ public class EndpointPersonsController {
 		personModel.addPerson(person);
 
 		if (!personModel.personExist(person)) {
-			logger.error("Error : person not added");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
-		logger.info("Success : person added");
+		logger.info("Success : person {} added", person.getIdPerson());
+
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(person.getIdPerson()).toUri();
 
@@ -85,39 +89,47 @@ public class EndpointPersonsController {
 	@PutMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody Person person) {
 
+		logger.info("Request : PUT /persons/{}", id);
+
 		if (personModel.getPersonById(id) == null) {
-			logger.error("Error : person does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
+		}
+
+		if (personModel.getPersonById(person.getFirstName() + person.getLastName()) == null) {
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					person.getFirstName() + person.getLastName());
 		}
 
 		person.setIdPerson(id);
 
-		// Person personUpdated = personModel.updatePerson(person);
 		personModel.updatePerson(person);
-		/*
-		 * if (!personUpdated.getAddress().equals(personToUpdate.getAddress())) {
-		 * logger.error("Error : person not updated"); return new
-		 * ResponseEntity<>(person, HttpStatus.INTERNAL_SERVER_ERROR); }
-		 */
+
+		if (!personModel.getPersonById(id).equals(person)) {
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
+		}
+
+		logger.info("Success : person {} updated", id);
+
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/persons/{id}")
 	public ResponseEntity<Void> deletePerson(@PathVariable(value = "id") String id) {
 
+		logger.info("Request : DELETE /persons/{}", id);
+
 		if (personModel.getPersonById(id) == null) {
-			logger.error("Error : person does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		Person personDeleted = personModel.deletePerson(id);
 
 		if (personModel.personExist(personDeleted)) {
-			logger.error("Error : person not deleted");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
-		logger.info("Success : person deleted");
+		logger.info("Success : person {} deleted", id);
+
 		return new ResponseEntity<>(HttpStatus.GONE);
 	}
 

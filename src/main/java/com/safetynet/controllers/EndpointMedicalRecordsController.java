@@ -34,9 +34,11 @@ public class EndpointMedicalRecordsController {
 	@GetMapping(value = "/medicalRecords")
 	public ResponseEntity<List<MedicalRecord>> getAllMedicalRecords() {
 
+		logger.info("Request : GET /medicalRecords");
+
 		List<MedicalRecord> medicalRecords = medicalRecordModel.getAllMedicalRecords();
 
-		logger.info("Success : medicalRecords list found");
+		logger.info("Success : medicalRecords found");
 
 		return new ResponseEntity<>(medicalRecords, HttpStatus.FOUND);
 	}
@@ -44,14 +46,15 @@ public class EndpointMedicalRecordsController {
 	@GetMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<MedicalRecord> getMedicalRecordById(@PathVariable String id) {
 
+		logger.info("Request : GET /medicalRecords{}", id);
+
 		MedicalRecord medicalRecordToGet = medicalRecordModel.getMedicalRecordById(id);
 
 		if (medicalRecordModel.getMedicalRecordById(id) == null) {
-			logger.error("Error : medicalRecord not found");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		logger.info("Success : medicalRecord found");
+		logger.info("Success : medicalRecord {} found", id);
 
 		return new ResponseEntity<>(medicalRecordToGet, HttpStatus.FOUND);
 	}
@@ -59,8 +62,9 @@ public class EndpointMedicalRecordsController {
 	@PostMapping(value = "/medicalRecords")
 	public ResponseEntity<MedicalRecord> addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 
+		logger.info("Request : POST /medicalRecords");
+
 		if (medicalRecordModel.medicalRecordExist(medicalRecord)) {
-			logger.error("Error : medicalRecord already exist");
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					medicalRecord.getFirstName() + medicalRecord.getLastName());
 		}
@@ -70,11 +74,11 @@ public class EndpointMedicalRecordsController {
 		medicalRecordModel.addMedicalRecord(medicalRecord);
 
 		if (!medicalRecordModel.medicalRecordExist(medicalRecord)) {
-			logger.error("Error : medicalRecord not added");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
-		logger.info("Success : medicalRecord added");
+		logger.info("Success : medicalRecord {} added", medicalRecord.getIdMedicalRecord());
+
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(medicalRecord.getIdMedicalRecord()).toUri();
 
@@ -85,14 +89,27 @@ public class EndpointMedicalRecordsController {
 	public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable String id,
 			@RequestBody MedicalRecord medicalRecord) {
 
+		logger.info("Request : PUT /medicalRecords{}", id);
+
 		if (medicalRecordModel.getMedicalRecordById(id) == null) {
-			logger.error("Error : medicalRecord does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
+		}
+
+		if (medicalRecordModel
+				.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					medicalRecord.getFirstName() + medicalRecord.getLastName());
 		}
 
 		medicalRecord.setIdMedicalRecord(id);
 
 		medicalRecordModel.updateMedicalRecord(medicalRecord);
+
+		if (!medicalRecordModel.getMedicalRecordById(id).equals(medicalRecord)) {
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
+		}
+
+		logger.info("Success : medicalRecord {} updated", medicalRecord.getIdMedicalRecord());
 
 		return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
 	}
@@ -100,19 +117,19 @@ public class EndpointMedicalRecordsController {
 	@DeleteMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable(value = "id") String id) {
 
+		logger.info("Request : DELETE /medicalRecords{}", id);
+
 		if (medicalRecordModel.getMedicalRecordById(id) == null) {
-			logger.error("Error : medicalRecord does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		MedicalRecord medicalRecordDeleted = medicalRecordModel.deleteMedicalRecord(id);
 
 		if (medicalRecordModel.medicalRecordExist(medicalRecordDeleted)) {
-			logger.error("Error : medicalRecord not deleted");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
-		logger.info("Success : medicalRecord deleted");
+		logger.info("Success : medicalRecord {} deleted", id);
 
 		return new ResponseEntity<>(HttpStatus.GONE);
 	}

@@ -45,13 +45,16 @@ public class PersonServiceImplTest {
 
 	@Test
 	public void addPerson() {
+		// ARRANGE
 		Person personToAdd = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
 		when(mockPersonDao.addPerson(personToAdd)).thenReturn(null);
 
+		// ACT
 		personModelImplUnderTest.addPerson(personToAdd);
 
+		// ASSERT
 		ArgumentCaptor<Person> argumentCaptorPerson = ArgumentCaptor.forClass(Person.class);
 		verify(mockPersonDao, times(1)).addPerson(argumentCaptorPerson.capture());
 
@@ -62,14 +65,16 @@ public class PersonServiceImplTest {
 
 	@Test
 	public void deletePerson() {
+		// ARRANGE
 		Person personToDelete = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		// personModelImplUnderTest.addPerson(personToDelete);
 		when(mockPersonDao.deletePerson(personToDelete.getIdPerson())).thenReturn(personToDelete);
 
+		// ACT
 		personModelImplUnderTest.deletePerson(personToDelete.getIdPerson());
 
+		// ASSERT
 		ArgumentCaptor<String> argumentCaptorIdPerson = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(mockPersonDao, times(1)).deletePerson(argumentCaptorIdPerson.capture());
 
@@ -80,39 +85,38 @@ public class PersonServiceImplTest {
 
 	@Test
 	public void updatePerson() {
-
-		Person personBeforeUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
+		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
 				"0696469887", "bs@email.com");
 
-		when(mockPersonDao.updatePerson(personToUpdate)).thenReturn(personBeforeUpdate);
+		when(mockPersonDao.updatePerson(personUpdated)).thenReturn(personToUpdate);
 
-		// personModelImplUnderTest.addPerson(personToUpdate);
+		// ACT
+		personModelImplUnderTest.updatePerson(personUpdated);
 
-		personModelImplUnderTest.updatePerson(personToUpdate);
-
+		// ASSERT
 		ArgumentCaptor<Person> argumentCaptorPerson = ArgumentCaptor.forClass(Person.class);
 		verify(mockPersonDao, times(1)).updatePerson(argumentCaptorPerson.capture());
 
 		Person agrumentPersonCaptured = argumentCaptorPerson.getValue();
-		assertEquals(personToUpdate, agrumentPersonCaptured);
-
+		assertEquals(personUpdated, agrumentPersonCaptured);
 	}
 
 	@Test
 	public void getPersonById() {
-
+		// ARRANGE
 		Person personToGet = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		// personModelImplUnderTest.addPerson(personToGet);
-
 		when(mockPersonDao.getPersonById(personToGet.getIdPerson())).thenReturn(personToGet);
 
+		// ACT
 		personModelImplUnderTest.getPersonById(personToGet.getIdPerson());
 
+		// ASSERT
 		ArgumentCaptor<String> argumentCaptorIdPerson = ArgumentCaptor.forClass(String.class);
 		verify(mockPersonDao, times(1)).getPersonById(argumentCaptorIdPerson.capture());
 
@@ -122,7 +126,7 @@ public class PersonServiceImplTest {
 
 	@Test
 	public void getAllPersons() {
-
+		// ARRANGE
 		Person personTest1 = new Person("BertrandSimon", "Bertrand", "Simon", "address1", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		Person personTest2 = new Person("BertrandSimon", "Bertrand", "Simon", "address2", "Paris", "75000",
@@ -137,72 +141,85 @@ public class PersonServiceImplTest {
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
+		// ACT
 		personModelImplUnderTest.getAllPersons();
 
+		// ASSERT
 		verify(mockPersonDao, times(1)).getAllPersons();
 	}
 
 	@Test
 	public void personExist_whenPersonExist() {
-		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personTestExist = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		when(mockPersonDao.getPersonById(personTest.getIdPerson())).thenReturn(personTest);
+		when(mockPersonDao.getPersonById(personTestExist.getIdPerson())).thenReturn(personTestExist);
 
-		assertTrue(personModelImplUnderTest.personExist(personTest));
+		// ACT & ASSERT
+		assertTrue(personModelImplUnderTest.personExist(personTestExist));
 	}
 
 	@Test
 	public void personExist_whenPersonNotExist() {
-		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personTestNotExist = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
-		when(mockPersonDao.getPersonById(personTest.getIdPerson())).thenReturn(null);
+		when(mockPersonDao.getPersonById(personTestNotExist.getIdPerson())).thenReturn(null);
 
-		assertFalse(personModelImplUnderTest.personExist(personTest));
+		// ACT & ASSERT
+		assertFalse(personModelImplUnderTest.personExist(personTestNotExist));
 	}
 
 	@Test
 	public void idPersonExist_whenPersonExist() {
-		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personTestExist = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
 		List<Person> allPersons = new ArrayList<>();
-		allPersons.add(personTest);
+		allPersons.add(personTestExist);
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
-		assertTrue(personModelImplUnderTest.idPersonExist(personTest.getIdPerson()));
+		// ACT & ASSERT
+		assertTrue(personModelImplUnderTest.idPersonExist(personTestExist.getIdPerson()));
 	}
 
 	@Test
 	public void idPersonExist_whenPersonNotExist() {
-		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personTestExist = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
 		List<Person> allPersons = new ArrayList<>();
-		allPersons.add(personTest);
+		allPersons.add(personTestExist);
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
+		// ACT & ASSERT
 		assertFalse(personModelImplUnderTest.idPersonExist("PersonNotExist"));
 	}
 
 	@Test
 	public void addressExist_whenAddressExist() {
-		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personTestExist = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
 		List<Person> allPersons = new ArrayList<>();
-		allPersons.add(personTest);
+		allPersons.add(personTestExist);
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
-		assertTrue(personModelImplUnderTest.addressExist(personTest.getAddress()));
+		// ACT & ASSERT
+		assertTrue(personModelImplUnderTest.addressExist(personTestExist.getAddress()));
 	}
 
 	@Test
 	public void addressExist_whenAddressNotExist() {
+		// ARRANGE
 		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
@@ -211,25 +228,28 @@ public class PersonServiceImplTest {
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
+		// ACT & ASSERT
 		assertFalse(personModelImplUnderTest.addressExist("AddressNotExist"));
 	}
 
 	@Test
 	public void cityExist_whenCityExist() {
-		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+		// ARRANGE
+		Person personTestExist = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
 		List<Person> allPersons = new ArrayList<>();
-		allPersons.add(personTest);
+		allPersons.add(personTestExist);
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
-		assertTrue(personModelImplUnderTest.cityExist(personTest.getCity()));
+		// ACT & ASSERT
+		assertTrue(personModelImplUnderTest.cityExist(personTestExist.getCity()));
 	}
 
 	@Test
 	public void cityExist_whenCityNotExist() {
-
+		// ARRANGE
 		Person personTest = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 
@@ -238,11 +258,13 @@ public class PersonServiceImplTest {
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
+		// ACT & ASSERT
 		assertFalse(personModelImplUnderTest.cityExist("CityNotExist"));
 	}
 
 	@Test
 	public void getAllAddress() {
+		// ARRANGE
 		Person personTest1 = new Person("BertrandSimon", "Bertrand", "Simon", "address1", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		Person personTest2 = new Person("BertrandSimon", "Bertrand", "Simon", "address2", "Paris", "75000",
@@ -257,6 +279,7 @@ public class PersonServiceImplTest {
 
 		when(mockPersonDao.getAllPersons()).thenReturn(allPersons);
 
+		// ACT & ASSERT
 		assertThat(personModelImplUnderTest.getAllAddress()).containsExactlyInAnyOrder("address1", "address2",
 				"address3");
 	}

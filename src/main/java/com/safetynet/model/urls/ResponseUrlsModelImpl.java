@@ -188,74 +188,61 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 	@Override
 	public Flood responseFlood(String[] idsStation) {
 
-		//Map<String, FloodStation> listFlood
 		Flood responseFlood = new Flood();
 
 		Map<String, FloodStation> responseMapFloodStations = new HashMap<>();
-		
-		//Map<String, List<FloodPerson>>
-		//FloodStation responseFloodStation = new FloodStation();
-		
-		//Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
 
 		List<Person> listAllPersons = personModel.getAllPersons();
 
 		Set<String> allAddress = personModel.getAllAddress();
 
-	for(int i=0;i<idsStation.length;i++) {	
-		
-		Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
-		
-		FloodStation responseFloodStation = new FloodStation();
-		
-		for (String address : allAddress) {
+		for (int i = 0; i < idsStation.length; i++) {
 
-			List<FloodPerson> responseListFloodPersons = new ArrayList<>();
+			Map<String, List<FloodPerson>> responseMapFloodPersons = new HashMap<>();
 
-			if ((firestationMappingModel.getFirestationMappingByAdress(address).getStation()).equals(idsStation[i])) {
-				
-				for (Person personInList : listAllPersons) {
+			FloodStation responseFloodStation = new FloodStation();
 
-					if (personInList.getAddress().equals(address)) {
+			for (String address : allAddress) {
 
-						FloodPerson responseFloodPerson = new FloodPerson();
+				List<FloodPerson> responseListFloodPersons = new ArrayList<>();
 
-						responseFloodPerson.setFirstName(personInList.getFirstName());
-						responseFloodPerson.setLastName(personInList.getLastName());
-						responseFloodPerson.setPhone(personInList.getPhone());
-						responseFloodPerson.setAge(getPersonAge(personInList));
+				if ((firestationMappingModel.getFirestationMappingByAdress(address).getStation())
+						.equals(idsStation[i])) {
 
-						responseFloodPerson.setMedications(medicalRecordModel
-								.getMedicalRecordById(
-										responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
-								.getMedications());
-						responseFloodPerson.setAllergies(medicalRecordModel
-								.getMedicalRecordById(
-										responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
-								.getAllergies());
+					for (Person personInList : listAllPersons) {
 
-						responseListFloodPersons.add(responseFloodPerson);
+						if (personInList.getAddress().equals(address)) {
+
+							FloodPerson responseFloodPerson = new FloodPerson();
+
+							responseFloodPerson.setFirstName(personInList.getFirstName());
+							responseFloodPerson.setLastName(personInList.getLastName());
+							responseFloodPerson.setPhone(personInList.getPhone());
+							responseFloodPerson.setAge(getPersonAge(personInList));
+
+							responseFloodPerson.setMedications(medicalRecordModel
+									.getMedicalRecordById(
+											responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
+									.getMedications());
+							responseFloodPerson.setAllergies(medicalRecordModel
+									.getMedicalRecordById(
+											responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
+									.getAllergies());
+
+							responseListFloodPersons.add(responseFloodPerson);
+						}
 					}
+					responseMapFloodPersons.put(address, responseListFloodPersons);
 				}
-				responseMapFloodPersons.put(address, responseListFloodPersons);
 			}
+			responseFloodStation.setMapFloodPersons(responseMapFloodPersons);
+
+			responseMapFloodStations.put(idsStation[i], responseFloodStation);
+
 		}
-		//responseFlood.setMapFloodPersons(responseMapFloodPersons);
-		
-		responseFloodStation.setMapFloodPersons(responseMapFloodPersons );
-		
-		responseMapFloodStations.put(idsStation[i], responseFloodStation);
-		
-	}
-	//responseFloodStation.setMapFloodPersons(responseMapFloodPersons );
-	
-	//responseListFloodStations.put(idsStation[i],responseFloodStation);
+		responseFlood.setMapFloodStations(responseMapFloodStations);
 
-
-	
-	responseFlood.setMapFloodStations(responseMapFloodStations);
-	
-	return responseFlood;
+		return responseFlood;
 	}
 
 	@Override

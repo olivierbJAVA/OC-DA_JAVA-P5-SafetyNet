@@ -9,17 +9,21 @@ import com.safetynet.entities.endpoints.Person;
 
 public interface IInitializeLists {
 
-	public void getData();
-	
+	public void getInitialData();
 
-	public void initializeListPersons(JsonNode rootNode);
+	public void initializeDataPersons();
 
-	public void initializeListFirestationMappings(JsonNode rootNode);
+	public void initializeDataFirestationMappings();
 	
-	public void initializeListMedicalRecords(JsonNode rootNode);
+	public void initializeDataMedicalRecords();
+	
+	/*
+	public void initializeDataPersons(JsonNode rootNode);
 
+	public void initializeDataFirestationMappings(JsonNode rootNode);
 	
-	
+	public void initializeDataMedicalRecords(JsonNode rootNode);
+	*/
 	/*
 	public List<Person> initializeListPersons();
 

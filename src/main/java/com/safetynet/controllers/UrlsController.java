@@ -40,12 +40,15 @@ public class UrlsController {
 	@GetMapping(value = "/firestation")
 	public ResponseEntity<Firestation> responseFirestation(@RequestParam String stationNumber) {
 
+		logger.info("Request : GET /firestation");
+
 		if (firestationMappingModel.getFirestationMappingByIdStation(stationNumber) == null) {
-			logger.error("Error : no mapping exist for this firestation");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", stationNumber);
 		}
 
 		Firestation responseFirestation = responseModel.responseFirestation(stationNumber);
+
+		logger.info("Success : firestation response found");
 
 		return new ResponseEntity<>(responseFirestation, HttpStatus.OK);
 	}
@@ -54,12 +57,15 @@ public class UrlsController {
 	@GetMapping(value = "/childAlert")
 	public ResponseEntity<ChildAlert> responseChildAlert(@RequestParam String address) {
 
+		logger.info("Request : GET /childAlert");
+
 		if (!personModel.addressExist(address)) {
-			logger.error("Error : address does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		ChildAlert responseChildAlert = responseModel.responseChildAlert(address);
+
+		logger.info("Success : childAlert response found");
 
 		return new ResponseEntity<>(responseChildAlert, HttpStatus.OK);
 
@@ -69,12 +75,15 @@ public class UrlsController {
 	@GetMapping(value = "/phoneAlert")
 	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam String firestation) {
 
+		logger.info("Request : GET /phoneAlert");
+
 		if (firestationMappingModel.getFirestationMappingByIdStation(firestation) == null) {
-			logger.error("Error : no mapping exist for this firestation");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", firestation);
 		}
 
 		Set<String> responsePhoneAlert = responseModel.responsePhoneAlert(firestation);
+
+		logger.info("Success : phoneAlert response found");
 
 		return new ResponseEntity<>(responsePhoneAlert, HttpStatus.OK);
 	}
@@ -83,30 +92,36 @@ public class UrlsController {
 	@GetMapping(value = "/fire")
 	public ResponseEntity<Fire> responseFire(@RequestParam String address) {
 
+		logger.info("Request : GET /fire");
+
 		if (!personModel.addressExist(address)) {
-			logger.error("Error : address does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		Fire responseFire = responseModel.responseFire(address);
+
+		logger.info("Success : fire response found");
 
 		return new ResponseEntity<>(responseFire, HttpStatus.OK);
 
 	}
 
 	// http://localhost:8080/flood/station?stations=<a list of station_numbers>
-	@GetMapping(value = "/flood/station")
+	@GetMapping(value = "/flood/stations")
 	public ResponseEntity<Flood> responseFlood(@RequestParam String[] station) {
+
+		logger.info("Request : GET /flood");
 
 		for (int i = 0; i < station.length; i++) {
 
 			if (firestationMappingModel.getFirestationMappingByIdStation(station[i]) == null) {
-				logger.error("Error : no mapping exist for this firestation");
 				throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", station[i]);
 			}
 		}
 
 		Flood responseFlood = responseModel.responseFlood(station);
+
+		logger.info("Success : flood response found");
 
 		return new ResponseEntity<>(responseFlood, HttpStatus.OK);
 	}
@@ -115,13 +130,16 @@ public class UrlsController {
 	@GetMapping(value = "/personInfo")
 	public ResponseEntity<PersonInfo> responsePersonInfo(String firstName, String lastName) {
 
+		logger.info("Request : GET /personInfo");
+
 		if (!personModel.idPersonExist(firstName + lastName)) {
-			logger.error("Error : person does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					firstName + lastName);
 		}
 
 		PersonInfo responsePersonInfo = responseModel.responsePersonInfo(firstName, lastName);
+
+		logger.info("Success : personInfo response found");
 
 		return new ResponseEntity<>(responsePersonInfo, HttpStatus.OK);
 	}
@@ -130,12 +148,15 @@ public class UrlsController {
 	@GetMapping(value = "/communityEmail")
 	public ResponseEntity<List<String>> responseCommunityEmail(@RequestParam String city) {
 
+		logger.info("Request : GET /communityEmail");
+
 		if (!personModel.cityExist(city)) {
-			logger.error("Error : city does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", city);
 		}
 
 		List<String> responseCommunityEmail = responseModel.responseCommunityEmail(city);
+
+		logger.info("Success : communityEmail response found");
 
 		return new ResponseEntity<>(responseCommunityEmail, HttpStatus.FOUND);
 	}

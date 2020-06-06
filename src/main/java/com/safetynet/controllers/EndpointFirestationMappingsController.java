@@ -34,9 +34,11 @@ public class EndpointFirestationMappingsController {
 	@GetMapping(value = "/firestations")
 	public ResponseEntity<List<FirestationMapping>> getAllFirestationMappings() {
 
+		logger.info("Request : GET /firestations");
+		
 		List<FirestationMapping> firestationMappings = firestationMappingModel.getAllFirestationMappings();
 
-		logger.info("Success : firestation mappings list found");
+		logger.info("Success : firestationMappings found");
 
 		return new ResponseEntity<>(firestationMappings, HttpStatus.FOUND);
 	}
@@ -45,8 +47,9 @@ public class EndpointFirestationMappingsController {
 	public ResponseEntity<FirestationMapping> addFirestationMapping(
 			@RequestBody FirestationMapping firestationMapping) {
 
+		logger.info("Request : POST /firestations");
+		
 		if (firestationMappingModel.firestationMappingExist(firestationMapping)) {
-			logger.error("Error : firestation mapping already exist");
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					firestationMapping.getAddress());
 		}
@@ -54,11 +57,11 @@ public class EndpointFirestationMappingsController {
 		firestationMappingModel.addFirestationMapping(firestationMapping);
 
 		if (!firestationMappingModel.firestationMappingExist(firestationMapping)) {
-			logger.error("Error : firestation mapping not added");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
-		logger.info("Success : firestation mapping added");
+		logger.info("Success : firestationMapping for address {} added", firestationMapping.getAddress());
+		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(firestationMapping.getAddress()).toUri();
 
@@ -69,37 +72,46 @@ public class EndpointFirestationMappingsController {
 	public ResponseEntity<FirestationMapping> updateFirestationMapping(@PathVariable String address,
 			@RequestBody FirestationMapping firestationMapping) {
 
+		logger.info("Request : PUT /firestations/{}", address);
+		
 		if (firestationMappingModel.getFirestationMappingByAdress(address) == null) {
-			logger.error("Error : firestation mapping adress does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		if (firestationMappingModel.getFirestationMappingByAdress(firestationMapping.getAddress()) == null) {
-			logger.error("Error : firestation mapping adress does not exist");
-			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", firestationMapping.getAddress());
+			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
+					firestationMapping.getAddress());
 		}
-		
+
 		firestationMappingModel.updateFirestationMapping(firestationMapping);
 
+		if (!firestationMappingModel.getFirestationMappingByAdress(address)
+				.equals(firestationMapping)) {
+			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
+		}
+
+		logger.info("Success : firestationMapping for address {} updated", firestationMapping.getAddress());
+		
 		return new ResponseEntity<>(firestationMapping, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/firestations/{address}")
 	public ResponseEntity<Void> deleteFirestationMapping(@PathVariable(value = "address") String address) {
 
+		logger.info("Request : DELETE /firestations/{}", address);
+		
 		if (firestationMappingModel.getFirestationMappingByAdress(address) == null) {
-			logger.error("Error : firestation mapping address does not exist");
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		FirestationMapping firestationMappingDeleted = firestationMappingModel.deleteFirestationMapping(address);
 
 		if (firestationMappingModel.firestationMappingExist(firestationMappingDeleted)) {
-			logger.error("Error : firestation mapping not deleted");
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
-		logger.info("Success : firestation mapping deleted");
+		logger.info("Success : firestationMapping for address {} deleted", address);
+		
 		return new ResponseEntity<>(HttpStatus.GONE);
 	}
 

@@ -24,7 +24,7 @@ public class SafetyNetApplication {
 	 * @Autowired private IInitializeLists initLists;
 	 */
 	public static void main(String[] args) {
-		logger.info("INFO : Launch SafetyNet");
+		logger.info("Launch SafetyNet Application");
 
 		SpringApplication.run(SafetyNetApplication.class, args);
 	}

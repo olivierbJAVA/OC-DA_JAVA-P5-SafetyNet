@@ -66,9 +66,6 @@ public class UrlsControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	// @Autowired
-	// ObjectMapper objectMapper;
-
 	@MockBean
 	private IResponseUrlsModel mockResponseUrlsModel;
 
@@ -78,7 +75,7 @@ public class UrlsControllerTest {
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@Test
 	public void getUrlFirestation_whenStationExist() throws Exception {
-
+		// ARRANGE
 		FirestationPerson firestationPerson1 = new FirestationPerson("Jonanathan", "Marrack", "29 15th St",
 				"841-874-6513");
 		FirestationPerson firestationPerson2 = new FirestationPerson("Warren", "Zemicks", "892 Downing Ct",
@@ -110,6 +107,7 @@ public class UrlsControllerTest {
 
 		when(mockResponseUrlsModel.responseFirestation("2")).thenReturn(firestationUrlResponse);
 
+		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
 				.perform(get("/firestation")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -131,9 +129,10 @@ public class UrlsControllerTest {
 
 	@Test
 	public void getUrlFirestation_whenStationNotExist() throws Exception {
-
+		// ARRANGE
 		when(mockFirestationMappingModel.getFirestationMappingByIdStation("2")).thenReturn(null);
 
+		// ACT & ASSERT
 		mockMvc.perform(get("/firestation")
 				.contentType(MediaType.APPLICATION_JSON)
 				.param("stationNumber", "2"))
