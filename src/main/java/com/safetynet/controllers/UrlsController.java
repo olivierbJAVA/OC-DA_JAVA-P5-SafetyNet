@@ -36,6 +36,7 @@ public class UrlsController {
 	@Autowired
 	private IPersonService personService;
 
+	// Statut renvoye OK vs Found & Collection (List vs Set)
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")
 	public ResponseEntity<Firestation> responseFirestation(@RequestParam String stationNumber) {
@@ -106,20 +107,20 @@ public class UrlsController {
 
 	}
 
-	// http://localhost:8080/flood/station?stations=<a list of station_numbers>
+	// http://localhost:8080/flood/stations?stations=<a list of station_numbers>
 	@GetMapping(value = "/flood/stations")
-	public ResponseEntity<Flood> responseFlood(@RequestParam String[] station) {
+	public ResponseEntity<Flood> responseFlood(@RequestParam String[] stations) {
 
 		logger.info("Request : GET /flood");
 
-		for (int i = 0; i < station.length; i++) {
+		for (int i = 0; i < stations.length; i++) {
 
-			if (firestationMappingService.getFirestationMappingByIdStation(station[i]) == null) {
-				throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", station[i]);
+			if (firestationMappingService.getFirestationMappingByIdStation(stations[i]) == null) {
+				throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", stations[i]);
 			}
 		}
 
-		Flood responseFlood = responseService.responseFlood(station);
+		Flood responseFlood = responseService.responseFlood(stations);
 
 		logger.info("Success : flood response found");
 
