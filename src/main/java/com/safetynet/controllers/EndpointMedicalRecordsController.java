@@ -50,7 +50,7 @@ public class EndpointMedicalRecordsController {
 
 		MedicalRecord medicalRecordToGet = medicalRecordService.getMedicalRecordById(id);
 
-		if (medicalRecordService.getMedicalRecordById(id) == null) {
+		if (medicalRecordToGet == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 

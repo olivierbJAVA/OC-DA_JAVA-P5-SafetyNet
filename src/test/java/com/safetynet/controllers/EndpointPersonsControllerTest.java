@@ -35,9 +35,6 @@ public class EndpointPersonsControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-
-	//@Autowired
-	//ObjectMapper objectMapper;
 	
 	@MockBean
 	private IPersonService mockPersonService;
