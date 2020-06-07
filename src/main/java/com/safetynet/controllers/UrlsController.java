@@ -18,9 +18,9 @@ import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.Flood;
 import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.exception.RessourceNotFoundException;
-import com.safetynet.model.urls.IResponseUrlsModel;
 import com.safetynet.service.endpoints.IFirestationMappingService;
 import com.safetynet.service.endpoints.IPersonService;
+import com.safetynet.service.urls.IResponseUrlsService;
 
 @RestController
 public class UrlsController {
@@ -28,13 +28,13 @@ public class UrlsController {
 	private static final Logger logger = LoggerFactory.getLogger(UrlsController.class);
 
 	@Autowired
-	private IResponseUrlsModel responseModel;
+	private IResponseUrlsService responseService;
 
 	@Autowired
-	private IFirestationMappingService firestationMappingModel;
+	private IFirestationMappingService firestationMappingService;
 
 	@Autowired
-	private IPersonService personModel;
+	private IPersonService personService;
 
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")
@@ -42,11 +42,11 @@ public class UrlsController {
 
 		logger.info("Request : GET /firestation");
 
-		if (firestationMappingModel.getFirestationMappingByIdStation(stationNumber) == null) {
+		if (firestationMappingService.getFirestationMappingByIdStation(stationNumber) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", stationNumber);
 		}
 
-		Firestation responseFirestation = responseModel.responseFirestation(stationNumber);
+		Firestation responseFirestation = responseService.responseFirestation(stationNumber);
 
 		logger.info("Success : firestation response found");
 
@@ -59,11 +59,11 @@ public class UrlsController {
 
 		logger.info("Request : GET /childAlert");
 
-		if (!personModel.addressExist(address)) {
+		if (!personService.addressExist(address)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
-		ChildAlert responseChildAlert = responseModel.responseChildAlert(address);
+		ChildAlert responseChildAlert = responseService.responseChildAlert(address);
 
 		logger.info("Success : childAlert response found");
 
@@ -77,11 +77,11 @@ public class UrlsController {
 
 		logger.info("Request : GET /phoneAlert");
 
-		if (firestationMappingModel.getFirestationMappingByIdStation(firestation) == null) {
+		if (firestationMappingService.getFirestationMappingByIdStation(firestation) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", firestation);
 		}
 
-		Set<String> responsePhoneAlert = responseModel.responsePhoneAlert(firestation);
+		Set<String> responsePhoneAlert = responseService.responsePhoneAlert(firestation);
 
 		logger.info("Success : phoneAlert response found");
 
@@ -94,11 +94,11 @@ public class UrlsController {
 
 		logger.info("Request : GET /fire");
 
-		if (!personModel.addressExist(address)) {
+		if (!personService.addressExist(address)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
-		Fire responseFire = responseModel.responseFire(address);
+		Fire responseFire = responseService.responseFire(address);
 
 		logger.info("Success : fire response found");
 
@@ -114,12 +114,12 @@ public class UrlsController {
 
 		for (int i = 0; i < station.length; i++) {
 
-			if (firestationMappingModel.getFirestationMappingByIdStation(station[i]) == null) {
+			if (firestationMappingService.getFirestationMappingByIdStation(station[i]) == null) {
 				throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", station[i]);
 			}
 		}
 
-		Flood responseFlood = responseModel.responseFlood(station);
+		Flood responseFlood = responseService.responseFlood(station);
 
 		logger.info("Success : flood response found");
 
@@ -132,12 +132,12 @@ public class UrlsController {
 
 		logger.info("Request : GET /personInfo");
 
-		if (!personModel.idPersonExist(firstName + lastName)) {
+		if (!personService.idPersonExist(firstName + lastName)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					firstName + lastName);
 		}
 
-		PersonInfo responsePersonInfo = responseModel.responsePersonInfo(firstName, lastName);
+		PersonInfo responsePersonInfo = responseService.responsePersonInfo(firstName, lastName);
 
 		logger.info("Success : personInfo response found");
 
@@ -150,11 +150,11 @@ public class UrlsController {
 
 		logger.info("Request : GET /communityEmail");
 
-		if (!personModel.cityExist(city)) {
+		if (!personService.cityExist(city)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", city);
 		}
 
-		List<String> responseCommunityEmail = responseModel.responseCommunityEmail(city);
+		List<String> responseCommunityEmail = responseService.responseCommunityEmail(city);
 
 		logger.info("Success : communityEmail response found");
 

@@ -36,13 +36,13 @@ class SafetyNetApplicationTests {
 	private IInitializeLists initializeList;
 	
 	@Autowired
-	private IPersonRepository personDaoImpl;
+	private IPersonRepository personRepositoryImpl;
 	
 	@BeforeEach
 	public void setupPerTest() {
-		List<Person> persons = personDaoImpl.getAllPersons();
+		List<Person> persons = personRepositoryImpl.getAllPersons();
 		for (Person person : persons) {
-			personDaoImpl.deletePerson(person.getIdPerson());
+			personRepositoryImpl.deletePerson(person.getIdPerson());
 		}
 		initializeList.getInitialData();	
 	}

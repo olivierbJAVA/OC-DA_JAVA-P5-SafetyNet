@@ -45,7 +45,8 @@ public class MedicalRecordRepositoryImplTest {
 		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecordToAdd);
 
 		// ASSERT
-		assertNotNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()));
+		assertNotNull(
+				medicalRecordRepositoryImplUnderTest.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()));
 		assertEquals("BertrandSimon", medicalRecordRepositoryImplUnderTest
 				.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()).getIdMedicalRecord());
 	}
@@ -63,7 +64,8 @@ public class MedicalRecordRepositoryImplTest {
 		medicalRecordRepositoryImplUnderTest.deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
 
 		// ASSERT
-		assertNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord()));
+		assertNull(
+				medicalRecordRepositoryImplUnderTest.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord()));
 	}
 
 	@Test
@@ -107,8 +109,8 @@ public class MedicalRecordRepositoryImplTest {
 
 	@Test
 	public void getMedicalRecordById_whenMedicalRecordNotExist() {
-		// ASSERT
-		assertNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById("MedicalRcordNotExist"));
+		// ACT & ASSERT
+		assertNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById("MedicalRecordNotExist"));
 	}
 
 	@Test

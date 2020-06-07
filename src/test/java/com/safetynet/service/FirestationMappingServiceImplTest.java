@@ -68,19 +68,19 @@ public class FirestationMappingServiceImplTest {
 		// ARRANGE
 		FirestationMapping firestationMappingToDelete = new FirestationMapping("2 rue de Paris", "5");
 
-		when(mockFirestationMappingRepository.deleteFirestationMapping(firestationMappingToDelete.getStation()))
+		when(mockFirestationMappingRepository.deleteFirestationMapping(firestationMappingToDelete.getAddress()))
 				.thenReturn(firestationMappingToDelete);
 
 		// ACT
-		firestationMappingServiceImplUnderTest.deleteFirestationMapping(firestationMappingToDelete.getStation());
+		firestationMappingServiceImplUnderTest.deleteFirestationMapping(firestationMappingToDelete.getAddress());
 
 		// ASSERT
-		ArgumentCaptor<String> argumentCaptorIdStation = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> argumentCaptorAddress = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(mockFirestationMappingRepository, times(1))
-				.deleteFirestationMapping(argumentCaptorIdStation.capture());
+				.deleteFirestationMapping(argumentCaptorAddress.capture());
 
-		String argumentIdStationCaptured = argumentCaptorIdStation.getValue();
-		assertEquals(firestationMappingToDelete.getStation(), argumentIdStationCaptured);
+		String argumentAddressCaptured = argumentCaptorAddress.getValue();
+		assertEquals(firestationMappingToDelete.getAddress(), argumentAddressCaptured);
 
 	}
 
@@ -143,8 +143,8 @@ public class FirestationMappingServiceImplTest {
 		verify(mockFirestationMappingRepository, times(1))
 				.getFirestationMappingByAdress(argumentCaptorAddressStation.capture());
 
-		String argumentIdStationCaptured = argumentCaptorAddressStation.getValue();
-		assertEquals(firestationMappingToGet.getAddress(), argumentIdStationCaptured);
+		String argumentAddressCaptured = argumentCaptorAddressStation.getValue();
+		assertEquals(firestationMappingToGet.getAddress(), argumentAddressCaptured);
 	}
 
 	@Test

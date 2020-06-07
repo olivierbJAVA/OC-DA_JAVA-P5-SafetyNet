@@ -77,12 +77,12 @@ public class MedicalRecordServiceImplTest {
 		medicalRecordServiceImplUnderTest.deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
 
 		// ASSERT
-		ArgumentCaptor<String> argumentCaptorMedicalRecord = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> argumentCaptorIdMedicalRecord = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(mockMedicalRecordRepository, times(1))
-				.deleteMedicalRecord(argumentCaptorMedicalRecord.capture());
+				.deleteMedicalRecord(argumentCaptorIdMedicalRecord.capture());
 
-		String argumentMedicalRecordCaptured = argumentCaptorMedicalRecord.getValue();
-		assertEquals(medicalRecordToDelete.getIdMedicalRecord(), argumentMedicalRecordCaptured);
+		String argumentIdMedicalRecordCaptured = argumentCaptorIdMedicalRecord.getValue();
+		assertEquals(medicalRecordToDelete.getIdMedicalRecord(), argumentIdMedicalRecordCaptured);
 
 	}
 
@@ -124,15 +124,15 @@ public class MedicalRecordServiceImplTest {
 		medicalRecordServiceImplUnderTest.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord());
 
 		// ASSERT
-		ArgumentCaptor<String> argumentCaptorMedicalRecord = ArgumentCaptor.forClass(String.class);
-		verify(mockMedicalRecordRepository, times(1)).getMedicalRecordById(argumentCaptorMedicalRecord.capture());
+		ArgumentCaptor<String> argumentCaptorIdMedicalRecord = ArgumentCaptor.forClass(String.class);
+		verify(mockMedicalRecordRepository, times(1)).getMedicalRecordById(argumentCaptorIdMedicalRecord.capture());
 
-		String argumentIdMedicalRecordCaptured = argumentCaptorMedicalRecord.getValue();
+		String argumentIdMedicalRecordCaptured = argumentCaptorIdMedicalRecord.getValue();
 		assertEquals(medicalRecordToGet.getIdMedicalRecord(), argumentIdMedicalRecordCaptured);
 	}
 
 	@Test
-	public void getAllMedicalRecrods() {
+	public void getAllMedicalRecords() {
 		// ARRANGE
 		MedicalRecord medicalRecord1 = new MedicalRecord("BertrandSimon1", "Bertrand", "Simon1", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },

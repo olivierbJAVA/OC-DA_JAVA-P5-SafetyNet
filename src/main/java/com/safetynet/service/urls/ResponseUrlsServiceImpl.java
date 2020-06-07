@@ -1,4 +1,4 @@
-package com.safetynet.model.urls;
+package com.safetynet.service.urls;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,16 +31,16 @@ import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.service.endpoints.IPersonService;
 
 @Service
-public class ResponseUrlsModelImpl implements IResponseUrlsModel {
+public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 
 	@Autowired
-	private IPersonService personModel;
+	private IPersonService personService;
 
 	@Autowired
-	private IFirestationMappingService firestationMappingModel;
+	private IFirestationMappingService firestationMappingService;
 
 	@Autowired
-	private IMedicalRecordService medicalRecordModel;
+	private IMedicalRecordService medicalRecordService;
 
 	@Override
 	public Firestation responseFirestation(String idStation) {
@@ -49,14 +49,14 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		List<FirestationPerson> responseFirestationListPersons = new ArrayList<>();
 
-		List<Person> listAllPersons = personModel.getAllPersons();
+		List<Person> listAllPersons = personService.getAllPersons();
 
 		int nbAdults = 0;
 		int nbChilds = 0;
 
 		for (Person personInList : listAllPersons) {
 
-			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress()).getStation())
+			if ((firestationMappingService.getFirestationMappingByAdress(personInList.getAddress()).getStation())
 					.equals(idStation)) {
 
 				FirestationPerson responseFirestationPerson = new FirestationPerson();
@@ -92,7 +92,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		List<Person> responseChildAlertListHouseholdMembers = new ArrayList<>();
 
-		List<Person> listAllPersons = personModel.getAllPersons();
+		List<Person> listAllPersons = personService.getAllPersons();
 
 		for (Person personInList : listAllPersons) {
 
@@ -134,11 +134,11 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		Set<String> responsePhoneAlert = new HashSet<>();
 
-		List<Person> listAllPersons = personModel.getAllPersons();
+		List<Person> listAllPersons = personService.getAllPersons();
 
 		for (Person personInList : listAllPersons) {
 
-			if ((firestationMappingModel.getFirestationMappingByAdress(personInList.getAddress()).getStation())
+			if ((firestationMappingService.getFirestationMappingByAdress(personInList.getAddress()).getStation())
 					.equals(idStation)) {
 
 				responsePhoneAlert.add(personInList.getPhone());
@@ -155,9 +155,9 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		List<FirePerson> responseFirePerson = new ArrayList<>();
 
-		List<Person> listAllPersons = personModel.getAllPersons();
+		List<Person> listAllPersons = personService.getAllPersons();
 
-		String idStation = firestationMappingModel.getFirestationMappingByAdress(address).getStation();
+		String idStation = firestationMappingService.getFirestationMappingByAdress(address).getStation();
 
 		responseFire.setIdStation(idStation);
 
@@ -172,9 +172,9 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 				firePerson.setPhone(personInList.getPhone());
 				firePerson.setAge(getPersonAge(personInList));
 
-				firePerson.setMedications(medicalRecordModel
+				firePerson.setMedications(medicalRecordService
 						.getMedicalRecordById(firePerson.getFirstName() + firePerson.getLastName()).getMedications());
-				firePerson.setAllergies(medicalRecordModel
+				firePerson.setAllergies(medicalRecordService
 						.getMedicalRecordById(firePerson.getFirstName() + firePerson.getLastName()).getAllergies());
 
 				responseFirePerson.add(firePerson);
@@ -192,9 +192,9 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		Map<String, FloodStation> responseMapFloodStations = new HashMap<>();
 
-		List<Person> listAllPersons = personModel.getAllPersons();
+		List<Person> listAllPersons = personService.getAllPersons();
 
-		Set<String> allAddress = personModel.getAllAddress();
+		Set<String> allAddress = personService.getAllAddress();
 
 		for (int i = 0; i < idsStation.length; i++) {
 
@@ -206,7 +206,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 				List<FloodPerson> responseListFloodPersons = new ArrayList<>();
 
-				if ((firestationMappingModel.getFirestationMappingByAdress(address).getStation())
+				if ((firestationMappingService.getFirestationMappingByAdress(address).getStation())
 						.equals(idsStation[i])) {
 
 					for (Person personInList : listAllPersons) {
@@ -220,11 +220,11 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 							responseFloodPerson.setPhone(personInList.getPhone());
 							responseFloodPerson.setAge(getPersonAge(personInList));
 
-							responseFloodPerson.setMedications(medicalRecordModel
+							responseFloodPerson.setMedications(medicalRecordService
 									.getMedicalRecordById(
 											responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
 									.getMedications());
-							responseFloodPerson.setAllergies(medicalRecordModel
+							responseFloodPerson.setAllergies(medicalRecordService
 									.getMedicalRecordById(
 											responseFloodPerson.getFirstName() + responseFloodPerson.getLastName())
 									.getAllergies());
@@ -250,7 +250,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 		PersonInfo responsePersonInfo = new PersonInfo();
 
-		List<Person> listAllPersons = personModel.getAllPersons();
+		List<Person> listAllPersons = personService.getAllPersons();
 
 		for (Person personInList : listAllPersons) {
 
@@ -262,10 +262,10 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 				responsePersonInfo.setAge(getPersonAge(personInList));
 				responsePersonInfo.setEmail(personInList.getEmail());
 
-				responsePersonInfo.setMedications(medicalRecordModel
+				responsePersonInfo.setMedications(medicalRecordService
 						.getMedicalRecordById(responsePersonInfo.getFirstName() + responsePersonInfo.getLastName())
 						.getMedications());
-				responsePersonInfo.setAllergies(medicalRecordModel
+				responsePersonInfo.setAllergies(medicalRecordService
 						.getMedicalRecordById(responsePersonInfo.getFirstName() + responsePersonInfo.getLastName())
 						.getAllergies());
 
@@ -284,10 +284,10 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 						responsePersonInfoOtherPersonSameName.setAge(getPersonAge(personInListWithSameName));
 						responsePersonInfoOtherPersonSameName.setEmail(personInListWithSameName.getEmail());
 
-						responsePersonInfoOtherPersonSameName.setMedications(medicalRecordModel.getMedicalRecordById(
+						responsePersonInfoOtherPersonSameName.setMedications(medicalRecordService.getMedicalRecordById(
 								personInListWithSameName.getFirstName() + personInListWithSameName.getLastName())
 								.getMedications());
-						responsePersonInfoOtherPersonSameName.setAllergies(medicalRecordModel.getMedicalRecordById(
+						responsePersonInfoOtherPersonSameName.setAllergies(medicalRecordService.getMedicalRecordById(
 								personInListWithSameName.getFirstName() + personInListWithSameName.getLastName())
 								.getAllergies());
 
@@ -304,7 +304,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 	@Override
 	public List<String> responseCommunityEmail(String city) {
 
-		List<Person> listPersons = personModel.getAllPersons();
+		List<Person> listPersons = personService.getAllPersons();
 
 		List<String> responseCommunityEmail = listPersons.stream().filter(person -> person.getCity().equals(city))
 				.map(Person::getEmail).distinct().collect(Collectors.toList());
@@ -314,7 +314,7 @@ public class ResponseUrlsModelImpl implements IResponseUrlsModel {
 
 	private long getPersonAge(Person person) {
 
-		String personBirthdateString = medicalRecordModel.getMedicalRecordById(person.getIdPerson()).getBirthdate();
+		String personBirthdateString = medicalRecordService.getMedicalRecordById(person.getIdPerson()).getBirthdate();
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		LocalDate personBirthdateDate = LocalDate.parse(personBirthdateString, formatter);

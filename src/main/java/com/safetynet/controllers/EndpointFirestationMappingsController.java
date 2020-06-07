@@ -29,14 +29,14 @@ public class EndpointFirestationMappingsController {
 	private static final Logger logger = LoggerFactory.getLogger(EndpointFirestationMappingsController.class);
 
 	@Autowired
-	private IFirestationMappingService firestationMappingModel;
+	private IFirestationMappingService firestationMappingService;
 
 	@GetMapping(value = "/firestations")
 	public ResponseEntity<List<FirestationMapping>> getAllFirestationMappings() {
 
 		logger.info("Request : GET /firestations");
 		
-		List<FirestationMapping> firestationMappings = firestationMappingModel.getAllFirestationMappings();
+		List<FirestationMapping> firestationMappings = firestationMappingService.getAllFirestationMappings();
 
 		logger.info("Success : firestationMappings found");
 
@@ -49,14 +49,14 @@ public class EndpointFirestationMappingsController {
 
 		logger.info("Request : POST /firestations");
 		
-		if (firestationMappingModel.firestationMappingExist(firestationMapping)) {
+		if (firestationMappingService.firestationMappingExist(firestationMapping)) {
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					firestationMapping.getAddress());
 		}
 
-		firestationMappingModel.addFirestationMapping(firestationMapping);
+		firestationMappingService.addFirestationMapping(firestationMapping);
 
-		if (!firestationMappingModel.firestationMappingExist(firestationMapping)) {
+		if (!firestationMappingService.firestationMappingExist(firestationMapping)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
@@ -74,18 +74,18 @@ public class EndpointFirestationMappingsController {
 
 		logger.info("Request : PUT /firestations/{}", address);
 		
-		if (firestationMappingModel.getFirestationMappingByAdress(address) == null) {
+		if (firestationMappingService.getFirestationMappingByAdress(address) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
-		if (firestationMappingModel.getFirestationMappingByAdress(firestationMapping.getAddress()) == null) {
+		if (firestationMappingService.getFirestationMappingByAdress(firestationMapping.getAddress()) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					firestationMapping.getAddress());
 		}
 
-		firestationMappingModel.updateFirestationMapping(firestationMapping);
+		firestationMappingService.updateFirestationMapping(firestationMapping);
 
-		if (!firestationMappingModel.getFirestationMappingByAdress(address)
+		if (!firestationMappingService.getFirestationMappingByAdress(address)
 				.equals(firestationMapping)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
@@ -100,13 +100,13 @@ public class EndpointFirestationMappingsController {
 
 		logger.info("Request : DELETE /firestations/{}", address);
 		
-		if (firestationMappingModel.getFirestationMappingByAdress(address) == null) {
+		if (firestationMappingService.getFirestationMappingByAdress(address) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
-		FirestationMapping firestationMappingDeleted = firestationMappingModel.deleteFirestationMapping(address);
+		FirestationMapping firestationMappingDeleted = firestationMappingService.deleteFirestationMapping(address);
 
-		if (firestationMappingModel.firestationMappingExist(firestationMappingDeleted)) {
+		if (firestationMappingService.firestationMappingExist(firestationMappingDeleted)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 

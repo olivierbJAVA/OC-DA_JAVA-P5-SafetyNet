@@ -107,7 +107,7 @@ public class FirestationMappingRepositoryImplTest {
 
 	@Test
 	public void getFirestationMappingByIdStation_whenIdStationNotExist() {
-		// ASSERT
+		// ACT & ASSERT
 		assertNull(firestationMappingRepositoryImplUnderTest.getFirestationMappingByIdStation("IdStationNotExist"));
 	}
 
@@ -129,7 +129,7 @@ public class FirestationMappingRepositoryImplTest {
 
 	@Test
 	public void getFirestationMappingByAddress_whenAddressNotExist() {
-		// ASSERT
+		// ACT & ASSERT
 		assertNull(firestationMappingRepositoryImplUnderTest.getFirestationMappingByAdress("AddressNotExist"));
 	}
 
@@ -139,6 +139,7 @@ public class FirestationMappingRepositoryImplTest {
 		FirestationMapping firestationMapping1 = new FirestationMapping("3 rue de Paris", "1");
 		FirestationMapping firestationMapping2 = new FirestationMapping("3 rue de nantes", "2");
 		FirestationMapping firestationMapping3 = new FirestationMapping("3 rue de Marseille", "3");
+
 		firestationMappingRepositoryImplUnderTest.addFirestationMapping(firestationMapping1);
 		firestationMappingRepositoryImplUnderTest.addFirestationMapping(firestationMapping2);
 		firestationMappingRepositoryImplUnderTest.addFirestationMapping(firestationMapping3);

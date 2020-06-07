@@ -32,7 +32,7 @@ public class PersonServiceImplTest {
 	@TestConfiguration
 	static class PersonServiceImplTestContextConfiguration {
 		@Bean
-		public IPersonService iPersonModel() {
+		public IPersonService iPersonService() {
 			return new PersonServiceImpl();
 		}
 	}

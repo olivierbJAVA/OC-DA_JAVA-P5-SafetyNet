@@ -28,13 +28,13 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	private static final Logger logger = LoggerFactory.getLogger("JsonInputFileReader");
 
 	@Autowired
-	private IPersonService personModel;
+	private IPersonService personService;
 
 	@Autowired
-	private IFirestationMappingService firestationMappingModel;
+	private IFirestationMappingService firestationMappingService;
 
 	@Autowired
-	private IMedicalRecordService medicalRecordModel;
+	private IMedicalRecordService medicalRecordService;
 
 	private JsonNode rootNode;
 
@@ -83,14 +83,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 				person = mapper.treeToValue(jsonNodePersons.get(numPerson), Person.class);
 				person.setIdPerson(jsonNodePersons.get(numPerson).get("firstName").asText()
 						+ jsonNodePersons.get(numPerson).get("lastName").asText());
-				personModel.addPerson(person);
+				personService.addPerson(person);
 				numPerson++;
 				iteratorPersons.next();
 			}
 
 			// pretty print
 			String prettyPersons = mapper.writerWithDefaultPrettyPrinter()
-					.writeValueAsString(personModel.getAllPersons());
+					.writeValueAsString(personService.getAllPersons());
 			System.out.println(prettyPersons);
 
 		} catch (Exception e) {
@@ -111,14 +111,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			while (iteratorFirestationMappings.hasNext()) {
 				firestationMapping = mapper.treeToValue(jsonNodeFirestationMappings.get(numFirestationMapping),
 						FirestationMapping.class);
-				firestationMappingModel.addFirestationMapping(firestationMapping);
+				firestationMappingService.addFirestationMapping(firestationMapping);
 				numFirestationMapping++;
 				iteratorFirestationMappings.next();
 			}
 
 			// pretty print
 			String prettyFirestations = mapper.writerWithDefaultPrettyPrinter()
-					.writeValueAsString(firestationMappingModel.getAllFirestationMappings());
+					.writeValueAsString(firestationMappingService.getAllFirestationMappings());
 			System.out.println(prettyFirestations);
 		} catch (Exception e) {
 			logger.error("Error : firestationMappings data initialization " + e.toString());
@@ -141,14 +141,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 				medicalRecord = mapper.treeToValue(jsonNodeMedicalRecords.get(numMedicalRecord), MedicalRecord.class);
 				medicalRecord.setIdMedicalRecord(jsonNodeMedicalRecords.get(numMedicalRecord).get("firstName").asText()
 						+ jsonNodeMedicalRecords.get(numMedicalRecord).get("lastName").asText());
-				medicalRecordModel.addMedicalRecord(medicalRecord);
+				medicalRecordService.addMedicalRecord(medicalRecord);
 				numMedicalRecord++;
 				iteratorMedicalRecords.next();
 			}
 
 			// pretty print
 			String prettyMedicalRecords = mapper.writerWithDefaultPrettyPrinter()
-					.writeValueAsString(medicalRecordModel.getAllMedicalRecords());
+					.writeValueAsString(medicalRecordService.getAllMedicalRecords());
 			System.out.println(prettyMedicalRecords);
 		} catch (Exception e) {
 			logger.error("Error : medicalRecords data initialization " + e.toString());

@@ -54,7 +54,8 @@ public class PersonRepositoryImplTest {
 
 		// ASSERT
 		assertNotNull(personRepositoryImplUnderTest.getPersonById(personToAdd.getIdPerson()));
-		assertEquals("BertrandSimon", personRepositoryImplUnderTest.getPersonById(personToAdd.getIdPerson()).getIdPerson());
+		assertEquals("BertrandSimon",
+				personRepositoryImplUnderTest.getPersonById(personToAdd.getIdPerson()).getIdPerson());
 	}
 
 	@Test
@@ -62,7 +63,7 @@ public class PersonRepositoryImplTest {
 		// ARRANGE
 		Person personToDelete = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
-		
+
 		personRepositoryImplUnderTest.addPerson(personToDelete);
 
 		// ACT
@@ -77,9 +78,9 @@ public class PersonRepositoryImplTest {
 		// ARRANGE
 		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
-		
+
 		personRepositoryImplUnderTest.addPerson(personToUpdate);
-		
+
 		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
 				"0696469887", "bs@email.com");
 
@@ -95,7 +96,7 @@ public class PersonRepositoryImplTest {
 		// ARRANGE
 		Person personToGet = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
-		
+
 		personRepositoryImplUnderTest.addPerson(personToGet);
 
 		// ACT
@@ -108,7 +109,7 @@ public class PersonRepositoryImplTest {
 
 	@Test
 	public void getPersonById_whenPersonNotExist() {
-		// ASSERT
+		// ACT & ASSERT
 		assertNull(personRepositoryImplUnderTest.getPersonById("PersonNotExist"));
 	}
 
@@ -121,7 +122,7 @@ public class PersonRepositoryImplTest {
 				"0696469887", "bs@email.com");
 		Person person3 = new Person("BertrandSimon3", "Bertrand", "Simon3", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
-		
+
 		personRepositoryImplUnderTest.addPerson(person1);
 		personRepositoryImplUnderTest.addPerson(person2);
 		personRepositoryImplUnderTest.addPerson(person3);

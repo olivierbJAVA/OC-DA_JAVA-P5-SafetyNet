@@ -1,4 +1,4 @@
-package com.safetynet.model.urls;
+package com.safetynet.service.urls;
 
 import java.util.List;
 import java.util.Set;
@@ -9,7 +9,7 @@ import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.Flood;
 import com.safetynet.entities.urls.PersonInfo;
 
-public interface IResponseUrlsModel {
+public interface IResponseUrlsService {
 
 	public Firestation responseFirestation(String idStation);
 

@@ -29,14 +29,14 @@ public class EndpointPersonsController {
 	private static final Logger logger = LoggerFactory.getLogger(EndpointPersonsController.class);
 
 	@Autowired
-	private IPersonService personModel;
+	private IPersonService personService;
 
 	@GetMapping(value = "/persons")
 	public ResponseEntity<List<Person>> getAllPersons() {
 
 		logger.info("Request : GET /persons");
 
-		List<Person> persons = personModel.getAllPersons();
+		List<Person> persons = personService.getAllPersons();
 
 		logger.info("Success : persons found");
 
@@ -48,7 +48,7 @@ public class EndpointPersonsController {
 
 		logger.info("Request : GET /persons/{}", id);
 
-		Person personToGet = personModel.getPersonById(id);
+		Person personToGet = personService.getPersonById(id);
 
 		if (personToGet == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
@@ -64,16 +64,16 @@ public class EndpointPersonsController {
 
 		logger.info("Request : POST /persons");
 
-		if (personModel.personExist(person)) {
+		if (personService.personExist(person)) {
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					person.getFirstName() + person.getLastName());
 		}
 
 		person.setIdPerson(person.getFirstName() + person.getLastName());
 
-		personModel.addPerson(person);
+		personService.addPerson(person);
 
-		if (!personModel.personExist(person)) {
+		if (!personService.personExist(person)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
@@ -91,20 +91,20 @@ public class EndpointPersonsController {
 
 		logger.info("Request : PUT /persons/{}", id);
 
-		if (personModel.getPersonById(id) == null) {
+		if (personService.getPersonById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		if (personModel.getPersonById(person.getFirstName() + person.getLastName()) == null) {
+		if (personService.getPersonById(person.getFirstName() + person.getLastName()) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					person.getFirstName() + person.getLastName());
 		}
 
 		person.setIdPerson(id);
 
-		personModel.updatePerson(person);
+		personService.updatePerson(person);
 
-		if (!personModel.getPersonById(id).equals(person)) {
+		if (!personService.getPersonById(id).equals(person)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
@@ -118,13 +118,13 @@ public class EndpointPersonsController {
 
 		logger.info("Request : DELETE /persons/{}", id);
 
-		if (personModel.getPersonById(id) == null) {
+		if (personService.getPersonById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		Person personDeleted = personModel.deletePerson(id);
+		Person personDeleted = personService.deletePerson(id);
 
-		if (personModel.personExist(personDeleted)) {
+		if (personService.personExist(personDeleted)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 

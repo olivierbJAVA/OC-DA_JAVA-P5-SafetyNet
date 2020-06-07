@@ -12,53 +12,53 @@ import com.safetynet.repository.IMedicalRecordRepository;
 public class MedicalRecordServiceImpl implements IMedicalRecordService {
 
 	@Autowired
-	private IMedicalRecordRepository medicalRecordDao;
+	private IMedicalRecordRepository medicalRecordRepository;
 
 	public MedicalRecordServiceImpl() {
 		super();
 	}
 
-	public MedicalRecordServiceImpl(IMedicalRecordRepository medicalRecordDao) {
+	public MedicalRecordServiceImpl(IMedicalRecordRepository medicalRecordRepository) {
 		super();
-		this.medicalRecordDao = medicalRecordDao;
+		this.medicalRecordRepository = medicalRecordRepository;
 	}
 
-	public IMedicalRecordRepository getMedicalRecordDao() {
-		return medicalRecordDao;
+	public IMedicalRecordRepository getMedicalRecordRepository() {
+		return medicalRecordRepository;
 	}
 
-	public void setMedicalRecordDao(IMedicalRecordRepository medicalRecordDao) {
-		this.medicalRecordDao = medicalRecordDao;
+	public void setMedicalRecordRepository(IMedicalRecordRepository medicalRecordRepository) {
+		this.medicalRecordRepository = medicalRecordRepository;
 	}
 
 	@Override
 	public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
-		return medicalRecordDao.addMedicalRecord(medicalRecord);
+		return medicalRecordRepository.addMedicalRecord(medicalRecord);
 	}
 
 	@Override
 	public MedicalRecord deleteMedicalRecord(String idMedicalRecord) {
-		return medicalRecordDao.deleteMedicalRecord(idMedicalRecord);
+		return medicalRecordRepository.deleteMedicalRecord(idMedicalRecord);
 	}
 
 	@Override
 	public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
-		return medicalRecordDao.updateMedicalRecord(medicalRecord);
+		return medicalRecordRepository.updateMedicalRecord(medicalRecord);
 	}
 
 	@Override
 	public List<MedicalRecord> getAllMedicalRecords() {
-		return medicalRecordDao.getAllMedicalRecords();
+		return medicalRecordRepository.getAllMedicalRecords();
 	}
 
 	@Override
 	public MedicalRecord getMedicalRecordById(String idMedicalRecord) {
-		return medicalRecordDao.getMedicalRecordById(idMedicalRecord);
+		return medicalRecordRepository.getMedicalRecordById(idMedicalRecord);
 	}
 
 	@Override
 	public boolean medicalRecordExist(MedicalRecord medicalRecord) {
-		if (medicalRecordDao.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {
+		if (medicalRecordRepository.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {
 			return false;
 		}
 		return true;

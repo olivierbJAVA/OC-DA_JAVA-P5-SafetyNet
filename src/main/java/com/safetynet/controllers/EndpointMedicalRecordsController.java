@@ -29,14 +29,14 @@ public class EndpointMedicalRecordsController {
 	private static final Logger logger = LoggerFactory.getLogger(EndpointMedicalRecordsController.class);
 
 	@Autowired
-	private IMedicalRecordService medicalRecordModel;
+	private IMedicalRecordService medicalRecordService;
 
 	@GetMapping(value = "/medicalRecords")
 	public ResponseEntity<List<MedicalRecord>> getAllMedicalRecords() {
 
 		logger.info("Request : GET /medicalRecords");
 
-		List<MedicalRecord> medicalRecords = medicalRecordModel.getAllMedicalRecords();
+		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecords();
 
 		logger.info("Success : medicalRecords found");
 
@@ -48,9 +48,9 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : GET /medicalRecords{}", id);
 
-		MedicalRecord medicalRecordToGet = medicalRecordModel.getMedicalRecordById(id);
+		MedicalRecord medicalRecordToGet = medicalRecordService.getMedicalRecordById(id);
 
-		if (medicalRecordModel.getMedicalRecordById(id) == null) {
+		if (medicalRecordService.getMedicalRecordById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
@@ -64,16 +64,16 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : POST /medicalRecords");
 
-		if (medicalRecordModel.medicalRecordExist(medicalRecord)) {
+		if (medicalRecordService.medicalRecordExist(medicalRecord)) {
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					medicalRecord.getFirstName() + medicalRecord.getLastName());
 		}
 
 		medicalRecord.setIdMedicalRecord(medicalRecord.getFirstName() + medicalRecord.getLastName());
 
-		medicalRecordModel.addMedicalRecord(medicalRecord);
+		medicalRecordService.addMedicalRecord(medicalRecord);
 
-		if (!medicalRecordModel.medicalRecordExist(medicalRecord)) {
+		if (!medicalRecordService.medicalRecordExist(medicalRecord)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
@@ -91,11 +91,11 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : PUT /medicalRecords{}", id);
 
-		if (medicalRecordModel.getMedicalRecordById(id) == null) {
+		if (medicalRecordService.getMedicalRecordById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		if (medicalRecordModel
+		if (medicalRecordService
 				.getMedicalRecordById(medicalRecord.getFirstName() + medicalRecord.getLastName()) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					medicalRecord.getFirstName() + medicalRecord.getLastName());
@@ -103,9 +103,9 @@ public class EndpointMedicalRecordsController {
 
 		medicalRecord.setIdMedicalRecord(id);
 
-		medicalRecordModel.updateMedicalRecord(medicalRecord);
+		medicalRecordService.updateMedicalRecord(medicalRecord);
 
-		if (!medicalRecordModel.getMedicalRecordById(id).equals(medicalRecord)) {
+		if (!medicalRecordService.getMedicalRecordById(id).equals(medicalRecord)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
@@ -119,13 +119,13 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : DELETE /medicalRecords{}", id);
 
-		if (medicalRecordModel.getMedicalRecordById(id) == null) {
+		if (medicalRecordService.getMedicalRecordById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
-		MedicalRecord medicalRecordDeleted = medicalRecordModel.deleteMedicalRecord(id);
+		MedicalRecord medicalRecordDeleted = medicalRecordService.deleteMedicalRecord(id);
 
-		if (medicalRecordModel.medicalRecordExist(medicalRecordDeleted)) {
+		if (medicalRecordService.medicalRecordExist(medicalRecordDeleted)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 

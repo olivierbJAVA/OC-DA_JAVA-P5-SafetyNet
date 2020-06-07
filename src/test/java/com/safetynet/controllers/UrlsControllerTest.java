@@ -23,11 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynet.controllers.UrlsController;
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.urls.Firestation;
 import com.safetynet.entities.urls.FirestationPerson;
-import com.safetynet.model.urls.IResponseUrlsModel;
 import com.safetynet.repository.FirestationMappingRepositoryImpl;
 import com.safetynet.repository.IFirestationMappingRepository;
 import com.safetynet.repository.IPersonRepository;
@@ -36,6 +34,7 @@ import com.safetynet.service.endpoints.FirestationMappingServiceImpl;
 import com.safetynet.service.endpoints.IFirestationMappingService;
 import com.safetynet.service.endpoints.IPersonService;
 import com.safetynet.service.endpoints.PersonServiceImpl;
+import com.safetynet.service.urls.IResponseUrlsService;
 
 @WebMvcTest(UrlsController.class)
 public class UrlsControllerTest {
@@ -43,22 +42,22 @@ public class UrlsControllerTest {
 	@TestConfiguration
 	static class UrlsControllerTestContextConfiguration {
 		@Bean
-		public IFirestationMappingService iFirestationMappingModel() {
+		public IFirestationMappingService iFirestationMappingService() {
 			return new FirestationMappingServiceImpl();
 		}
 
 		@Bean
-		public IFirestationMappingRepository iFirestationMappingDao() {
+		public IFirestationMappingRepository iFirestationMappingRepository() {
 			return new FirestationMappingRepositoryImpl();
 		}
 
 		@Bean
-		public IPersonService iPersonModel() {
+		public IPersonService iPersonService() {
 			return new PersonServiceImpl();
 		}
 
 		@Bean
-		public IPersonRepository iPersonDao() {
+		public IPersonRepository iPersonRepository() {
 			return new PersonRepositoryImpl();
 		}
 	}
@@ -67,10 +66,10 @@ public class UrlsControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private IResponseUrlsModel mockResponseUrlsModel;
+	private IResponseUrlsService mockResponseUrlsService;
 
 	@MockBean
-	private IFirestationMappingService mockFirestationMappingModel;
+	private IFirestationMappingService mockFirestationMappingService;
 
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@Test
@@ -103,21 +102,16 @@ public class UrlsControllerTest {
 		firestationMapping.setStation("2");
 		firestationMapping.setAddress("29 15th St");
 
-		when(mockFirestationMappingModel.getFirestationMappingByIdStation("2")).thenReturn(firestationMapping);
+		when(mockFirestationMappingService.getFirestationMappingByIdStation("2")).thenReturn(firestationMapping);
 
-		when(mockResponseUrlsModel.responseFirestation("2")).thenReturn(firestationUrlResponse);
+		when(mockResponseUrlsService.responseFirestation("2")).thenReturn(firestationUrlResponse);
 
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
-				.perform(get("/firestation")
-				.contentType(MediaType.APPLICATION_JSON)
-				.param("stationNumber", "2"))
-				.andExpect(status().isOk())
-				.andExpect(content()
-				.contentType("application/json"))
-				.andReturn();
+				.perform(get("/firestation").contentType(MediaType.APPLICATION_JSON).param("stationNumber", "2"))
+				.andExpect(status().isOk()).andExpect(content().contentType("application/json")).andReturn();
 
-		verify(mockResponseUrlsModel, times(1)).responseFirestation("2");
+		verify(mockResponseUrlsService, times(1)).responseFirestation("2");
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
@@ -130,15 +124,13 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlFirestation_whenStationNotExist() throws Exception {
 		// ARRANGE
-		when(mockFirestationMappingModel.getFirestationMappingByIdStation("2")).thenReturn(null);
+		when(mockFirestationMappingService.getFirestationMappingByIdStation("2")).thenReturn(null);
 
 		// ACT & ASSERT
-		mockMvc.perform(get("/firestation")
-				.contentType(MediaType.APPLICATION_JSON)
-				.param("stationNumber", "2"))
+		mockMvc.perform(get("/firestation").contentType(MediaType.APPLICATION_JSON).param("stationNumber", "2"))
 				.andExpect(status().isNotFound());
 
-		verify(mockFirestationMappingModel, times(1)).getFirestationMappingByIdStation("2");
-		verify(mockResponseUrlsModel, never()).responseFirestation("2");
+		verify(mockFirestationMappingService, times(1)).getFirestationMappingByIdStation("2");
+		verify(mockResponseUrlsService, never()).responseFirestation("2");
 	}
 }
