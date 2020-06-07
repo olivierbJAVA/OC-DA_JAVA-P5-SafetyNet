@@ -23,22 +23,22 @@ import com.safetynet.repository.PersonRepositoryImpl;
 public class PersonRepositoryImplTest {
 
 	@TestConfiguration
-	static class PersonDaoImplTestContextConfiguration {
+	static class PersonRepositoryImplTestContextConfiguration {
 		@Bean
-		public IPersonRepository iPersonDao() {
+		public IPersonRepository iPersonRepository() {
 			return new PersonRepositoryImpl();
 		}
 	}
 
 	@Autowired
-	private IPersonRepository personDaoImplUnderTest;
+	private IPersonRepository personRepositoryImplUnderTest;
 
 	@BeforeEach
 	private void setUpPerTest() {
 
-		List<Person> persons = personDaoImplUnderTest.getAllPersons();
+		List<Person> persons = personRepositoryImplUnderTest.getAllPersons();
 		for (Person person : persons) {
-			personDaoImplUnderTest.deletePerson(person.getIdPerson());
+			personRepositoryImplUnderTest.deletePerson(person.getIdPerson());
 		}
 
 	}
@@ -50,11 +50,11 @@ public class PersonRepositoryImplTest {
 				"0696469887", "bs@email.com");
 
 		// ACT
-		personDaoImplUnderTest.addPerson(personToAdd);
+		personRepositoryImplUnderTest.addPerson(personToAdd);
 
 		// ASSERT
-		assertNotNull(personDaoImplUnderTest.getPersonById(personToAdd.getIdPerson()));
-		assertEquals("BertrandSimon", personDaoImplUnderTest.getPersonById(personToAdd.getIdPerson()).getIdPerson());
+		assertNotNull(personRepositoryImplUnderTest.getPersonById(personToAdd.getIdPerson()));
+		assertEquals("BertrandSimon", personRepositoryImplUnderTest.getPersonById(personToAdd.getIdPerson()).getIdPerson());
 	}
 
 	@Test
@@ -63,13 +63,13 @@ public class PersonRepositoryImplTest {
 		Person personToDelete = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		
-		personDaoImplUnderTest.addPerson(personToDelete);
+		personRepositoryImplUnderTest.addPerson(personToDelete);
 
 		// ACT
-		personDaoImplUnderTest.deletePerson(personToDelete.getIdPerson());
+		personRepositoryImplUnderTest.deletePerson(personToDelete.getIdPerson());
 
 		// ASSERT
-		assertNull(personDaoImplUnderTest.getPersonById(personToDelete.getIdPerson()));
+		assertNull(personRepositoryImplUnderTest.getPersonById(personToDelete.getIdPerson()));
 	}
 
 	@Test
@@ -78,16 +78,16 @@ public class PersonRepositoryImplTest {
 		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		
-		personDaoImplUnderTest.addPerson(personToUpdate);
+		personRepositoryImplUnderTest.addPerson(personToUpdate);
 		
 		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Marseille", "75000",
 				"0696469887", "bs@email.com");
 
 		// ACT
-		personDaoImplUnderTest.updatePerson(personUpdated);
+		personRepositoryImplUnderTest.updatePerson(personUpdated);
 
 		// ASSERT
-		assertEquals("Marseille", personDaoImplUnderTest.getPersonById(personToUpdate.getIdPerson()).getCity());
+		assertEquals("Marseille", personRepositoryImplUnderTest.getPersonById(personToUpdate.getIdPerson()).getCity());
 	}
 
 	@Test
@@ -96,20 +96,20 @@ public class PersonRepositoryImplTest {
 		Person personToGet = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		
-		personDaoImplUnderTest.addPerson(personToGet);
+		personRepositoryImplUnderTest.addPerson(personToGet);
 
 		// ACT
-		Person personGet = personDaoImplUnderTest.getPersonById(personToGet.getIdPerson());
+		Person personGet = personRepositoryImplUnderTest.getPersonById(personToGet.getIdPerson());
 
 		// ASSERT
-		assertNotNull(personDaoImplUnderTest.getPersonById(personToGet.getIdPerson()));
+		assertNotNull(personGet);
 		assertEquals("BertrandSimon", personGet.getIdPerson());
 	}
 
 	@Test
 	public void getPersonById_whenPersonNotExist() {
 		// ASSERT
-		assertNull(personDaoImplUnderTest.getPersonById("PersonNotExist"));
+		assertNull(personRepositoryImplUnderTest.getPersonById("PersonNotExist"));
 	}
 
 	@Test
@@ -122,12 +122,12 @@ public class PersonRepositoryImplTest {
 		Person person3 = new Person("BertrandSimon3", "Bertrand", "Simon3", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
 		
-		personDaoImplUnderTest.addPerson(person1);
-		personDaoImplUnderTest.addPerson(person2);
-		personDaoImplUnderTest.addPerson(person3);
+		personRepositoryImplUnderTest.addPerson(person1);
+		personRepositoryImplUnderTest.addPerson(person2);
+		personRepositoryImplUnderTest.addPerson(person3);
 
 		// ACT
-		List<Person> listAllPersons = personDaoImplUnderTest.getAllPersons();
+		List<Person> listAllPersons = personRepositoryImplUnderTest.getAllPersons();
 
 		// ASSERT
 		assertEquals(3, listAllPersons.size());

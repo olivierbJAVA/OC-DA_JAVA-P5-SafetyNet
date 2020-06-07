@@ -22,110 +22,118 @@ import com.safetynet.repository.MedicalRecordRepositoryImpl;
 public class MedicalRecordRepositoryImplTest {
 
 	@Autowired
-	private MedicalRecordRepositoryImpl medicalRecordDaoImplUnderTest;
+	private MedicalRecordRepositoryImpl medicalRecordRepositoryImplUnderTest;
 
 	@BeforeEach
 	private void setUpPerTest() {
 
-		List<MedicalRecord> medicalRecords = medicalRecordDaoImplUnderTest.getAllMedicalRecords();
+		List<MedicalRecord> medicalRecords = medicalRecordRepositoryImplUnderTest.getAllMedicalRecords();
 		for (MedicalRecord medicalRecord : medicalRecords) {
-			medicalRecordDaoImplUnderTest.deleteMedicalRecord(medicalRecord.getIdMedicalRecord());
+			medicalRecordRepositoryImplUnderTest.deleteMedicalRecord(medicalRecord.getIdMedicalRecord());
 		}
 
 	}
 
 	@Test
 	public void addMedicalRecord() {
-		MedicalRecord medicalRecordToAdd = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1979",
+		// ARRANGE
+		MedicalRecord medicalRecordToAdd = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
 
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecordToAdd);
+		// ACT
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecordToAdd);
 
-		assertNotNull(medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()));
-		assertEquals("BertrandSimon", medicalRecordDaoImplUnderTest
+		// ASSERT
+		assertNotNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()));
+		assertEquals("BertrandSimon", medicalRecordRepositoryImplUnderTest
 				.getMedicalRecordById(medicalRecordToAdd.getIdMedicalRecord()).getIdMedicalRecord());
-
 	}
 
 	@Test
 	public void deleteMedicalRecord() {
-		MedicalRecord medicalRecordToDelete = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1979",
+		// ARRANGE
+		MedicalRecord medicalRecordToDelete = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
 
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecordToDelete);
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecordToDelete);
 
-		medicalRecordDaoImplUnderTest.deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
+		// ACT
+		medicalRecordRepositoryImplUnderTest.deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
 
-		assertNull(medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord()));
-
+		// ASSERT
+		assertNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord()));
 	}
 
 	@Test
 	public void updateMedicalRecord() {
-		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1979",
+		// ARRANGE
+		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
 
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecordToUpdate);
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecordToUpdate);
 
-		MedicalRecord medicalRecordUpdated = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
+		MedicalRecord medicalRecordUpdated = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1983",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
 
-		medicalRecordDaoImplUnderTest.updateMedicalRecord(medicalRecordUpdated);
+		// ACT
+		medicalRecordRepositoryImplUnderTest.updateMedicalRecord(medicalRecordUpdated);
 
-		assertEquals("10/05/1980", medicalRecordDaoImplUnderTest
+		// ASSERT
+		assertEquals("10/05/1983", medicalRecordRepositoryImplUnderTest
 				.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord()).getBirthdate());
-
 	}
 
 	@Test
 	public void getMedicalRecordById_whenMedicalRecordExist() {
-
-		MedicalRecord medicalRecordToGet = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1979",
+		// ARRANGE
+		MedicalRecord medicalRecordToGet = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
 
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecordToGet);
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecordToGet);
 
-		MedicalRecord medicalRecordGet = medicalRecordDaoImplUnderTest
+		// ACT
+		MedicalRecord medicalRecordGet = medicalRecordRepositoryImplUnderTest
 				.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord());
 
-		assertNotNull(medicalRecordDaoImplUnderTest.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord()));
+		// ASSERT
+		assertNotNull(medicalRecordGet);
 		assertEquals("BertrandSimon", medicalRecordGet.getIdMedicalRecord());
-
 	}
 
 	@Test
 	public void getMedicalRecordById_whenMedicalRecordNotExist() {
-
-		assertNull(medicalRecordDaoImplUnderTest.getMedicalRecordById("BertrandSimon"));
-
+		// ASSERT
+		assertNull(medicalRecordRepositoryImplUnderTest.getMedicalRecordById("MedicalRcordNotExist"));
 	}
 
 	@Test
 	public void getAllMedicalRecords() {
-		MedicalRecord medicalRecord1 = new MedicalRecord("BertrandSimon1", "Bertrand", "Simon1", "10/05/1979",
+		// ARRANGE
+		MedicalRecord medicalRecord1 = new MedicalRecord("BertrandSimon1", "Bertrand", "Simon1", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
-		MedicalRecord medicalRecord2 = new MedicalRecord("BertrandSimon2", "Bertrand", "Simon2", "10/05/1979",
+		MedicalRecord medicalRecord2 = new MedicalRecord("BertrandSimon2", "Bertrand", "Simon2", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
-		MedicalRecord medicalRecord3 = new MedicalRecord("BertrandSimon3", "Bertrand", "Simon3", "10/05/1979",
+		MedicalRecord medicalRecord3 = new MedicalRecord("BertrandSimon3", "Bertrand", "Simon3", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
 				new String[] { "pollen", "acariens", "chats" });
 
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecord1);
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecord2);
-		medicalRecordDaoImplUnderTest.addMedicalRecord(medicalRecord3);
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecord1);
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecord2);
+		medicalRecordRepositoryImplUnderTest.addMedicalRecord(medicalRecord3);
 
-		List<MedicalRecord> listAllMedicalRecords = medicalRecordDaoImplUnderTest.getAllMedicalRecords();
+		// ACT
+		List<MedicalRecord> listAllMedicalRecords = medicalRecordRepositoryImplUnderTest.getAllMedicalRecords();
 
+		// ASSERT
 		assertEquals(3, listAllMedicalRecords.size());
 		assertThat(listAllMedicalRecords).containsExactlyInAnyOrder(medicalRecord1, medicalRecord2, medicalRecord3);
-
 	}
 
 }
