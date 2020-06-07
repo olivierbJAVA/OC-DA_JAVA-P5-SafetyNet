@@ -137,7 +137,7 @@ public class FirestationMappingRepositoryImplTest {
 	public void getAllFirestationMappings() {
 		// ARRANGE
 		FirestationMapping firestationMapping1 = new FirestationMapping("3 rue de Paris", "1");
-		FirestationMapping firestationMapping2 = new FirestationMapping("3 rue de nantes", "2");
+		FirestationMapping firestationMapping2 = new FirestationMapping("3 rue de Nantes", "2");
 		FirestationMapping firestationMapping3 = new FirestationMapping("3 rue de Marseille", "3");
 
 		firestationMappingRepositoryImplUnderTest.addFirestationMapping(firestationMapping1);

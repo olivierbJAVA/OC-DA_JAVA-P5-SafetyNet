@@ -199,7 +199,7 @@ public class EndpointPersonsControllerTest {
 	
 	// @PutMapping(value = "/persons/{id}")
 	@Test
-	public void updatePerson_whenPersonNotExist() throws Exception {
+	public void updatePerson_whenPersonInPathRequestNotExist() throws Exception {
 		//ARRANGE
 		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
 				"0696469887", "bs@email.com");
@@ -216,33 +216,56 @@ public class EndpointPersonsControllerTest {
 				.content(objectMapper.writeValueAsString(personUpdated)))
 				.andExpect(status().isNotFound());
 		
-		verify(mockPersonService, times(1)).getPersonById(anyString());
+		verify(mockPersonService, times(1)).getPersonById(personToUpdate.getIdPerson());
 		verify(mockPersonService, never()).updatePerson(any(Person.class));
 	}
 	
 	// @PutMapping(value = "/persons/{id}")
-		@Test
-		public void updatePerson_whenPersonExist_whenInternalServerError() throws Exception {
-			//ARRANGE
-			Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
-					"0696469887", "bs@email.com");
-			Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Courcelles", "Paris", "75000",
-					"0696469887", "bs@email.com");
-			
-			when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate).thenReturn(personToUpdate).thenReturn(personToUpdate);
-			when(mockPersonService.updatePerson(personUpdated)).thenReturn(personToUpdate);
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-
-			//ACT & ASSERT
-			mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(personUpdated)))
-					.andExpect(status().isInternalServerError());
+	@Test
+	public void updatePerson_whenPersonInRequestBodyNotExist() throws Exception {
+		//ARRANGE
+		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+				"0696469887", "bs@email.com");
+		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Courcelles", "Paris", "75000",
+				"0696469887", "bs@email.com");
 		
-			verify(mockPersonService, times(3)).getPersonById(personToUpdate.getIdPerson());
-			verify(mockPersonService, times(1)).updatePerson(personUpdated);
-		}
+		when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate).thenReturn(null);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		//ACT & ASSERT
+		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(personUpdated)))
+				.andExpect(status().isNotFound());
+		
+		verify(mockPersonService, times(2)).getPersonById(personToUpdate.getIdPerson());
+		verify(mockPersonService, never()).updatePerson(any(Person.class));
+	}
+	
+	// @PutMapping(value = "/persons/{id}")
+	@Test
+	public void updatePerson_whenPersonExist_whenInternalServerError() throws Exception {
+		//ARRANGE
+		Person personToUpdate = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Paris", "Paris", "75000",
+				"0696469887", "bs@email.com");
+		Person personUpdated = new Person("BertrandSimon", "Bertrand", "Simon", "2 rue de Courcelles", "Paris", "75000",
+				"0696469887", "bs@email.com");
+		
+		when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate).thenReturn(personToUpdate).thenReturn(personToUpdate);
+		when(mockPersonService.updatePerson(personUpdated)).thenReturn(personToUpdate);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		//ACT & ASSERT
+		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(personUpdated)))
+				.andExpect(status().isInternalServerError());
+		
+		verify(mockPersonService, times(3)).getPersonById(personToUpdate.getIdPerson());
+		verify(mockPersonService, times(1)).updatePerson(personUpdated);
+	}
 	
 	// @DeleteMapping(value = "/persons/{id}")
 	@Test

@@ -209,7 +209,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PutMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void updateMedicalRecord_whenMedicalRecordNotExist() throws Exception {
+	public void updateMedicalRecord_whenMedicalRecordInPathRequestNotExist() throws Exception {
 		//ARRANGE
 		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -228,35 +228,60 @@ public class EndpointMedicalRecordsControllerTest {
 				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
 				.andExpect(status().isNotFound());
 		
-		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(anyString());
+		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
 		verify(mockMedicalRecordService, never()).updateMedicalRecord(any(MedicalRecord.class));
 	}
 	
 	// @PutMapping(value = "/medicalRecords/{id}")
-		@Test
-		public void updateMedicalRecord_whenMedicalRecordExist_whenInternalServerError() throws Exception {
-			//ARRANGE
-			MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
-					new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
-					new String[] { "pollen", "acariens", "chats" });
-			MedicalRecord medicalRecordUpdated = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1983",
-					new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
-					new String[] { "pollen", "acariens", "chats" });
-			
-			when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate);
-			when(mockMedicalRecordService.updateMedicalRecord(medicalRecordUpdated)).thenReturn(medicalRecordToUpdate);
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-
-			//ACT & ASSERT
-			mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
-					.andExpect(status().isInternalServerError());
+	@Test
+	public void updateMedicalRecord_whenMedicalRecordInRequestBodyNotExist() throws Exception {
+		//ARRANGE
+		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
+				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
+				new String[] { "pollen", "acariens", "chats" });
+		MedicalRecord medicalRecordUpdated = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1983",
+				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
+				new String[] { "pollen", "acariens", "chats" });
 		
-			verify(mockMedicalRecordService, times(3)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
-			verify(mockMedicalRecordService, times(1)).updateMedicalRecord(medicalRecordUpdated);
-		}
+		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(null);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		//ACT & ASSERT
+		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
+				.andExpect(status().isNotFound());
+		
+		verify(mockMedicalRecordService, times(2)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
+		verify(mockMedicalRecordService, never()).updateMedicalRecord(any(MedicalRecord.class));
+	}
+	
+	// @PutMapping(value = "/medicalRecords/{id}")
+	@Test
+	public void updateMedicalRecord_whenMedicalRecordExist_whenInternalServerError() throws Exception {
+		//ARRANGE
+		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
+				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
+				new String[] { "pollen", "acariens", "chats" });
+		MedicalRecord medicalRecordUpdated = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1983",
+				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
+				new String[] { "pollen", "acariens", "chats" });
+		
+		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate);
+		when(mockMedicalRecordService.updateMedicalRecord(medicalRecordUpdated)).thenReturn(medicalRecordToUpdate);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		//ACT & ASSERT
+		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
+				.andExpect(status().isInternalServerError());
+		
+		verify(mockMedicalRecordService, times(3)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
+		verify(mockMedicalRecordService, times(1)).updateMedicalRecord(medicalRecordUpdated);
+	}
 	
 	// @DeleteMapping(value = "/medicalRecords/{id}")
 	@Test
