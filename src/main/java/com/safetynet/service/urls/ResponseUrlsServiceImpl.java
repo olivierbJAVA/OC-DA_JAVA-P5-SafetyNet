@@ -302,12 +302,17 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 	}
 
 	@Override
-	public List<String> responseCommunityEmail(String city) {
+	public Set<String> responseCommunityEmail(String city) {
 
 		List<Person> listPersons = personService.getAllPersons();
 
-		List<String> responseCommunityEmail = listPersons.stream().filter(person -> person.getCity().equals(city))
-				.map(Person::getEmail).distinct().collect(Collectors.toList());
+		Set<String> responseCommunityEmail = 
+				listPersons.stream()
+				.filter(person -> person.getCity()
+				.equals(city))
+				.map(Person::getEmail)
+				.distinct()
+				.collect(Collectors.toSet());
 
 		return responseCommunityEmail;
 	}

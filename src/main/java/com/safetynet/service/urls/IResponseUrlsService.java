@@ -23,5 +23,5 @@ public interface IResponseUrlsService {
 
 	public Set<String> responsePhoneAlert(String idStation);
 
-	public List<String> responseCommunityEmail(String city);
+	public Set<String> responseCommunityEmail(String city);
 }

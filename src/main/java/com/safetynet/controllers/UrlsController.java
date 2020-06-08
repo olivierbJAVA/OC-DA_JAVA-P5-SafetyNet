@@ -111,7 +111,7 @@ public class UrlsController {
 	@GetMapping(value = "/flood/stations")
 	public ResponseEntity<Flood> responseFlood(@RequestParam String[] stations) {
 
-		logger.info("Request : GET /flood");
+		logger.info("Request : GET /flood/stations");
 
 		for (int i = 0; i < stations.length; i++) {
 
@@ -147,7 +147,7 @@ public class UrlsController {
 
 	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
-	public ResponseEntity<List<String>> responseCommunityEmail(@RequestParam String city) {
+	public ResponseEntity<Set<String>> responseCommunityEmail(@RequestParam String city) {
 
 		logger.info("Request : GET /communityEmail");
 
@@ -155,7 +155,7 @@ public class UrlsController {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", city);
 		}
 
-		List<String> responseCommunityEmail = responseService.responseCommunityEmail(city);
+		Set<String> responseCommunityEmail = responseService.responseCommunityEmail(city);
 
 		logger.info("Success : communityEmail response found");
 

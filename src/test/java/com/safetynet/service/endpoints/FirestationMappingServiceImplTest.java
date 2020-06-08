@@ -1,4 +1,4 @@
-package com.safetynet.service;
+package com.safetynet.service.endpoints;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
