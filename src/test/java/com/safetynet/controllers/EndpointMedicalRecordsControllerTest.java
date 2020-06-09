@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,6 +40,13 @@ public class EndpointMedicalRecordsControllerTest {
 	@MockBean
 	private IMedicalRecordService mockMedicalRecordService;
 
+	private ObjectMapper objectMapper;
+		
+	@BeforeEach
+	private void setUpPerTest() {
+		objectMapper = new ObjectMapper();
+	}	
+	
 	// @GetMapping(value = "/medicalRecords")
 	@Test
 	public void getAllMedicalRecords() throws Exception {
@@ -118,9 +126,7 @@ public class EndpointMedicalRecordsControllerTest {
 		
 		when(mockMedicalRecordService.medicalRecordExist(any(MedicalRecord.class))).thenReturn(false).thenReturn(true);
 		when(mockMedicalRecordService.addMedicalRecord(medicalRecordToAdd)).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	
+
 		//ACT & ASSERT
 		MvcResult mvcResult = mockMvc.perform(post("/medicalRecords")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -144,9 +150,7 @@ public class EndpointMedicalRecordsControllerTest {
 				new String[] { "pollen", "acariens", "chats" });
 		
 		when(mockMedicalRecordService.medicalRecordExist(any(MedicalRecord.class))).thenReturn(true);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		
+
 		//ACT & ASSERT
 		mockMvc.perform(post("/medicalRecords")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -167,9 +171,7 @@ public class EndpointMedicalRecordsControllerTest {
 		
 		when(mockMedicalRecordService.medicalRecordExist(any(MedicalRecord.class))).thenReturn(false).thenReturn(false);
 		when(mockMedicalRecordService.addMedicalRecord(medicalRecordToAdd)).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	
+
 		//ACT & ASSERT
 		mockMvc.perform(post("/medicalRecords")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -193,9 +195,7 @@ public class EndpointMedicalRecordsControllerTest {
 		
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordUpdated);
 		when(mockMedicalRecordService.updateMedicalRecord(medicalRecordUpdated)).thenReturn(medicalRecordToUpdate);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	
+
 		//ACT & ASSERT
 		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -219,8 +219,6 @@ public class EndpointMedicalRecordsControllerTest {
 				new String[] { "pollen", "acariens", "chats" });
 		
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
@@ -244,8 +242,6 @@ public class EndpointMedicalRecordsControllerTest {
 				new String[] { "pollen", "acariens", "chats" });
 		
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
@@ -270,8 +266,6 @@ public class EndpointMedicalRecordsControllerTest {
 		
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate).thenReturn(medicalRecordToUpdate);
 		when(mockMedicalRecordService.updateMedicalRecord(medicalRecordUpdated)).thenReturn(medicalRecordToUpdate);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())

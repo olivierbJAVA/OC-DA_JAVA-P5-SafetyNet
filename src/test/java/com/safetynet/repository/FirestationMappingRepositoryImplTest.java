@@ -33,13 +33,12 @@ public class FirestationMappingRepositoryImplTest {
 
 	@BeforeEach
 	private void setUpPerTest() {
-
+		// We clear the firestationMappings list
 		List<FirestationMapping> firestationMappings = firestationMappingRepositoryImplUnderTest
 				.getAllFirestationMappings();
 		for (FirestationMapping firestationMapping : firestationMappings) {
 			firestationMappingRepositoryImplUnderTest.deleteFirestationMapping(firestationMapping.getAddress());
 		}
-
 	}
 
 	@Test

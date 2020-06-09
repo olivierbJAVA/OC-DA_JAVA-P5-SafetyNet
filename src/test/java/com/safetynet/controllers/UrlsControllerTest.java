@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -68,6 +69,13 @@ public class UrlsControllerTest {
 		}
 	}
 
+	private ObjectMapper objectMapper;
+	
+	@BeforeEach
+	private void setUpPerTest() {
+		objectMapper = new ObjectMapper();
+	}
+	
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -93,8 +101,6 @@ public class UrlsControllerTest {
 		when(mockFirestationMappingService.getFirestationMappingByIdStation("2")).thenReturn(firestationMapping);
 
 		when(mockResponseUrlsService.responseFirestation("2")).thenReturn(firestationUrlResponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -138,8 +144,6 @@ public class UrlsControllerTest {
 		when(mockPersonService.addressExist("1509 Culver St")).thenReturn(true);
 				
 		when(mockResponseUrlsService.responseChildAlert("1509 Culver St")).thenReturn(childAlertUrlResponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -163,7 +167,6 @@ public class UrlsControllerTest {
 		// ARRANGE
 		when(mockPersonService.addressExist("1509 Culver St")).thenReturn(false);
 		
-
 		// ACT & ASSERT
 		mockMvc.perform(get("/childAlert")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -184,8 +187,6 @@ public class UrlsControllerTest {
 		when(mockFirestationMappingService.getFirestationMappingByIdStation("1")).thenReturn(firestationMapping);
 		
 		when(mockResponseUrlsService.responsePhoneAlert("1")).thenReturn(phoneAlertUrlResponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -228,8 +229,6 @@ public class UrlsControllerTest {
 		when(mockPersonService.addressExist("748 Townings Dr")).thenReturn(true);
 						
 		when(mockResponseUrlsService.responseFire("748 Townings Dr")).thenReturn(fireUrlResponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -272,8 +271,6 @@ public class UrlsControllerTest {
 		when(mockPersonService.idPersonExist("LilyCooper")).thenReturn(true);
 
 		when(mockResponseUrlsService.responsePersonInfo("Lily", "Cooper")).thenReturn(personInfoUrlResponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -318,8 +315,6 @@ public class UrlsControllerTest {
 		when(mockPersonService.cityExist("Culver")).thenReturn(true);
 		
 		when(mockResponseUrlsService.responseCommunityEmail("Culver")).thenReturn(communityEmailUrlResponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -366,8 +361,6 @@ public class UrlsControllerTest {
 		when(mockFirestationMappingService.getFirestationMappingByIdStation("4")).thenReturn(firestationMapping);
 
 		when(mockResponseUrlsService.responseFlood(new String[] {"4"})).thenReturn(floodUrlReponse);
-
-		ObjectMapper objectMapper = new ObjectMapper();
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc

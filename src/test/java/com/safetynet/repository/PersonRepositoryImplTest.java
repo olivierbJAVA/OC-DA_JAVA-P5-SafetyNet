@@ -35,12 +35,11 @@ public class PersonRepositoryImplTest {
 
 	@BeforeEach
 	private void setUpPerTest() {
-
+		// We clear the medicalRecords list
 		List<Person> persons = personRepositoryImplUnderTest.getAllPersons();
 		for (Person person : persons) {
 			personRepositoryImplUnderTest.deletePerson(person.getIdPerson());
 		}
-
 	}
 
 	@Test

@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,6 +40,13 @@ public class EndpointPersonsControllerTest {
 	@MockBean
 	private IPersonService mockPersonService;
 
+	private ObjectMapper objectMapper;
+	
+	@BeforeEach
+	private void setUpPerTest() {
+		objectMapper = new ObjectMapper();
+	}	
+	
 	// @GetMapping(value = "/persons")
 	@Test
 	public void getAllPersons() throws Exception {
@@ -112,8 +120,6 @@ public class EndpointPersonsControllerTest {
 		
 		when(mockPersonService.personExist(any(Person.class))).thenReturn(false).thenReturn(true);
 		when(mockPersonService.addPerson(personToAdd)).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 	
 		//ACT & ASSERT
 		MvcResult mvcResult = mockMvc.perform(post("/persons")
@@ -138,8 +144,6 @@ public class EndpointPersonsControllerTest {
 		
 		when(mockPersonService.personExist(any(Person.class))).thenReturn(true);
 		
-		ObjectMapper objectMapper = new ObjectMapper();
-		
 		//ACT & ASSERT
 		mockMvc.perform(post("/persons")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -159,8 +163,6 @@ public class EndpointPersonsControllerTest {
 		
 		when(mockPersonService.personExist(any(Person.class))).thenReturn(false).thenReturn(false);
 		when(mockPersonService.addPerson(personToAdd)).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 	
 		//ACT & ASSERT
 		mockMvc.perform(post("/persons")
@@ -183,8 +185,6 @@ public class EndpointPersonsControllerTest {
 		
 		when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate).thenReturn(personToUpdate).thenReturn(personUpdated);
 		when(mockPersonService.updatePerson(personUpdated)).thenReturn(personToUpdate);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 	
 		//ACT & ASSERT
 		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
@@ -207,8 +207,6 @@ public class EndpointPersonsControllerTest {
 				"0696469887", "bs@email.com");
 		
 		when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
@@ -230,8 +228,6 @@ public class EndpointPersonsControllerTest {
 				"0696469887", "bs@email.com");
 		
 		when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())
@@ -254,8 +250,6 @@ public class EndpointPersonsControllerTest {
 		
 		when(mockPersonService.getPersonById(personToUpdate.getIdPerson())).thenReturn(personToUpdate).thenReturn(personToUpdate).thenReturn(personToUpdate);
 		when(mockPersonService.updatePerson(personUpdated)).thenReturn(personToUpdate);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/persons/{id}", personToUpdate.getIdPerson())

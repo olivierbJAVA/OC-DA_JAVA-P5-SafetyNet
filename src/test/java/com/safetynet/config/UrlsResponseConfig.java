@@ -25,6 +25,8 @@ public class UrlsResponseConfig {
 
 	public Firestation getUrlFirestationResponse() {
 
+		Firestation firestationUrlResponse = new Firestation();
+
 		FirestationPerson firestationPerson1 = new FirestationPerson("Jonanathan", "Marrack", "29 15th St",
 				"841-874-6513");
 		FirestationPerson firestationPerson2 = new FirestationPerson("Warren", "Zemicks", "892 Downing Ct",
@@ -43,7 +45,6 @@ public class UrlsResponseConfig {
 		firestationPersons.add(firestationPerson4);
 		firestationPersons.add(firestationPerson5);
 
-		Firestation firestationUrlResponse = new Firestation();
 		firestationUrlResponse.setFirestationPersons(firestationPersons);
 		firestationUrlResponse.setNbAdults(4);
 		firestationUrlResponse.setNbChilds(1);
@@ -51,7 +52,7 @@ public class UrlsResponseConfig {
 		return firestationUrlResponse;
 	}
 
-	public ChildAlert getUrlChildAlertResponse() throws Exception {
+	public ChildAlert getUrlChildAlertResponse() {
 
 		ChildAlert childAlertUrlResponse = new ChildAlert();
 
@@ -78,7 +79,7 @@ public class UrlsResponseConfig {
 		return childAlertUrlResponse;
 	}
 
-	public Set<String> getUrlPhoneAlertResponse() throws Exception {
+	public Set<String> getUrlPhoneAlertResponse() {
 
 		Set<String> phoneAlertUrlResponse = new HashSet<>(
 				Arrays.asList("841-874-7784", "841-874-7462", "841-874-6512", "841-874-8547"));
@@ -86,7 +87,7 @@ public class UrlsResponseConfig {
 		return phoneAlertUrlResponse;
 	}
 
-	public Fire getUrlFireResponse() throws Exception {
+	public Fire getUrlFireResponse() {
 
 		Fire fireUrlResponse = new Fire();
 
@@ -104,33 +105,7 @@ public class UrlsResponseConfig {
 		return fireUrlResponse;
 	}
 
-	public PersonInfo getUrlPersonInfoResponse() throws Exception {
-
-		List<PersonInfoSameName> otherPersonsWithSameName = new ArrayList<PersonInfoSameName>();
-
-		PersonInfoSameName otherPersonWithSameName = new PersonInfoSameName("Tony", "Cooper", "112 Steppes Pl", 26,
-				"tcoop@ymail.com", new String[] { "hydrapermazol:300mg", "dodoxadin:30mg" },
-				new String[] { "shellfish" });
-
-		otherPersonsWithSameName.add(otherPersonWithSameName);
-
-		PersonInfo personInfoUrlResponse = new PersonInfo("Lily", "Cooper", "489 Manchester St", 26, "lily@email.com",
-				new String[] {}, new String[] {}, otherPersonsWithSameName);
-
-		return personInfoUrlResponse;
-	}
-
-	public Set<String> getUrlCommunityEmailResponse() throws Exception {
-
-		Set<String> communityEmailUrlResponse = new HashSet<>(Arrays.asList("jaboyd@email.com", "ssanw@email.com",
-				"drk@email.com", "tenz@email.com", "bstel@email.com", "aly@imail.com", "ward@email.com",
-				"reg@email.com", "lily@email.com", "gramps@email.com", "jpeter@email.com", "clivfd@ymail.com",
-				"tcoop@ymail.com", "soph@email.com", "zarc@email.com"));
-
-		return communityEmailUrlResponse;
-	}
-
-	public Flood getUrlFloodResponse() throws Exception {
+	public Flood getUrlFloodResponse() {
 
 		Flood floodUrlReponse = new Flood();
 		Map<String, FloodStation> mapFloodStations = new HashMap<>();
@@ -147,11 +122,14 @@ public class UrlsResponseConfig {
 		String address2 = "112 Steppes Pl";
 		FloodPerson floodPerson1Address2 = new FloodPerson("Allison", "Boyd", "841-874-9888", 55,
 				new String[] { "aznol:200mg" }, new String[] { "nillacilan" });
-		FloodPerson floodPerson2Address2 = new FloodPerson("Tony", "Cooper", "841-874-6874", 26,
+		FloodPerson floodPerson2Address2 = new FloodPerson("Ron", "Peters", "841-874-8888", 55, new String[] {},
+				new String[] {});
+		FloodPerson floodPerson3Address2 = new FloodPerson("Tony", "Cooper", "841-874-6874", 26,
 				new String[] { "hydrapermazol:300mg", "dodoxadin:30mg" }, new String[] { "shellfish" });
 		List<FloodPerson> floodPersonsAddress2 = new ArrayList<>();
 		floodPersonsAddress2.add(floodPerson1Address2);
 		floodPersonsAddress2.add(floodPerson2Address2);
+		floodPersonsAddress2.add(floodPerson3Address2);
 
 		mapFloodPersons.put(address1, floodPersonsAddress1);
 		mapFloodPersons.put(address2, floodPersonsAddress2);
@@ -164,6 +142,32 @@ public class UrlsResponseConfig {
 		floodUrlReponse.setMapFloodStations(mapFloodStations);
 
 		return floodUrlReponse;
+	}
+
+	public PersonInfo getUrlPersonInfoResponse() {
+
+		List<PersonInfoSameName> otherPersonsWithSameName = new ArrayList<PersonInfoSameName>();
+
+		PersonInfoSameName otherPersonWithSameName = new PersonInfoSameName("Tony", "Cooper", "112 Steppes Pl", 26,
+				"tcoop@ymail.com", new String[] { "hydrapermazol:300mg", "dodoxadin:30mg" },
+				new String[] { "shellfish" });
+
+		otherPersonsWithSameName.add(otherPersonWithSameName);
+
+		PersonInfo personInfoUrlResponse = new PersonInfo("Lily", "Cooper", "489 Manchester St", 26, "lily@email.com",
+				new String[] {}, new String[] {}, otherPersonsWithSameName);
+
+		return personInfoUrlResponse;
+	}
+
+	public Set<String> getUrlCommunityEmailResponse() {
+
+		Set<String> communityEmailUrlResponse = new HashSet<>(Arrays.asList("jaboyd@email.com", "ssanw@email.com",
+				"drk@email.com", "tenz@email.com", "bstel@email.com", "aly@imail.com", "ward@email.com",
+				"reg@email.com", "lily@email.com", "gramps@email.com", "jpeter@email.com", "clivfd@ymail.com",
+				"tcoop@ymail.com", "soph@email.com", "zarc@email.com"));
+
+		return communityEmailUrlResponse;
 	}
 
 }

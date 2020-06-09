@@ -1,8 +1,13 @@
 package com.safetynet.config;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.Person;
 
 public class InputDataConfig {
@@ -57,7 +62,41 @@ public class InputDataConfig {
 				"841-874-6741", "clivfd@ymail.com");
 		Person person23 = new Person("EricCadigan", "Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451",
 				"841-874-7458", "gramps@.com");
-
+		
+		Map<String, Person> persons = new TreeMap<>();
+		persons.put("JohnBoyd", person1);
+		persons.put("JacobBoyd", person2);
+		persons.put("TenleyBoyd", person3);
+		persons.put("RogerBoyd", person4);
+		persons.put("FeliciaBoyd", person5);
+		persons.put("JonanathanMarrack", person6);
+		persons.put("TessaCarman", person7);
+		persons.put("PeterDuncan", person8);
+		persons.put("FosterShepard", person9);
+		persons.put("TonyCooper", person10);
+		persons.put("LilyCooper", person11);
+		persons.put("SophiaZemicks", person12);
+		persons.put("WarrenZemicks", person13);
+		persons.put("ReginoldWalker", person14);
+		persons.put("JamiePeters", person15);
+		persons.put("RonPeters", person16);
+		persons.put("AllisonBoyd", person17);
+		persons.put("BrianStelzer", person18);
+		persons.put("ShawnaStelzer", person19);
+		persons.put("KendrikStelzer", person20);
+		persons.put("CliveFerguson", person21);
+		persons.put("EricCadigan", person22);
+		persons.put("LilyCooper", person23);
+		
+		/*
+		for (Map.Entry<String, Person> mapentry : persons.entrySet()) {
+			inputListAllPersons.add(mapentry.getValue());
+		}
+		*/
+		Collection<Person> listAllPersons = persons.values();
+		return new ArrayList<>(listAllPersons);
+		
+		/*
 		inputListAllPersons.add(person1);
 		inputListAllPersons.add(person2);
 		inputListAllPersons.add(person3);
@@ -81,8 +120,8 @@ public class InputDataConfig {
 		inputListAllPersons.add(person21);
 		inputListAllPersons.add(person22);
 		inputListAllPersons.add(person23);
-
-		return inputListAllPersons;
+		*/
+		//return inputListAllPersons;
 	}
 
 }

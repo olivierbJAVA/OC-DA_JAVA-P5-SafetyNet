@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,13 +33,20 @@ import com.safetynet.service.endpoints.IFirestationMappingService;
 
 @WebMvcTest(EndpointFirestationMappingsController.class)
 public class EndpointFirestationMappingsControllerTest {
-
+	
 	@Autowired
 	private MockMvc mockMvc;
 	
 	@MockBean
 	private IFirestationMappingService mockFirestationMappingService;
 
+	private ObjectMapper objectMapper;
+	
+	@BeforeEach
+	private void setUpPerTest() {
+		objectMapper = new ObjectMapper();
+	}	
+	
 	// @GetMapping(value = "/firestations")
 	@Test
 	public void getAllFirestationMappings() throws Exception {
@@ -73,9 +81,7 @@ public class EndpointFirestationMappingsControllerTest {
 		
 		when(mockFirestationMappingService.firestationMappingExist(firestationMappingToAdd)).thenReturn(false).thenReturn(true);
 		when(mockFirestationMappingService.addFirestationMapping(firestationMappingToAdd)).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	
+
 		//ACT & ASSERT
 		MvcResult mvcResult = mockMvc.perform(post("/firestations")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -97,9 +103,7 @@ public class EndpointFirestationMappingsControllerTest {
 		FirestationMapping firestationMappingToAdd = new FirestationMapping("2 rue de Paris", "5");
 		
 		when(mockFirestationMappingService.firestationMappingExist(firestationMappingToAdd)).thenReturn(true);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		
+
 		//ACT & ASSERT
 		mockMvc.perform(post("/firestations")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -118,9 +122,7 @@ public class EndpointFirestationMappingsControllerTest {
 		
 		when(mockFirestationMappingService.firestationMappingExist(firestationMappingToAdd)).thenReturn(false).thenReturn(false);
 		when(mockFirestationMappingService.addFirestationMapping(firestationMappingToAdd)).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	
+
 		//ACT & ASSERT
 		mockMvc.perform(post("/firestations")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -140,9 +142,7 @@ public class EndpointFirestationMappingsControllerTest {
 		
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToUpdate.getAddress())).thenReturn(firestationMappingToUpdate).thenReturn(firestationMappingToUpdate).thenReturn(firestationMappingUpdated);
 		when(mockFirestationMappingService.updateFirestationMapping(firestationMappingUpdated)).thenReturn(firestationMappingToUpdate);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-	
+
 		//ACT & ASSERT
 		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -162,8 +162,6 @@ public class EndpointFirestationMappingsControllerTest {
 		FirestationMapping firestationMappingUpdated = new FirestationMapping("2 rue de Paris", "6");
 		
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToUpdate.getAddress())).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
@@ -183,8 +181,6 @@ public class EndpointFirestationMappingsControllerTest {
 		FirestationMapping firestationMappingUpdated = new FirestationMapping("2 rue de Paris", "6");
 		
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToUpdate.getAddress())).thenReturn(firestationMappingToUpdate).thenReturn(null);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
@@ -205,8 +201,6 @@ public class EndpointFirestationMappingsControllerTest {
 		
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToUpdate.getAddress())).thenReturn(firestationMappingToUpdate).thenReturn(firestationMappingToUpdate).thenReturn(firestationMappingToUpdate);
 		when(mockFirestationMappingService.updateFirestationMapping(firestationMappingUpdated)).thenReturn(firestationMappingToUpdate);
-		
-		ObjectMapper objectMapper = new ObjectMapper();
 
 		//ACT & ASSERT
 		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
