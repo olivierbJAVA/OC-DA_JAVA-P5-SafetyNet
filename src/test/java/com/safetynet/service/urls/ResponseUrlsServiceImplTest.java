@@ -1,5 +1,6 @@
 package com.safetynet.service.urls;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -111,10 +112,10 @@ public class ResponseUrlsServiceImplTest {
 		Firestation actualFirestationResponse = responseUrlsServiceImplUnderTest.responseFirestation("2");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedFirestationResponse),
-				objectMapper.writeValueAsString(actualFirestationResponse));
+		assertEquals(objectMapper.writeValueAsString(expectedFirestationResponse),objectMapper.writeValueAsString(actualFirestationResponse));
 
 		// assertEquals(expectedFirestationResponse, actualFirestationResponse);
+		
 	}
 
 	@Test

@@ -1,11 +1,7 @@
 package com.safetynet.config;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.Person;
@@ -16,87 +12,53 @@ public class InputDataConfig {
 
 		List<Person> inputListAllPersons = new ArrayList<Person>();
 
-		Person person1 = new Person("JohnBoyd", "John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-				"jaboyd@.com");
-		Person person2 = new Person("JacobBoyd", "Jacob", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513",
-				"drk@.com");
-		Person person3 = new Person("TenleyBoyd", "Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-				"tenz@.com");
-		Person person4 = new Person("RogerBoyd", "Roger", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
-				"jaboyd@.com");
-		Person person5 = new Person("FeliciaBoyd", "Felicia", "Boyd", "1509 Culver St", "Culver", "97451",
-				"841-874-6544", "jaboyd@.com");
+		Person person1 = new Person("RogerBoyd", "Roger", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
+				"jaboyd@email.com");
+		Person person2 = new Person("PeterDuncan", "Peter", "Duncan", "644 Gershwin Cir", "Culver", "97451",
+				"841-874-6512", "jaboyd@email.com");
+		Person person3 = new Person("ShawnaStelzer", "Shawna", "Stelzer", "947 E. Rose Dr", "Culver", "97451",
+				"841-874-7784", "ssanw@email.com");
+		Person person4 = new Person("JacobBoyd", "Jacob", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6513",
+				"drk@email.com");
+		Person person5 = new Person("TenleyBoyd", "Tenley", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
+				"tenz@email.com");
 		Person person6 = new Person("JonanathanMarrack", "Jonanathan", "Marrack", "29 15th St", "Culver", "97451",
-				"841-874-6513", "drk@.com");
-		Person person7 = new Person("TessaCarman", "Tessa", "Carman", "834 Binoc Ave", "Culver", "97451",
-				"841-874-6512", "tenz@.com");
-		Person person8 = new Person("PeterDuncan", "Peter", "Duncan", "644 Gershwin Cir", "Culver", "97451",
-				"841-874-6512", "jaboyd@.com");
-		Person person9 = new Person("FosterShepard", "Foster", "Shepard", "748 Townings Dr", "Culver", "97451",
-				"841-874-6544", "jaboyd@.com");
-		Person person10 = new Person("TonyCooper", "Tony", "Cooper", "112 Steppes Pl", "Culver", "97451",
-				"841-874-6874", "tcoop@ymail.com");
-		Person person11 = new Person("LilyCooper", "Lily", "Cooper", "489 Manchester St", "Culver", "97451",
-				"841-874-9845", "lily@.com");
-		Person person12 = new Person("SophiaZemicks", "Sophia", "Zemicks", "892 Downing Ct", "Culver", "97451",
-				"841-874-7878", "soph@.com");
-		Person person13 = new Person("WarrenZemicks", "Warren", "Zemicks", "892 Downing Ct", "Culver", "97451",
-				"841-874-7512", "ward@.com");
-		Person person14 = new Person("ZachZemicks", "Zach", "Zemicks", "892 Downing Ct", "Culver", "97451",
-				"841-874-7512", "zarc@.com");
-		Person person15 = new Person("ReginoldWalker", "Reginold", "Walker", "908 73rd St", "Culver", "97451",
-				"841-874-8547", "reg@.com");
-		Person person16 = new Person("JamiePeters", "Jamie", "Peters", "908 73rd St", "Culver", "97451", "841-874-7462",
-				"jpeter@.com");
-		Person person17 = new Person("RonPeters", "Ron", "Peters", "112 Steppes Pl", "Culver", "97451", "841-874-8888",
-				"jpeter@.com");
-		Person person18 = new Person("AllisonBoyd", "Allison", "Boyd", "112 Steppes Pl", "Culver", "97451",
+				"841-874-6513", "drk@email.com");
+		Person person7 = new Person("KendrikStelzer", "Kendrik", "Stelzer", "947 E. Rose Dr", "Culver", "97451",
+				"841-874-7784", "bstel@email.com");
+		Person person8 = new Person("AllisonBoyd", "Allison", "Boyd", "112 Steppes Pl", "Culver", "97451",
 				"841-874-9888", "aly@imail.com");
-		Person person19 = new Person("BrianStelzer", "Brian", "Stelzer", "947 E. Rose Dr", "Culver", "97451",
-				"841-874-7784", "bstel@.com");
-		Person person20 = new Person("ShawnaStelzer", "Shawna", "Stelzer", "947 E. Rose Dr", "Culver", "97451",
-				"841-874-7784", "ssanw@.com");
-		Person person21 = new Person("KendrikStelzer", "Kendrik", "Stelzer", "947 E. Rose Dr", "Culver", "97451",
-				"841-874-7784", "bstel@.com");
-		Person person22 = new Person("CliveFerguson", "Clive", "Ferguson", "748 Townings Dr", "Culver", "97451",
+		Person person9 = new Person("WarrenZemicks", "Warren", "Zemicks", "892 Downing Ct", "Culver", "97451",
+				"841-874-7512", "ward@email.com");
+		Person person10 = new Person("ReginoldWalker", "Reginold", "Walker", "908 73rd St", "Culver", "97451",
+				"841-874-8547", "reg@email.com");
+		Person person11 = new Person("TessaCarman", "Tessa", "Carman", "834 Binoc Ave", "Culver", "97451",
+				"841-874-6512", "tenz@email.com");
+		Person person12 = new Person("LilyCooper", "Lily", "Cooper", "489 Manchester St", "Culver", "97451",
+				"841-874-9845", "lily@email.com");
+		Person person13 = new Person("EricCadigan", "Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451",
+				"841-874-7458", "gramps@email.com");
+		Person person14 = new Person("JohnBoyd", "John", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
+				"jaboyd@email.com");
+		Person person15 = new Person("JamiePeters", "Jamie", "Peters", "908 73rd St", "Culver", "97451", "841-874-7462",
+				"jpeter@email.com");
+		Person person16 = new Person("BrianStelzer", "Brian", "Stelzer", "947 E. Rose Dr", "Culver", "97451",
+				"841-874-7784", "bstel@email.com");
+		Person person17 = new Person("CliveFerguson", "Clive", "Ferguson", "748 Townings Dr", "Culver", "97451",
 				"841-874-6741", "clivfd@ymail.com");
-		Person person23 = new Person("EricCadigan", "Eric", "Cadigan", "951 LoneTree Rd", "Culver", "97451",
-				"841-874-7458", "gramps@.com");
-		
-		Map<String, Person> persons = new TreeMap<>();
-		persons.put("JohnBoyd", person1);
-		persons.put("JacobBoyd", person2);
-		persons.put("TenleyBoyd", person3);
-		persons.put("RogerBoyd", person4);
-		persons.put("FeliciaBoyd", person5);
-		persons.put("JonanathanMarrack", person6);
-		persons.put("TessaCarman", person7);
-		persons.put("PeterDuncan", person8);
-		persons.put("FosterShepard", person9);
-		persons.put("TonyCooper", person10);
-		persons.put("LilyCooper", person11);
-		persons.put("SophiaZemicks", person12);
-		persons.put("WarrenZemicks", person13);
-		persons.put("ReginoldWalker", person14);
-		persons.put("JamiePeters", person15);
-		persons.put("RonPeters", person16);
-		persons.put("AllisonBoyd", person17);
-		persons.put("BrianStelzer", person18);
-		persons.put("ShawnaStelzer", person19);
-		persons.put("KendrikStelzer", person20);
-		persons.put("CliveFerguson", person21);
-		persons.put("EricCadigan", person22);
-		persons.put("LilyCooper", person23);
-		
-		/*
-		for (Map.Entry<String, Person> mapentry : persons.entrySet()) {
-			inputListAllPersons.add(mapentry.getValue());
-		}
-		*/
-		Collection<Person> listAllPersons = persons.values();
-		return new ArrayList<>(listAllPersons);
-		
-		/*
+		Person person18 = new Person("FosterShepard", "Foster", "Shepard", "748 Townings Dr", "Culver", "97451",
+				"841-874-6544", "jaboyd@email.com");
+		Person person19 = new Person("RonPeters", "Ron", "Peters", "112 Steppes Pl", "Culver", "97451", "841-874-8888",
+				"jpeter@email.com");
+		Person person20 = new Person("TonyCooper", "Tony", "Cooper", "112 Steppes Pl", "Culver", "97451",
+				"841-874-6874", "tcoop@ymail.com");
+		Person person21 = new Person("SophiaZemicks", "Sophia", "Zemicks", "892 Downing Ct", "Culver", "97451",
+				"841-874-7878", "soph@email.com");
+		Person person22 = new Person("FeliciaBoyd", "Felicia", "Boyd", "1509 Culver St", "Culver", "97451",
+				"841-874-6544", "jaboyd@email.com");
+		Person person23 = new Person("ZachZemicks", "Zach", "Zemicks", "892 Downing Ct", "Culver", "97451",
+				"841-874-7512", "zarc@email.com");
+
 		inputListAllPersons.add(person1);
 		inputListAllPersons.add(person2);
 		inputListAllPersons.add(person3);
@@ -120,8 +82,38 @@ public class InputDataConfig {
 		inputListAllPersons.add(person21);
 		inputListAllPersons.add(person22);
 		inputListAllPersons.add(person23);
-		*/
-		//return inputListAllPersons;
+
+		return inputListAllPersons;
 	}
 
+	public List<FirestationMapping> inputDataFirestatioMappings() {
+
+		List<FirestationMapping> inputListAllFirestationMappings = new ArrayList<FirestationMapping>();
+
+		FirestationMapping FirestationMapping1 = new FirestationMapping("748 Townings Dr", "3");
+		FirestationMapping FirestationMapping2 = new FirestationMapping("951 LoneTree Rd", "2");
+		FirestationMapping FirestationMapping3 = new FirestationMapping("489 Manchester St", "4");
+		FirestationMapping FirestationMapping4 = new FirestationMapping("908 73rd St", "1");
+		FirestationMapping FirestationMapping5 = new FirestationMapping("947 E. Rose Dr", "1");
+		FirestationMapping FirestationMapping6 = new FirestationMapping("644 Gershwin Cir", "1");
+		FirestationMapping FirestationMapping7 = new FirestationMapping("1509 Culver St", "3");
+		FirestationMapping FirestationMapping8 = new FirestationMapping("892 Downing Ct", "2");
+		FirestationMapping FirestationMapping9 = new FirestationMapping("834 Binoc Ave", "3");
+		FirestationMapping FirestationMapping10 = new FirestationMapping("112 Steppes Pl", "4");
+		FirestationMapping FirestationMapping11 = new FirestationMapping("29 15th St", "2");
+
+		inputListAllFirestationMappings.add(FirestationMapping1);
+		inputListAllFirestationMappings.add(FirestationMapping2);
+		inputListAllFirestationMappings.add(FirestationMapping3);
+		inputListAllFirestationMappings.add(FirestationMapping4);
+		inputListAllFirestationMappings.add(FirestationMapping5);
+		inputListAllFirestationMappings.add(FirestationMapping6);
+		inputListAllFirestationMappings.add(FirestationMapping7);
+		inputListAllFirestationMappings.add(FirestationMapping8);
+		inputListAllFirestationMappings.add(FirestationMapping9);
+		inputListAllFirestationMappings.add(FirestationMapping10);
+		inputListAllFirestationMappings.add(FirestationMapping11);
+
+		return inputListAllFirestationMappings;
+	}
 }

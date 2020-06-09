@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,6 +36,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	@Autowired
 	private IMedicalRecordService medicalRecordService;
 
+	@Value("${filePathInputData}")
+	private String filePathInputData;
+	
 	private JsonNode rootNode;
 
 	@PostConstruct
@@ -46,7 +50,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			// JsonNode rootNode = mapper.readTree(jsonInputDataFile);
-			this.rootNode = mapper.readTree(new File("./data.json"));
+			System.out.println("File Input for Data Initialization : " + filePathInputData);
+			logger.info("File Input for Data Initialization : {}", filePathInputData);
+			this.rootNode = mapper.readTree(new File(filePathInputData));
 
 		} catch (FileNotFoundException e) {
 			logger.error("Error : JSON initialization file not found" + e.toString());
