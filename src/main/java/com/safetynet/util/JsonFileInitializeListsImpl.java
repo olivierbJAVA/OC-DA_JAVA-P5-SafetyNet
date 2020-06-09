@@ -36,10 +36,15 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	@Autowired
 	private IMedicalRecordService medicalRecordService;
 
-	@Value("${filePathInputData}")
+	//@Value("${filePathInputData}")
 	private String filePathInputData;
 	
 	private JsonNode rootNode;
+
+	public JsonFileInitializeListsImpl(@Value("${filePathInputData}") String filePathInputData) {
+		System.out.println("Appel constructeur File Input for Data Initialization : " + filePathInputData);
+		this.filePathInputData = filePathInputData;
+	}
 
 	@PostConstruct
 	public void getInitialData() {

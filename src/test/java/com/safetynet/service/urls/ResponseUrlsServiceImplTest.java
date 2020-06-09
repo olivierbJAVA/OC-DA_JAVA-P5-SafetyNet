@@ -1,6 +1,5 @@
 package com.safetynet.service.urls;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -42,6 +41,8 @@ public class ResponseUrlsServiceImplTest {
 
 	// private static InputDataConfig inputDataConfig = new InputDataConfig();
 
+	private static String filePathInputDataForTests = "./data-test.json";
+
 	@TestConfiguration
 	static class ResponseUrlsServiceImplTestContextConfiguration {
 		@Bean
@@ -81,7 +82,7 @@ public class ResponseUrlsServiceImplTest {
 
 		@Bean
 		public IInitializeLists iInitializeLists() {
-			return new JsonFileInitializeListsImpl();
+			return new JsonFileInitializeListsImpl(filePathInputDataForTests);
 		}
 
 	}
@@ -112,10 +113,8 @@ public class ResponseUrlsServiceImplTest {
 		Firestation actualFirestationResponse = responseUrlsServiceImplUnderTest.responseFirestation("2");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedFirestationResponse),objectMapper.writeValueAsString(actualFirestationResponse));
-
-		// assertEquals(expectedFirestationResponse, actualFirestationResponse);
-		
+		assertEquals(objectMapper.writeValueAsString(expectedFirestationResponse),
+				objectMapper.writeValueAsString(actualFirestationResponse));
 	}
 
 	@Test
@@ -159,7 +158,7 @@ public class ResponseUrlsServiceImplTest {
 		Fire expectedFireResponse = urlsResponseConfig.getUrlFireResponse();
 
 		// ACT
-		Fire actualFireResponse = responseUrlsServiceImplUnderTest.responseFire("748 Townings Dr");
+		Fire actualFireResponse = responseUrlsServiceImplUnderTest.responseFire("29 15th St");
 
 		// ASSERT
 		assertEquals(objectMapper.writeValueAsString(expectedFireResponse),

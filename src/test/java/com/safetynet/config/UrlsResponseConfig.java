@@ -92,14 +92,11 @@ public class UrlsResponseConfig {
 		Fire fireUrlResponse = new Fire();
 
 		List<FirePerson> firePersons = new ArrayList<>();
-		FirePerson firePerson1 = new FirePerson("Clive", "Ferguson", "841-874-6741", 26, new String[] {},
-				new String[] {});
-		FirePerson firePerson2 = new FirePerson("Foster", "Shepard", "841-874-6544", 40, new String[] {},
+		FirePerson firePerson1 = new FirePerson("Jonanathan", "Marrack", "841-874-6513", 31, new String[] {},
 				new String[] {});
 		firePersons.add(firePerson1);
-		firePersons.add(firePerson2);
 
-		fireUrlResponse.setIdStation("3");
+		fireUrlResponse.setIdStation("2");
 		fireUrlResponse.setFirePersons(firePersons);
 
 		return fireUrlResponse;
