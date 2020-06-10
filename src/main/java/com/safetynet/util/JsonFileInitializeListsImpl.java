@@ -36,13 +36,14 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	@Autowired
 	private IMedicalRecordService medicalRecordService;
 
-	//@Value("${filePathInputData}")
+	// @Value("${filePathInputData}")
 	private String filePathInputData;
-	
+
 	private JsonNode rootNode;
 
+	// The value of the file path containing input data comes from the SpringBoot
+	// application.properties file
 	public JsonFileInitializeListsImpl(@Value("${filePathInputData}") String filePathInputData) {
-		System.out.println("Appel constructeur File Input for Data Initialization : " + filePathInputData);
 		this.filePathInputData = filePathInputData;
 	}
 
@@ -50,13 +51,12 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 	public void getInitialData() {
 
 		logger.info("Start data initilization");
-		
-		// JsonNode rootNode = null;
+
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			// JsonNode rootNode = mapper.readTree(jsonInputDataFile);
-			System.out.println("File Input for Data Initialization : " + filePathInputData);
+
 			logger.info("File Input for Data Initialization : {}", filePathInputData);
+
 			this.rootNode = mapper.readTree(new File(filePathInputData));
 
 		} catch (FileNotFoundException e) {
@@ -76,9 +76,6 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		initializeDataMedicalRecords();
 
 		logger.info("Success : data initialization");
-
-		// this.rootNode=rootNode;
-		// return rootNode;
 	}
 
 	public void initializeDataPersons() {
@@ -89,6 +86,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			ObjectMapper mapper = new ObjectMapper();
 			Person person;
 			int numPerson = 0;
+			// We add each person
 			while (iteratorPersons.hasNext()) {
 				person = mapper.treeToValue(jsonNodePersons.get(numPerson), Person.class);
 				person.setIdPerson(jsonNodePersons.get(numPerson).get("firstName").asText()
@@ -118,6 +116,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			ObjectMapper mapper = new ObjectMapper();
 			FirestationMapping firestationMapping;
 			int numFirestationMapping = 0;
+			// We add each firestationMapping
 			while (iteratorFirestationMappings.hasNext()) {
 				firestationMapping = mapper.treeToValue(jsonNodeFirestationMappings.get(numFirestationMapping),
 						FirestationMapping.class);
@@ -137,7 +136,6 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		logger.info("Success : firestationMappings data initialization");
 	}
 
-	// public void initializeDataMedicalRecords(JsonNode rootNode) {
 	public void initializeDataMedicalRecords() {
 		JsonNode jsonNodeMedicalRecords = this.rootNode.path("medicalrecords");
 
@@ -147,6 +145,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			ObjectMapper mapper = new ObjectMapper();
 			MedicalRecord medicalRecord;
 			int numMedicalRecord = 0;
+			// We add each medicalRecord
 			while (iteratorMedicalRecords.hasNext()) {
 				medicalRecord = mapper.treeToValue(jsonNodeMedicalRecords.get(numMedicalRecord), MedicalRecord.class);
 				medicalRecord.setIdMedicalRecord(jsonNodeMedicalRecords.get(numMedicalRecord).get("firstName").asText()

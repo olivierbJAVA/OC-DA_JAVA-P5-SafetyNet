@@ -1,6 +1,5 @@
 package com.safetynet.controllers;
 
-import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -36,13 +35,13 @@ public class UrlsController {
 	@Autowired
 	private IPersonService personService;
 
-	// Statut renvoye OK vs Found & Collection (List vs Set)
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")
 	public ResponseEntity<Firestation> responseFirestation(@RequestParam String stationNumber) {
 
 		logger.info("Request : GET /firestation");
 
+		// We check that the station requested exist
 		if (firestationMappingService.getFirestationMappingByIdStation(stationNumber) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", stationNumber);
 		}
@@ -60,6 +59,7 @@ public class UrlsController {
 
 		logger.info("Request : GET /childAlert");
 
+		// We check that the address requested exist
 		if (!personService.addressExist(address)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
@@ -78,6 +78,7 @@ public class UrlsController {
 
 		logger.info("Request : GET /phoneAlert");
 
+		// We check that the station requested exist
 		if (firestationMappingService.getFirestationMappingByIdStation(firestation) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", firestation);
 		}
@@ -95,6 +96,7 @@ public class UrlsController {
 
 		logger.info("Request : GET /fire");
 
+		// We check that the address requested exist
 		if (!personService.addressExist(address)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
@@ -113,6 +115,7 @@ public class UrlsController {
 
 		logger.info("Request : GET /flood/stations");
 
+		// We check that stations requested exist
 		for (int i = 0; i < stations.length; i++) {
 
 			if (firestationMappingService.getFirestationMappingByIdStation(stations[i]) == null) {
@@ -133,6 +136,7 @@ public class UrlsController {
 
 		logger.info("Request : GET /personInfo");
 
+		// We check that the person requested exist
 		if (!personService.idPersonExist(firstName + lastName)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ",
 					firstName + lastName);
@@ -151,6 +155,7 @@ public class UrlsController {
 
 		logger.info("Request : GET /communityEmail");
 
+		// We check that the city requested exist
 		if (!personService.cityExist(city)) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", city);
 		}

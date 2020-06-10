@@ -35,7 +35,7 @@ public class EndpointFirestationMappingsController {
 	public ResponseEntity<List<FirestationMapping>> getAllFirestationMappings() {
 
 		logger.info("Request : GET /firestations");
-		
+
 		List<FirestationMapping> firestationMappings = firestationMappingService.getAllFirestationMappings();
 
 		logger.info("Success : firestationMappings found");
@@ -48,7 +48,8 @@ public class EndpointFirestationMappingsController {
 			@RequestBody FirestationMapping firestationMapping) {
 
 		logger.info("Request : POST /firestations");
-		
+
+		// We check that the resource to add don't already exist
 		if (firestationMappingService.firestationMappingExist(firestationMapping)) {
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					firestationMapping.getAddress());
@@ -56,12 +57,14 @@ public class EndpointFirestationMappingsController {
 
 		firestationMappingService.addFirestationMapping(firestationMapping);
 
+		// We check that the resource has been added
 		if (!firestationMappingService.firestationMappingExist(firestationMapping)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : firestationMapping for address {} added", firestationMapping.getAddress());
-		
+
+		// We return the new resource location in the header
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(firestationMapping.getAddress()).toUri();
 
@@ -73,7 +76,8 @@ public class EndpointFirestationMappingsController {
 			@RequestBody FirestationMapping firestationMapping) {
 
 		logger.info("Request : PUT /firestations/{}", address);
-		
+
+		// We check that the resource to update exist
 		if (firestationMappingService.getFirestationMappingByAdress(address) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
@@ -85,13 +89,13 @@ public class EndpointFirestationMappingsController {
 
 		firestationMappingService.updateFirestationMapping(firestationMapping);
 
-		if (!firestationMappingService.getFirestationMappingByAdress(address)
-				.equals(firestationMapping)) {
+		// We check that the resource has been updated
+		if (!firestationMappingService.getFirestationMappingByAdress(address).equals(firestationMapping)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : firestationMapping for address {} updated", firestationMapping.getAddress());
-		
+
 		return new ResponseEntity<>(firestationMapping, HttpStatus.OK);
 	}
 
@@ -99,19 +103,21 @@ public class EndpointFirestationMappingsController {
 	public ResponseEntity<Void> deleteFirestationMapping(@PathVariable(value = "address") String address) {
 
 		logger.info("Request : DELETE /firestations/{}", address);
-		
+
+		// We check that the resource to delete exist
 		if (firestationMappingService.getFirestationMappingByAdress(address) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", address);
 		}
 
 		FirestationMapping firestationMappingDeleted = firestationMappingService.deleteFirestationMapping(address);
 
+		// We check that the resource has been deleted
 		if (firestationMappingService.firestationMappingExist(firestationMappingDeleted)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : firestationMapping for address {} deleted", address);
-		
+
 		return new ResponseEntity<>(HttpStatus.GONE);
 	}
 

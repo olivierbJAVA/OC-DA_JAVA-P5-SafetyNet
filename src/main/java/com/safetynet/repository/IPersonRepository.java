@@ -14,7 +14,4 @@ public interface IPersonRepository {
 	public List<Person> getAllPersons();
 
 	public Person getPersonById(String idPerson);
-
-	//boolean addressExist(String address);
-
 }

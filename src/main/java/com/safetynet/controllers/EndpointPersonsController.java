@@ -64,6 +64,7 @@ public class EndpointPersonsController {
 
 		logger.info("Request : POST /persons");
 
+		// We check that the resource to add don't already exist
 		if (personService.personExist(person)) {
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					person.getFirstName() + person.getLastName());
@@ -73,12 +74,14 @@ public class EndpointPersonsController {
 
 		personService.addPerson(person);
 
+		// We check that the resource has been added
 		if (!personService.personExist(person)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : person {} added", person.getIdPerson());
 
+		// We return the new resource location in the header
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(person.getIdPerson()).toUri();
 
@@ -91,6 +94,7 @@ public class EndpointPersonsController {
 
 		logger.info("Request : PUT /persons/{}", id);
 
+		// We check that the resource to update exist
 		if (personService.getPersonById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
@@ -104,6 +108,7 @@ public class EndpointPersonsController {
 
 		personService.updatePerson(person);
 
+		// We check that the resource has been updated
 		if (!personService.getPersonById(id).equals(person)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
@@ -118,12 +123,14 @@ public class EndpointPersonsController {
 
 		logger.info("Request : DELETE /persons/{}", id);
 
+		// We check that the resource to delete exist
 		if (personService.getPersonById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		Person personDeleted = personService.deletePerson(id);
 
+		// We check that the resource has been deleted
 		if (personService.personExist(personDeleted)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}

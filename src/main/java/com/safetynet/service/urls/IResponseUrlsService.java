@@ -1,6 +1,5 @@
 package com.safetynet.service.urls;
 
-import java.util.List;
 import java.util.Set;
 
 import com.safetynet.entities.urls.ChildAlert;

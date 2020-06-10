@@ -64,6 +64,7 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : POST /medicalRecords");
 
+		// We check that the resource to add don't already exist
 		if (medicalRecordService.medicalRecordExist(medicalRecord)) {
 			throw new RessourceAlreadyExistException(HttpStatus.BAD_REQUEST, "Error ressource already exist : ",
 					medicalRecord.getFirstName() + medicalRecord.getLastName());
@@ -73,12 +74,14 @@ public class EndpointMedicalRecordsController {
 
 		medicalRecordService.addMedicalRecord(medicalRecord);
 
+		// We check that the resource has been added
 		if (!medicalRecordService.medicalRecordExist(medicalRecord)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
 
 		logger.info("Success : medicalRecord {} added", medicalRecord.getIdMedicalRecord());
 
+		// We return the new resource location in the header
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(medicalRecord.getIdMedicalRecord()).toUri();
 
@@ -91,6 +94,7 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : PUT /medicalRecords{}", id);
 
+		// We check that the resource to update exist
 		if (medicalRecordService.getMedicalRecordById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
@@ -105,6 +109,7 @@ public class EndpointMedicalRecordsController {
 
 		medicalRecordService.updateMedicalRecord(medicalRecord);
 
+		// We check that the resource has been updated
 		if (!medicalRecordService.getMedicalRecordById(id).equals(medicalRecord)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
@@ -119,12 +124,14 @@ public class EndpointMedicalRecordsController {
 
 		logger.info("Request : DELETE /medicalRecords{}", id);
 
+		// We check that the resource to delete exist
 		if (medicalRecordService.getMedicalRecordById(id) == null) {
 			throw new RessourceNotFoundException(HttpStatus.NOT_FOUND, "Error ressource not found : ", id);
 		}
 
 		MedicalRecord medicalRecordDeleted = medicalRecordService.deleteMedicalRecord(id);
 
+		// We check that the resource has been deleted
 		if (medicalRecordService.medicalRecordExist(medicalRecordDeleted)) {
 			throw new InternalServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during the operation");
 		}
