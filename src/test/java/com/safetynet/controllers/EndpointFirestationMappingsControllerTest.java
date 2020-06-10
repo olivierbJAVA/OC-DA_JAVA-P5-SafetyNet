@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,6 +39,8 @@ import com.safetynet.service.endpoints.IFirestationMappingService;
 @WebMvcTest(EndpointFirestationMappingsController.class)
 public class EndpointFirestationMappingsControllerTest {
 	
+	private static final Logger logger = LoggerFactory.getLogger(EndpointFirestationMappingsControllerTest.class);
+	
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -52,7 +56,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @GetMapping(value = "/firestations")
 	@Test
-	public void getAllFirestationMappings() throws Exception {
+	public void getAllFirestationMappings() {
 		//ARRANGE
 		FirestationMapping firestationMappingToGet1 = new FirestationMapping("3 rue de Paris", "1");
 		FirestationMapping firestationMappingToGet2 = new FirestationMapping("3 rue de Nantes", "2");
@@ -66,19 +70,23 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.getAllFirestationMappings()).thenReturn(allFirestationMappingsToGet);
 
 		//ACT & ASSERT
-		mockMvc.perform(get("/firestations")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isFound())
-				.andExpect(jsonPath("$[0].address", is(firestationMappingToGet1.getAddress())))
-				.andExpect(jsonPath("$[1].address", is(firestationMappingToGet2.getAddress())))
-				.andExpect(jsonPath("$[2].address", is(firestationMappingToGet3.getAddress())));
+		try {
+			mockMvc.perform(get("/firestations")
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isFound())
+					.andExpect(jsonPath("$[0].address", is(firestationMappingToGet1.getAddress())))
+					.andExpect(jsonPath("$[1].address", is(firestationMappingToGet2.getAddress())))
+					.andExpect(jsonPath("$[2].address", is(firestationMappingToGet3.getAddress())));
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(1)).getAllFirestationMappings();
 	}
 	
 	// @PostMapping(value = "/firestations")
 	@Test
-	public void addFirestationMapping_whenFirestationMappingNotAlreadyExist() throws Exception {
+	public void addFirestationMapping_whenFirestationMappingNotAlreadyExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToAdd = new FirestationMapping("2 rue de Paris", "5");
 		
@@ -86,11 +94,16 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.addFirestationMapping(firestationMappingToAdd)).thenReturn(null);
 
 		//ACT & ASSERT
-		MvcResult mvcResult = mockMvc.perform(post("/firestations")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingToAdd)))
-				.andExpect(status().isCreated())
-				.andReturn();
+		MvcResult mvcResult=null;
+		try {
+			mvcResult = mockMvc.perform(post("/firestations")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingToAdd)))
+					.andExpect(status().isCreated())
+					.andReturn();
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 	
 		verify(mockFirestationMappingService, times(2)).firestationMappingExist(firestationMappingToAdd);
 		verify(mockFirestationMappingService, times(1)).addFirestationMapping(firestationMappingToAdd);
@@ -101,17 +114,21 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @PostMapping(value = "/firestations")
 	@Test
-	public void addFirestationMapping_whenFirestationMappingAlreadyExist() throws Exception {
+	public void addFirestationMapping_whenFirestationMappingAlreadyExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToAdd = new FirestationMapping("2 rue de Paris", "5");
 		
 		when(mockFirestationMappingService.firestationMappingExist(firestationMappingToAdd)).thenReturn(true);
 
 		//ACT & ASSERT
-		mockMvc.perform(post("/firestations")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingToAdd)))
-				.andExpect(status().isBadRequest());
+		try {
+			mockMvc.perform(post("/firestations")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingToAdd)))
+					.andExpect(status().isBadRequest());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(1)).firestationMappingExist(firestationMappingToAdd);
 		verify(mockFirestationMappingService, never()).addFirestationMapping(firestationMappingToAdd);
@@ -119,7 +136,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @PostMapping(value = "/firestations")
 	@Test
-	public void addFirestationMapping_whenFirestationMappingNotAlreadyExist_whenInternalServerError() throws Exception {
+	public void addFirestationMapping_whenFirestationMappingNotAlreadyExist_whenInternalServerError() {
 		//ARRANGE
 		FirestationMapping firestationMappingToAdd = new FirestationMapping("2 rue de Paris", "5");
 		
@@ -127,10 +144,14 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.addFirestationMapping(firestationMappingToAdd)).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(post("/firestations")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingToAdd)))
-				.andExpect(status().isInternalServerError());
+		try {
+			mockMvc.perform(post("/firestations")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingToAdd)))
+					.andExpect(status().isInternalServerError());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 
 		verify(mockFirestationMappingService, times(2)).firestationMappingExist(firestationMappingToAdd);
 		verify(mockFirestationMappingService, times(1)).addFirestationMapping(firestationMappingToAdd);
@@ -138,7 +159,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @PutMapping(value = "/firestations/{id}")
 	@Test
-	public void updateFirestationMapping_whenFirestationMappingExist() throws Exception {
+	public void updateFirestationMapping_whenFirestationMappingExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToUpdate = new FirestationMapping("2 rue de Paris", "5");
 		FirestationMapping firestationMappingUpdated = new FirestationMapping("2 rue de Paris", "6");
@@ -147,11 +168,15 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.updateFirestationMapping(firestationMappingUpdated)).thenReturn(firestationMappingToUpdate);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.address", is(firestationMappingUpdated.getAddress())));
+		try {
+			mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.address", is(firestationMappingUpdated.getAddress())));
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 
 		verify(mockFirestationMappingService, times(3)).getFirestationMappingByAdress(firestationMappingToUpdate.getAddress());
 		verify(mockFirestationMappingService, times(1)).updateFirestationMapping(firestationMappingUpdated);
@@ -159,7 +184,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @PutMapping(value = "/firestations/{id}")
 	@Test
-	public void updateFirestationMapping_whenFirestationMappingInPathRequestNotExist() throws Exception {
+	public void updateFirestationMapping_whenFirestationMappingInPathRequestNotExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToUpdate = new FirestationMapping("2 rue de Paris", "5");
 		FirestationMapping firestationMappingUpdated = new FirestationMapping("2 rue de Paris", "6");
@@ -167,10 +192,14 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToUpdate.getAddress())).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(1)).getFirestationMappingByAdress(firestationMappingToUpdate.getAddress());
 		verify(mockFirestationMappingService, never()).updateFirestationMapping(any(FirestationMapping.class));
@@ -178,7 +207,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @PutMapping(value = "/firestations/{id}")
 	@Test
-	public void updateFirestationMapping_whenFirestationMappingInRequestBodyNotExist() throws Exception {
+	public void updateFirestationMapping_whenFirestationMappingInRequestBodyNotExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToUpdate = new FirestationMapping("2 rue de Paris", "5");
 		FirestationMapping firestationMappingUpdated = new FirestationMapping("2 rue de Paris", "6");
@@ -186,10 +215,14 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToUpdate.getAddress())).thenReturn(firestationMappingToUpdate).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(2)).getFirestationMappingByAdress(firestationMappingToUpdate.getAddress());
 		verify(mockFirestationMappingService, never()).updateFirestationMapping(any(FirestationMapping.class));
@@ -197,7 +230,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @PutMapping(value = "/firestations/{id}")
 	@Test
-	public void updateFirestationMapping_whenFirestationMappingExist_whenInternalServerError() throws Exception {
+	public void updateFirestationMapping_whenFirestationMappingExist_whenInternalServerError() {
 		//ARRANGE
 		FirestationMapping firestationMappingToUpdate = new FirestationMapping("2 rue de Paris", "5");
 		FirestationMapping firestationMappingUpdated = new FirestationMapping("2 rue de Paris", "6");
@@ -206,10 +239,14 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.updateFirestationMapping(firestationMappingUpdated)).thenReturn(firestationMappingToUpdate);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
-				.andExpect(status().isInternalServerError());
+		try {
+			mockMvc.perform(put("/firestations/{id}", firestationMappingToUpdate.getAddress())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(firestationMappingUpdated)))
+					.andExpect(status().isInternalServerError());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(3)).getFirestationMappingByAdress(firestationMappingToUpdate.getAddress());
 		verify(mockFirestationMappingService, times(1)).updateFirestationMapping(firestationMappingUpdated);
@@ -217,7 +254,7 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @DeleteMapping(value = "/firestations/{id}")
 	@Test
-	public void deleteFirestationMapping_whenFirestationMappingExist() throws Exception {
+	public void deleteFirestationMapping_whenFirestationMappingExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToDelete = new FirestationMapping("2 rue de Paris", "5");
 		
@@ -226,9 +263,13 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.firestationMappingExist(firestationMappingToDelete)).thenReturn(false);
 
 		//ACT & ASSERT
-		mockMvc.perform(delete("/firestations/{id}", firestationMappingToDelete.getAddress())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isGone());
+		try {
+			mockMvc.perform(delete("/firestations/{id}", firestationMappingToDelete.getAddress())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isGone());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(1)).getFirestationMappingByAdress(firestationMappingToDelete.getAddress());
 		verify(mockFirestationMappingService, times(1)).deleteFirestationMapping(firestationMappingToDelete.getAddress());
@@ -237,16 +278,20 @@ public class EndpointFirestationMappingsControllerTest {
 	
 	// @DeleteMapping(value = "/firestations/{id}")
 	@Test
-	public void deleteFirestationMapping_whenFirestationMappingNotExist() throws Exception {
+	public void deleteFirestationMapping_whenFirestationMappingNotExist() {
 		//ARRANGE
 		FirestationMapping firestationMappingToDelete = new FirestationMapping("2 rue de Paris", "5");
 		
 		when(mockFirestationMappingService.getFirestationMappingByAdress(firestationMappingToDelete.getAddress())).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(delete("/firestations/{id}", firestationMappingToDelete.getAddress())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(delete("/firestations/{id}", firestationMappingToDelete.getAddress())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(1)).getFirestationMappingByAdress(firestationMappingToDelete.getAddress());
 		verify(mockFirestationMappingService, never()).deleteFirestationMapping(anyString());
@@ -255,7 +300,7 @@ public class EndpointFirestationMappingsControllerTest {
 
 	// @DeleteMapping(value = "/firestations/{id}")
 	@Test
-	public void deleteFirestationMapping_whenFirestationMappingExist_whenInternalServerError() throws Exception {
+	public void deleteFirestationMapping_whenFirestationMappingExist_whenInternalServerError() {
 		//ARRANGE
 		FirestationMapping firestationMappingToDelete = new FirestationMapping("2 rue de Paris", "5");
 		
@@ -264,9 +309,13 @@ public class EndpointFirestationMappingsControllerTest {
 		when(mockFirestationMappingService.firestationMappingExist(firestationMappingToDelete)).thenReturn(true);
 	
 		//ACT & ASSERT
-		mockMvc.perform(delete("/firestations/{id}", firestationMappingToDelete.getAddress())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isInternalServerError());
+		try {
+			mockMvc.perform(delete("/firestations/{id}", firestationMappingToDelete.getAddress())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isInternalServerError());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockFirestationMappingService, times(1)).getFirestationMappingByAdress(firestationMappingToDelete.getAddress());
 		verify(mockFirestationMappingService, times(1)).deleteFirestationMapping(firestationMappingToDelete.getAddress());

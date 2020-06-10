@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,6 +38,8 @@ import com.safetynet.service.endpoints.IMedicalRecordService;
  */
 @WebMvcTest(EndpointMedicalRecordsController.class)
 public class EndpointMedicalRecordsControllerTest {
+	
+	private static final Logger logger = LoggerFactory.getLogger(EndpointMedicalRecordsControllerTest.class);
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -52,7 +56,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @GetMapping(value = "/medicalRecords")
 	@Test
-	public void getAllMedicalRecords() throws Exception {
+	public void getAllMedicalRecords() {
 		//ARRANGE
 		MedicalRecord medicalRecordToGet1 = new MedicalRecord("BertrandSimon1", "Bertrand", "Simon1", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -72,19 +76,23 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.getAllMedicalRecords()).thenReturn(allMedicalRecordsToGet);
 
 		//ACT & ASSERT
-		mockMvc.perform(get("/medicalRecords")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isFound())
-				.andExpect(jsonPath("$[0].lastName", is(medicalRecordToGet1.getLastName())))
-				.andExpect(jsonPath("$[1].lastName", is(medicalRecordToGet2.getLastName())))
-				.andExpect(jsonPath("$[2].lastName", is(medicalRecordToGet3.getLastName())));
+		try {
+			mockMvc.perform(get("/medicalRecords")
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isFound())
+					.andExpect(jsonPath("$[0].lastName", is(medicalRecordToGet1.getLastName())))
+					.andExpect(jsonPath("$[1].lastName", is(medicalRecordToGet2.getLastName())))
+					.andExpect(jsonPath("$[2].lastName", is(medicalRecordToGet3.getLastName())));
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getAllMedicalRecords();
 	}
 		
 	// @GetMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void getMedicalRecordById_whenMedicalRecordExist() throws Exception {
+	public void getMedicalRecordById_whenMedicalRecordExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToGet = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -93,17 +101,21 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord())).thenReturn(medicalRecordToGet);
 
 		//ACT & ASSERT
-		mockMvc.perform(get("/medicalRecords/{id}", medicalRecordToGet.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isFound())
-				.andExpect(jsonPath("$.firstName", is(medicalRecordToGet.getFirstName())));
+		try {
+			mockMvc.perform(get("/medicalRecords/{id}", medicalRecordToGet.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isFound())
+					.andExpect(jsonPath("$.firstName", is(medicalRecordToGet.getFirstName())));
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);;
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord());
 	}
 
 	// @GetMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void getMedicalRecordById_whenMedicalRecordNotExist() throws Exception {
+	public void getMedicalRecordById_whenMedicalRecordNotExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToGet = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -112,16 +124,20 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord())).thenReturn(null);
 		
 		//ACT & ASSERT
-		mockMvc.perform(get("/medicalRecords/{id}", medicalRecordToGet.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(get("/medicalRecords/{id}", medicalRecordToGet.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord());
 	}
 	
 	// @PostMapping(value = "/medicalRecords")
 	@Test
-	public void addMedicalRecord_whenMedicalRecordNotAlreadyExist() throws Exception {
+	public void addMedicalRecord_whenMedicalRecordNotAlreadyExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToAdd = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -131,11 +147,16 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.addMedicalRecord(medicalRecordToAdd)).thenReturn(null);
 
 		//ACT & ASSERT
-		MvcResult mvcResult = mockMvc.perform(post("/medicalRecords")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordToAdd)))
-				.andExpect(status().isCreated())
-				.andReturn();
+		MvcResult mvcResult=null;
+		try {
+			mvcResult = mockMvc.perform(post("/medicalRecords")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordToAdd)))
+					.andExpect(status().isCreated())
+					.andReturn();
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 	
 		verify(mockMedicalRecordService, times(2)).medicalRecordExist(any(MedicalRecord.class));
 		verify(mockMedicalRecordService, times(1)).addMedicalRecord(medicalRecordToAdd);
@@ -146,7 +167,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PostMapping(value = "/medicalRecords")
 	@Test
-	public void addMedicalRecord_whenMedicalRecordAlreadyExist() throws Exception {
+	public void addMedicalRecord_whenMedicalRecordAlreadyExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToAdd = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -155,10 +176,14 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.medicalRecordExist(any(MedicalRecord.class))).thenReturn(true);
 
 		//ACT & ASSERT
-		mockMvc.perform(post("/medicalRecords")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordToAdd)))
-				.andExpect(status().isBadRequest());
+		try {
+			mockMvc.perform(post("/medicalRecords")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordToAdd)))
+					.andExpect(status().isBadRequest());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).medicalRecordExist(any(MedicalRecord.class));
 		verify(mockMedicalRecordService, never()).addMedicalRecord(medicalRecordToAdd);
@@ -166,7 +191,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PostMapping(value = "/medicalRecords")
 	@Test
-	public void addMedicalRecord_whenMedicalRecordNotAlreadyExist_whenInternalServerError() throws Exception {
+	public void addMedicalRecord_whenMedicalRecordNotAlreadyExist_whenInternalServerError() {
 		//ARRANGE
 		MedicalRecord medicalRecordToAdd = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -176,10 +201,14 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.addMedicalRecord(medicalRecordToAdd)).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(post("/medicalRecords")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordToAdd)))
-				.andExpect(status().isInternalServerError());
+		try {
+			mockMvc.perform(post("/medicalRecords")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordToAdd)))
+					.andExpect(status().isInternalServerError());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 
 		verify(mockMedicalRecordService, times(2)).medicalRecordExist(any(MedicalRecord.class));
 		verify(mockMedicalRecordService, times(1)).addMedicalRecord(medicalRecordToAdd);
@@ -187,7 +216,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PutMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void updateMedicalRecord_whenMedicalRecordExist() throws Exception {
+	public void updateMedicalRecord_whenMedicalRecordExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -200,11 +229,15 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.updateMedicalRecord(medicalRecordUpdated)).thenReturn(medicalRecordToUpdate);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.birthdate", is(medicalRecordUpdated.getBirthdate())));
+		try {
+			mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.birthdate", is(medicalRecordUpdated.getBirthdate())));
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 
 		verify(mockMedicalRecordService, times(3)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
 		verify(mockMedicalRecordService, times(1)).updateMedicalRecord(medicalRecordUpdated);
@@ -212,7 +245,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PutMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void updateMedicalRecord_whenMedicalRecordInPathRequestNotExist() throws Exception {
+	public void updateMedicalRecord_whenMedicalRecordInPathRequestNotExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -224,10 +257,14 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
 		verify(mockMedicalRecordService, never()).updateMedicalRecord(any(MedicalRecord.class));
@@ -235,7 +272,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PutMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void updateMedicalRecord_whenMedicalRecordInRequestBodyNotExist() throws Exception {
+	public void updateMedicalRecord_whenMedicalRecordInRequestBodyNotExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -247,10 +284,14 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord())).thenReturn(medicalRecordToUpdate).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);;
+		}
 		
 		verify(mockMedicalRecordService, times(2)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
 		verify(mockMedicalRecordService, never()).updateMedicalRecord(any(MedicalRecord.class));
@@ -258,7 +299,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @PutMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void updateMedicalRecord_whenMedicalRecordExist_whenInternalServerError() throws Exception {
+	public void updateMedicalRecord_whenMedicalRecordExist_whenInternalServerError() {
 		//ARRANGE
 		MedicalRecord medicalRecordToUpdate = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -271,10 +312,14 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.updateMedicalRecord(medicalRecordUpdated)).thenReturn(medicalRecordToUpdate);
 
 		//ACT & ASSERT
-		mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
-				.andExpect(status().isInternalServerError());
+		try {
+			mockMvc.perform(put("/medicalRecords/{id}", medicalRecordToUpdate.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(medicalRecordUpdated)))
+					.andExpect(status().isInternalServerError());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(3)).getMedicalRecordById(medicalRecordToUpdate.getIdMedicalRecord());
 		verify(mockMedicalRecordService, times(1)).updateMedicalRecord(medicalRecordUpdated);
@@ -282,7 +327,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @DeleteMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void deleteMedicalRecord_whenMedicalRecordExist() throws Exception {
+	public void deleteMedicalRecord_whenMedicalRecordExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToDelete = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -293,9 +338,13 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.medicalRecordExist(medicalRecordToDelete)).thenReturn(false);
 
 		//ACT & ASSERT
-		mockMvc.perform(delete("/medicalRecords/{id}", medicalRecordToDelete.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isGone());
+		try {
+			mockMvc.perform(delete("/medicalRecords/{id}", medicalRecordToDelete.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isGone());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord());
 		verify(mockMedicalRecordService, times(1)).deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
@@ -304,7 +353,7 @@ public class EndpointMedicalRecordsControllerTest {
 	
 	// @DeleteMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void deleteMedicalRecord_whenMedicalRecordNotExist() throws Exception {
+	public void deleteMedicalRecord_whenMedicalRecordNotExist() {
 		//ARRANGE
 		MedicalRecord medicalRecordToDelete = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -313,9 +362,13 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord())).thenReturn(null);
 
 		//ACT & ASSERT
-		mockMvc.perform(delete("/medicalRecords/{id}", medicalRecordToDelete.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isNotFound());
+		try {
+			mockMvc.perform(delete("/medicalRecords/{id}", medicalRecordToDelete.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isNotFound());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord());
 		verify(mockMedicalRecordService, never()).deleteMedicalRecord(anyString());
@@ -324,7 +377,7 @@ public class EndpointMedicalRecordsControllerTest {
 
 	// @DeleteMapping(value = "/medicalRecords/{id}")
 	@Test
-	public void deleteMedicalRecord_whenMedicalRecordExist_whenInternalServerError() throws Exception {
+	public void deleteMedicalRecord_whenMedicalRecordExist_whenInternalServerError() {
 		//ARRANGE
 		MedicalRecord medicalRecordToDelete = new MedicalRecord("BertrandSimon", "Bertrand", "Simon", "10/05/1980",
 				new String[] { "abc:500mg", "def:1000mg", "ghi:500mg" },
@@ -335,9 +388,13 @@ public class EndpointMedicalRecordsControllerTest {
 		when(mockMedicalRecordService.medicalRecordExist(medicalRecordToDelete)).thenReturn(true);
 	
 		//ACT & ASSERT
-		mockMvc.perform(delete("/medicalRecords/{id}", medicalRecordToDelete.getIdMedicalRecord())
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isInternalServerError());
+		try {
+			mockMvc.perform(delete("/medicalRecords/{id}", medicalRecordToDelete.getIdMedicalRecord())
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isInternalServerError());
+		} catch (Exception e) {
+			logger.error("Error in MockMvc", e);
+		}
 		
 		verify(mockMedicalRecordService, times(1)).getMedicalRecordById(medicalRecordToDelete.getIdMedicalRecord());
 		verify(mockMedicalRecordService, times(1)).deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());

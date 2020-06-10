@@ -8,6 +8,8 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +43,8 @@ import com.safetynet.util.JsonFileInitializeListsImpl;
  */
 @ExtendWith(SpringExtension.class)
 public class ResponseUrlsServiceImplTest {
+
+	private static final Logger logger = LoggerFactory.getLogger(ResponseUrlsServiceImplTest.class);
 
 	// We use a dedicated input data file for tests purposes
 	private static String filePathInputDataForTests = "./data-test.json";
@@ -106,7 +110,7 @@ public class ResponseUrlsServiceImplTest {
 	}
 
 	@Test
-	public void responseFirestation() throws JsonProcessingException {
+	public void responseFirestation() {
 		// ARRANGE
 		// when(mockPersonService.getAllPersons()).thenReturn(mockListAllPersons);
 		Firestation expectedFirestationResponse = urlsResponseConfig.getUrlFirestationResponse();
@@ -115,12 +119,16 @@ public class ResponseUrlsServiceImplTest {
 		Firestation actualFirestationResponse = responseUrlsServiceImplUnderTest.responseFirestation("2");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedFirestationResponse),
-				objectMapper.writeValueAsString(actualFirestationResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedFirestationResponse),
+					objectMapper.writeValueAsString(actualFirestationResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 
 	@Test
-	public void responseChildAlert_whenChildAlertNotEmpty() throws JsonProcessingException {
+	public void responseChildAlert_whenChildAlertNotEmpty() {
 		// ARRANGE
 		ChildAlert expectedChildAlertResponse = urlsResponseConfig.getUrlChildAlertResponse();
 
@@ -128,12 +136,16 @@ public class ResponseUrlsServiceImplTest {
 		ChildAlert actualChildAlertResponse = responseUrlsServiceImplUnderTest.responseChildAlert("1509 Culver St");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedChildAlertResponse),
-				objectMapper.writeValueAsString(actualChildAlertResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedChildAlertResponse),
+					objectMapper.writeValueAsString(actualChildAlertResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 
 	@Test
-	public void responseChildAlert_whenChildAlertEmpty() throws JsonProcessingException {
+	public void responseChildAlert_whenChildAlertEmpty() {
 		// ACT
 		ChildAlert actualChildAlertResponse = responseUrlsServiceImplUnderTest.responseChildAlert("29 15th St");
 
@@ -142,7 +154,7 @@ public class ResponseUrlsServiceImplTest {
 	}
 
 	@Test
-	public void responsePhoneAlert() throws JsonProcessingException {
+	public void responsePhoneAlert() {
 		// ARRANGE
 		Set<String> expectedPhoneAlertResponse = urlsResponseConfig.getUrlPhoneAlertResponse();
 
@@ -150,12 +162,16 @@ public class ResponseUrlsServiceImplTest {
 		Set<String> actualPhoneAlertResponse = responseUrlsServiceImplUnderTest.responsePhoneAlert("1");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedPhoneAlertResponse),
-				objectMapper.writeValueAsString(actualPhoneAlertResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedPhoneAlertResponse),
+					objectMapper.writeValueAsString(actualPhoneAlertResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 
 	@Test
-	public void responseFire() throws JsonProcessingException {
+	public void responseFire() {
 		// ARRANGE
 		Fire expectedFireResponse = urlsResponseConfig.getUrlFireResponse();
 
@@ -163,12 +179,16 @@ public class ResponseUrlsServiceImplTest {
 		Fire actualFireResponse = responseUrlsServiceImplUnderTest.responseFire("29 15th St");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedFireResponse),
-				objectMapper.writeValueAsString(actualFireResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedFireResponse),
+					objectMapper.writeValueAsString(actualFireResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 
 	@Test
-	public void responseFlood() throws JsonProcessingException {
+	public void responseFlood() {
 		// ARRANGE
 		Flood expectedFloodResponse = urlsResponseConfig.getUrlFloodResponse();
 
@@ -176,12 +196,16 @@ public class ResponseUrlsServiceImplTest {
 		Flood actualFloodResponse = responseUrlsServiceImplUnderTest.responseFlood(new String[] { "4" });
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedFloodResponse),
-				objectMapper.writeValueAsString(actualFloodResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedFloodResponse),
+					objectMapper.writeValueAsString(actualFloodResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 
 	@Test
-	public void responsePersonInfo() throws JsonProcessingException {
+	public void responsePersonInfo() {
 		// ARRANGE
 		PersonInfo expectedPersonInfoResponse = urlsResponseConfig.getUrlPersonInfoResponse();
 
@@ -189,12 +213,16 @@ public class ResponseUrlsServiceImplTest {
 		PersonInfo actualPersonInfoResponse = responseUrlsServiceImplUnderTest.responsePersonInfo("Lily", "Cooper");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedPersonInfoResponse),
-				objectMapper.writeValueAsString(actualPersonInfoResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedPersonInfoResponse),
+					objectMapper.writeValueAsString(actualPersonInfoResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 
 	@Test
-	public void responseCommunityEmail() throws JsonProcessingException {
+	public void responseCommunityEmail() {
 		// ARRANGE
 		Set<String> expectedCommunityEmailResponse = urlsResponseConfig.getUrlCommunityEmailResponse();
 
@@ -202,7 +230,11 @@ public class ResponseUrlsServiceImplTest {
 		Set<String> actualCommunityEmailtResponse = responseUrlsServiceImplUnderTest.responseCommunityEmail("Culver");
 
 		// ASSERT
-		assertEquals(objectMapper.writeValueAsString(expectedCommunityEmailResponse),
-				objectMapper.writeValueAsString(actualCommunityEmailtResponse));
+		try {
+			assertEquals(objectMapper.writeValueAsString(expectedCommunityEmailResponse),
+					objectMapper.writeValueAsString(actualCommunityEmailtResponse));
+		} catch (JsonProcessingException e) {
+			logger.error("Exception in JsonProcessing", e);
+		}
 	}
 }

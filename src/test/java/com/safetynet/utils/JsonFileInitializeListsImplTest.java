@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.entities.endpoints.MedicalRecord;
 import com.safetynet.entities.endpoints.Person;
@@ -96,7 +95,7 @@ public class JsonFileInitializeListsImplTest {
 	private IMedicalRecordService medicalRecordService;
 
 	@Test
-	public void getInitialData() throws JsonProcessingException {
+	public void getInitialData() {
 		// ARRANGE
 		// Expected persons to be in the list of persons following data initialization
 		Person person1 = new Person("RogerBoyd", "Roger", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
