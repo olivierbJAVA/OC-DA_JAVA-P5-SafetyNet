@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Class materializing a flood response for url response.
+ */
 public class Flood {
 
 	@JsonProperty("Firestation")

@@ -22,6 +22,10 @@ import com.safetynet.service.endpoints.IFirestationMappingService;
 import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.service.endpoints.IPersonService;
 
+/**
+ * Class in charge of managing the data initialization of the lists. The data
+ * come from a file which path is parameter of the object constructor.
+ */
 @Service
 public class JsonFileInitializeListsImpl implements IInitializeLists {
 
@@ -43,10 +47,18 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 
 	// The value of the file path containing input data comes from the SpringBoot
 	// application.properties file
+	/**
+	 * Constructor of the JsonFileInitializeListsImpl object.
+	 * 
+	 * @param filePathInputData The path of the file containing input data
+	 */
 	public JsonFileInitializeListsImpl(@Value("${filePathInputData}") String filePathInputData) {
 		this.filePathInputData = filePathInputData;
 	}
 
+	/**
+	 * Get the initial data.
+	 */
 	@PostConstruct
 	public void getInitialData() {
 
@@ -78,6 +90,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		logger.info("Success : data initialization");
 	}
 
+	/**
+	 * Initialize the data list of persons.
+	 */
 	public void initializeDataPersons() {
 		JsonNode jsonNodePersons = this.rootNode.path("persons");
 		Iterator<JsonNode> iteratorPersons = jsonNodePersons.elements();
@@ -97,9 +112,10 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			}
 
 			// pretty print
-			String prettyPersons = mapper.writerWithDefaultPrettyPrinter()
+			String prettyPrintPersons = mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(personService.getAllPersons());
-			System.out.println(prettyPersons);
+			logger.debug("Initial list of persons : {}" + prettyPrintPersons);
+			System.out.println(prettyPrintPersons);
 
 		} catch (Exception e) {
 			logger.error("Error : persons data initialization " + e.toString());
@@ -108,6 +124,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		logger.info("Success : persons data initialization");
 	}
 
+	/**
+	 * Initialize the data list of firestation mappings.
+	 */
 	public void initializeDataFirestationMappings() {
 		JsonNode jsonNodeFirestationMappings = this.rootNode.path("firestations");
 		Iterator<JsonNode> iteratorFirestationMappings = jsonNodeFirestationMappings.elements();
@@ -126,9 +145,10 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			}
 
 			// pretty print
-			String prettyFirestations = mapper.writerWithDefaultPrettyPrinter()
+			String prettyPrintFirestations = mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(firestationMappingService.getAllFirestationMappings());
-			System.out.println(prettyFirestations);
+			logger.debug("Initial list of firestation mappings : {}" + prettyPrintFirestations);
+			System.out.println(prettyPrintFirestations);
 		} catch (Exception e) {
 			logger.error("Error : firestationMappings data initialization " + e.toString());
 		}
@@ -136,6 +156,9 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		logger.info("Success : firestationMappings data initialization");
 	}
 
+	/**
+	 * Initialize the data list of medical records.
+	 */
 	public void initializeDataMedicalRecords() {
 		JsonNode jsonNodeMedicalRecords = this.rootNode.path("medicalrecords");
 
@@ -156,9 +179,10 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			}
 
 			// pretty print
-			String prettyMedicalRecords = mapper.writerWithDefaultPrettyPrinter()
+			String prettyPrintMedicalRecords = mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(medicalRecordService.getAllMedicalRecords());
-			System.out.println(prettyMedicalRecords);
+			logger.debug("Initial list of firestation mappings : {}" + prettyPrintMedicalRecords);
+			System.out.println(prettyPrintMedicalRecords);
 		} catch (Exception e) {
 			logger.error("Error : medicalRecords data initialization " + e.toString());
 		}

@@ -37,6 +37,7 @@ import com.safetynet.util.JsonFileInitializeListsImpl;
 @ExtendWith(SpringExtension.class)
 public class JsonFileInitializeListsImplTest {
 
+	// We use a dedicated input data file for tests purposes
 	// @Value("${filePathInputData}")
 	private static String filePathInputDataForTests = "./data-test.json";
 
@@ -94,6 +95,7 @@ public class JsonFileInitializeListsImplTest {
 	@Test
 	public void getInitialData() throws JsonProcessingException {
 		// ARRANGE
+		// Expected persons to be in the list of persons following data initialization
 		Person person1 = new Person("RogerBoyd", "Roger", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
 				"jaboyd@email.com");
 		Person person2 = new Person("PeterDuncan", "Peter", "Duncan", "644 Gershwin Cir", "Culver", "97451",
@@ -141,6 +143,7 @@ public class JsonFileInitializeListsImplTest {
 		Person person23 = new Person("ZachZemicks", "Zach", "Zemicks", "892 Downing Ct", "Culver", "97451",
 				"841-874-7512", "zarc@email.com");
 
+		// Expected firestationMappings to be in the list of firestationMappings following data initialization
 		FirestationMapping firestationMapping1 = new FirestationMapping("748 Townings Dr", "3");
 		FirestationMapping firestationMapping2 = new FirestationMapping("951 LoneTree Rd", "2");
 		FirestationMapping firestationMapping3 = new FirestationMapping("489 Manchester St", "4");
@@ -153,6 +156,7 @@ public class JsonFileInitializeListsImplTest {
 		FirestationMapping firestationMapping10 = new FirestationMapping("112 Steppes Pl", "4");
 		FirestationMapping firestationMapping11 = new FirestationMapping("29 15th St", "2");
 
+		// Expected medicalRecords to be in the list of medicalRecords following data initialization
 		MedicalRecord medicalRecord1 = new MedicalRecord("JohnBoyd", "John", "Boyd", "03/06/1984",
 				new String[] { "aznol:350mg", "hydrapermazol:100mg" }, new String[] { "nillacilan" });
 		MedicalRecord medicalRecord2 = new MedicalRecord("JacobBoyd", "Jacob", "Boyd", "03/06/1989",
@@ -205,16 +209,19 @@ public class JsonFileInitializeListsImplTest {
 		jsonFileInitializeListsImpl.getInitialData();
 
 		// ASSERT
+		// We check that the list of persons generated contains the expected persons
 		List<Person> actualListPersons = personService.getAllPersons();
 		assertThat(actualListPersons).containsExactlyInAnyOrder(person1, person2, person3, person4, person5, person6,
 				person7, person8, person9, person10, person11, person12, person13, person14, person15, person16,
 				person17, person18, person19, person20, person21, person22, person23);
 
+		// We check that the list of firestationMappings generated contains the expected firestationMappings
 		List<FirestationMapping> actualListFirestationMappings = firestationMappingService.getAllFirestationMappings();
 		assertThat(actualListFirestationMappings).containsExactlyInAnyOrder(firestationMapping1, firestationMapping2,
 				firestationMapping3, firestationMapping4, firestationMapping5, firestationMapping6, firestationMapping7,
 				firestationMapping8, firestationMapping9, firestationMapping10, firestationMapping11);
 
+		// We check that the list of medicalRecords generated contains the expected medicalRecords
 		List<MedicalRecord> actualListMedicalRecords = medicalRecordService.getAllMedicalRecords();
 		assertThat(actualListMedicalRecords).containsExactlyInAnyOrder(medicalRecord1, medicalRecord2, medicalRecord3,
 				medicalRecord4, medicalRecord5, medicalRecord6, medicalRecord7, medicalRecord8, medicalRecord9,

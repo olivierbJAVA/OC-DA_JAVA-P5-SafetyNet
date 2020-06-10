@@ -55,6 +55,7 @@ public class PersonServiceImplTest {
 		personServiceImplUnderTest.addPerson(personToAdd);
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<Person> argumentCaptorPerson = ArgumentCaptor.forClass(Person.class);
 		verify(mockPersonRepository, times(1)).addPerson(argumentCaptorPerson.capture());
 
@@ -75,6 +76,7 @@ public class PersonServiceImplTest {
 		personServiceImplUnderTest.deletePerson(personToDelete.getIdPerson());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorIdPerson = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(mockPersonRepository, times(1)).deletePerson(argumentCaptorIdPerson.capture());
 
@@ -98,6 +100,7 @@ public class PersonServiceImplTest {
 		personServiceImplUnderTest.updatePerson(personUpdated);
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<Person> argumentCaptorPerson = ArgumentCaptor.forClass(Person.class);
 		verify(mockPersonRepository, times(1)).updatePerson(argumentCaptorPerson.capture());
 
@@ -117,6 +120,7 @@ public class PersonServiceImplTest {
 		personServiceImplUnderTest.getPersonById(personToGet.getIdPerson());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorIdPerson = ArgumentCaptor.forClass(String.class);
 		verify(mockPersonRepository, times(1)).getPersonById(argumentCaptorIdPerson.capture());
 

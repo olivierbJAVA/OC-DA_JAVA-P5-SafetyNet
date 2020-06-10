@@ -23,6 +23,9 @@ import com.safetynet.exception.RessourceAlreadyExistException;
 import com.safetynet.exception.RessourceNotFoundException;
 import com.safetynet.service.endpoints.IFirestationMappingService;
 
+/**
+ * Controller in charge of managing the endpoint for the firestation mappings.
+ */
 @RestController
 public class EndpointFirestationMappingsController {
 
@@ -31,6 +34,9 @@ public class EndpointFirestationMappingsController {
 	@Autowired
 	private IFirestationMappingService firestationMappingService;
 
+	/**
+	 * Method managing the GET "/firestations" endpoint HTTP request.
+	 */
 	@GetMapping(value = "/firestations")
 	public ResponseEntity<List<FirestationMapping>> getAllFirestationMappings() {
 
@@ -43,6 +49,11 @@ public class EndpointFirestationMappingsController {
 		return new ResponseEntity<>(firestationMappings, HttpStatus.FOUND);
 	}
 
+	/**
+	 * Method managing the POST "/firestations" endpoint HTTP request.
+	 * 
+	 * @param firestationMapping The firestationMapping to add
+	 */
 	@PostMapping(value = "/firestations")
 	public ResponseEntity<FirestationMapping> addFirestationMapping(
 			@RequestBody FirestationMapping firestationMapping) {
@@ -71,6 +82,13 @@ public class EndpointFirestationMappingsController {
 		return ResponseEntity.created(location).build();
 	}
 
+	/**
+	 * Method managing the PUT "/firestations/{address}" endpoint HTTP request.
+	 * 
+	 * @param address            The address of the firestationMapping to update
+	 * 
+	 * @param firestationMapping The firestationMapping to update
+	 */
 	@PutMapping(value = "/firestations/{address}")
 	public ResponseEntity<FirestationMapping> updateFirestationMapping(@PathVariable String address,
 			@RequestBody FirestationMapping firestationMapping) {
@@ -99,6 +117,11 @@ public class EndpointFirestationMappingsController {
 		return new ResponseEntity<>(firestationMapping, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the DELETE "/firestations/{address}" endpoint HTTP request.
+	 * 
+	 * @param address The address of the firestationMapping to delete
+	 */
 	@DeleteMapping(value = "/firestations/{address}")
 	public ResponseEntity<Void> deleteFirestationMapping(@PathVariable(value = "address") String address) {
 

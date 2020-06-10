@@ -23,6 +23,9 @@ import com.safetynet.exception.RessourceNotFoundException;
 import com.safetynet.service.endpoints.IPersonService;
 import com.safetynet.exception.InternalServerErrorException;
 
+/**
+ * Controller in charge of managing the endpoint for the persons.
+ */
 @RestController
 public class EndpointPersonsController {
 
@@ -31,6 +34,9 @@ public class EndpointPersonsController {
 	@Autowired
 	private IPersonService personService;
 
+	/**
+	 * Method managing the GET "/persons" url HTTP request.
+	 */
 	@GetMapping(value = "/persons")
 	public ResponseEntity<List<Person>> getAllPersons() {
 
@@ -43,6 +49,11 @@ public class EndpointPersonsController {
 		return new ResponseEntity<>(persons, HttpStatus.FOUND);
 	}
 
+	/**
+	 * Method managing the GET "/persons/{id}" endpoint HTTP request.
+	 * 
+	 * @param id The id of the person to get
+	 */
 	@GetMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> getPersonById(@PathVariable String id) {
 
@@ -59,6 +70,11 @@ public class EndpointPersonsController {
 		return new ResponseEntity<>(personToGet, HttpStatus.FOUND);
 	}
 
+	/**
+	 * Method managing the POST "/persons" endpoint HTTP request.
+	 * 
+	 * @param person The person to add
+	 */
 	@PostMapping(value = "/persons")
 	public ResponseEntity<Person> addPerson(@RequestBody Person person) {
 
@@ -89,6 +105,13 @@ public class EndpointPersonsController {
 		// return new ResponseEntity<>(personAdded, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	/**
+	 * Method managing the PUT "/persons/{id}" endpoint HTTP request.
+	 * 
+	 * @param id     The id of the person to update
+	 * 
+	 * @param person The person to update
+	 */
 	@PutMapping(value = "/persons/{id}")
 	public ResponseEntity<Person> updatePerson(@PathVariable String id, @RequestBody Person person) {
 
@@ -118,6 +141,11 @@ public class EndpointPersonsController {
 		return new ResponseEntity<>(person, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the DELETE "/persons/{id}" endpoint HTTP request.
+	 * 
+	 * @param id The id of the person to delete
+	 */
 	@DeleteMapping(value = "/persons/{id}")
 	public ResponseEntity<Void> deletePerson(@PathVariable(value = "id") String id) {
 

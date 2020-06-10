@@ -55,6 +55,7 @@ public class MedicalRecordServiceImplTest {
 		medicalRecordServiceImplUnderTest.addMedicalRecord(medicalRecordToAdd);
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<MedicalRecord> argumentCaptorMedicalRecord = ArgumentCaptor.forClass(MedicalRecord.class);
 		verify(mockMedicalRecordRepository, times(1)).addMedicalRecord(argumentCaptorMedicalRecord.capture());
 
@@ -77,6 +78,7 @@ public class MedicalRecordServiceImplTest {
 		medicalRecordServiceImplUnderTest.deleteMedicalRecord(medicalRecordToDelete.getIdMedicalRecord());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorIdMedicalRecord = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(mockMedicalRecordRepository, times(1))
 				.deleteMedicalRecord(argumentCaptorIdMedicalRecord.capture());
@@ -103,6 +105,7 @@ public class MedicalRecordServiceImplTest {
 		medicalRecordServiceImplUnderTest.updateMedicalRecord(medicalRecordUpdated);
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<MedicalRecord> argumentCaptorMedicalRecord = ArgumentCaptor.forClass(MedicalRecord.class);
 		verify(mockMedicalRecordRepository, times(1)).updateMedicalRecord(argumentCaptorMedicalRecord.capture());
 
@@ -124,6 +127,7 @@ public class MedicalRecordServiceImplTest {
 		medicalRecordServiceImplUnderTest.getMedicalRecordById(medicalRecordToGet.getIdMedicalRecord());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorIdMedicalRecord = ArgumentCaptor.forClass(String.class);
 		verify(mockMedicalRecordRepository, times(1)).getMedicalRecordById(argumentCaptorIdMedicalRecord.capture());
 

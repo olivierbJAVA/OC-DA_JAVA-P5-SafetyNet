@@ -5,6 +5,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.safetynet.entities.endpoints.Person;
 
+/**
+ * Class materializing a child alert response for url response.
+ */
 public class ChildAlert {
 
 	@JsonProperty("ChildsLivingAtThisAddress")

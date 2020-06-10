@@ -53,6 +53,7 @@ public class FirestationMappingServiceImplTest {
 		firestationMappingServiceImplUnderTest.addFirestationMapping(firestationMappingToAdd);
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<FirestationMapping> argumentCaptorFirestationMapping = ArgumentCaptor
 				.forClass(FirestationMapping.class);
 		verify(mockFirestationMappingRepository, times(1))
@@ -75,6 +76,7 @@ public class FirestationMappingServiceImplTest {
 		firestationMappingServiceImplUnderTest.deleteFirestationMapping(firestationMappingToDelete.getAddress());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorAddress = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(mockFirestationMappingRepository, times(1))
 				.deleteFirestationMapping(argumentCaptorAddress.capture());
@@ -98,6 +100,7 @@ public class FirestationMappingServiceImplTest {
 		firestationMappingServiceImplUnderTest.updateFirestationMapping(firestationMappingUpdated);
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<FirestationMapping> argumentCaptorFirestationMapping = ArgumentCaptor
 				.forClass(FirestationMapping.class);
 		verify(mockFirestationMappingRepository, times(1))
@@ -119,6 +122,7 @@ public class FirestationMappingServiceImplTest {
 		firestationMappingServiceImplUnderTest.getFirestationMappingByIdStation(firestationMappingToGet.getStation());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorIdStation = ArgumentCaptor.forClass(String.class);
 		verify(mockFirestationMappingRepository, times(1))
 				.getFirestationMappingByIdStation(argumentCaptorIdStation.capture());
@@ -139,6 +143,7 @@ public class FirestationMappingServiceImplTest {
 		firestationMappingServiceImplUnderTest.getFirestationMappingByAdress(firestationMappingToGet.getAddress());
 
 		// ASSERT
+		// We check that the correct method has been called with correct argument
 		ArgumentCaptor<String> argumentCaptorAddressStation = ArgumentCaptor.forClass(String.class);
 		verify(mockFirestationMappingRepository, times(1))
 				.getFirestationMappingByAdress(argumentCaptorAddressStation.capture());

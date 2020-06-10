@@ -1,5 +1,8 @@
 package com.safetynet.entities.urls;
 
+/**
+ * Class materializing a fire person in fire response.
+ */
 public class FirePerson {
 
 	private String firstName;

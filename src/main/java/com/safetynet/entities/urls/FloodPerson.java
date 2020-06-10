@@ -1,5 +1,8 @@
 package com.safetynet.entities.urls;
 
+/**
+ * Class materializing a flood person in flood response.
+ */
 public class FloodPerson {
 
 	private String firstName;

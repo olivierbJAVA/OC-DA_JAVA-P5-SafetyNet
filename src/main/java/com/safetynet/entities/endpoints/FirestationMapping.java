@@ -1,5 +1,8 @@
 package com.safetynet.entities.endpoints;
 
+/**
+ * Class materializing a firestation mapping.
+ */
 public class FirestationMapping {
 
 	private String address;

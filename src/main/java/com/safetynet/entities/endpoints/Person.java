@@ -2,6 +2,9 @@ package com.safetynet.entities.endpoints;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Class materializing a person.
+ */
 public class Person {
 
 	@JsonIgnore

@@ -92,7 +92,7 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlFirestation_whenStationExist() throws Exception {
 		// ARRANGE
-		Firestation firestationUrlResponse = urlsResponseConfig.getUrlFirestationResponse();
+		Firestation expectedFirestationUrlResponse = urlsResponseConfig.getUrlFirestationResponse();
 		
 		FirestationMapping firestationMapping = new FirestationMapping();
 		firestationMapping.setStation("2");
@@ -100,7 +100,7 @@ public class UrlsControllerTest {
 
 		when(mockFirestationMappingService.getFirestationMappingByIdStation("2")).thenReturn(firestationMapping);
 
-		when(mockResponseUrlsService.responseFirestation("2")).thenReturn(firestationUrlResponse);
+		when(mockResponseUrlsService.responseFirestation("2")).thenReturn(expectedFirestationUrlResponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -114,7 +114,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responseFirestation("2");
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(firestationUrlResponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedFirestationUrlResponse), actualResponseBody);
 		// assertThat(objectMapper.writeValueAsString(firestationUrlResponse)).isEqualToIgnoringWhitespace(actualResponseBody);
 		// assertThat(objectMapper.writeValueAsString(firestationUrlResponse)).isEqualTo(actualResponseBody);
 	}
@@ -139,11 +139,11 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlChildAlert_whenAddressExist() throws Exception {
 		// ARRANGE
-		ChildAlert childAlertUrlResponse = urlsResponseConfig.getUrlChildAlertResponse();
+		ChildAlert expectedChildAlertUrlResponse = urlsResponseConfig.getUrlChildAlertResponse();
 
 		when(mockPersonService.addressExist("1509 Culver St")).thenReturn(true);
 				
-		when(mockResponseUrlsService.responseChildAlert("1509 Culver St")).thenReturn(childAlertUrlResponse);
+		when(mockResponseUrlsService.responseChildAlert("1509 Culver St")).thenReturn(expectedChildAlertUrlResponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -158,7 +158,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responseChildAlert("1509 Culver St");
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(childAlertUrlResponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedChildAlertUrlResponse), actualResponseBody);
 	}	
 
 	// http://localhost:8080/childAlert?address=<address>
@@ -181,12 +181,12 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlPhoneAlert_whenFirestationExist() throws Exception {
 		// ARRANGE
-		Set<String> phoneAlertUrlResponse = urlsResponseConfig.getUrlPhoneAlertResponse();
+		Set<String> expectedPhoneAlertUrlResponse = urlsResponseConfig.getUrlPhoneAlertResponse();
 		
 		FirestationMapping firestationMapping = new FirestationMapping("644 Gershwin Cir", "1");
 		when(mockFirestationMappingService.getFirestationMappingByIdStation("1")).thenReturn(firestationMapping);
 		
-		when(mockResponseUrlsService.responsePhoneAlert("1")).thenReturn(phoneAlertUrlResponse);
+		when(mockResponseUrlsService.responsePhoneAlert("1")).thenReturn(expectedPhoneAlertUrlResponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -201,7 +201,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responsePhoneAlert("1");
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(phoneAlertUrlResponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedPhoneAlertUrlResponse), actualResponseBody);
 	}	
 
 	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
@@ -224,11 +224,11 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlFire_whenAddressExist() throws Exception {
 		// ARRANGE
-		Fire fireUrlResponse = urlsResponseConfig.getUrlFireResponse();
+		Fire expectedFireUrlResponse = urlsResponseConfig.getUrlFireResponse();
 
 		when(mockPersonService.addressExist("748 Townings Dr")).thenReturn(true);
 						
-		when(mockResponseUrlsService.responseFire("748 Townings Dr")).thenReturn(fireUrlResponse);
+		when(mockResponseUrlsService.responseFire("748 Townings Dr")).thenReturn(expectedFireUrlResponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -243,7 +243,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responseFire("748 Townings Dr");
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(fireUrlResponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedFireUrlResponse), actualResponseBody);
 	}	
 	
 	// http://localhost:8080/fire?address=<address>
@@ -266,11 +266,11 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlPersonInfo_whenPersonExist() throws Exception {
 		// ARRANGE
-		PersonInfo personInfoUrlResponse = urlsResponseConfig.getUrlPersonInfoResponse();
+		PersonInfo expectedPersonInfoUrlResponse = urlsResponseConfig.getUrlPersonInfoResponse();
 			
 		when(mockPersonService.idPersonExist("LilyCooper")).thenReturn(true);
 
-		when(mockResponseUrlsService.responsePersonInfo("Lily", "Cooper")).thenReturn(personInfoUrlResponse);
+		when(mockResponseUrlsService.responsePersonInfo("Lily", "Cooper")).thenReturn(expectedPersonInfoUrlResponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -286,7 +286,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responsePersonInfo("Lily", "Cooper");
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(personInfoUrlResponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedPersonInfoUrlResponse), actualResponseBody);
 	}	
 		
 	// http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
@@ -310,11 +310,11 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlCommunityEmail_whenCityExist() throws Exception {
 		// ARRANGE
-		Set<String> communityEmailUrlResponse = urlsResponseConfig.getUrlCommunityEmailResponse();
+		Set<String> expectedCommunityEmailUrlResponse = urlsResponseConfig.getUrlCommunityEmailResponse();
 		
 		when(mockPersonService.cityExist("Culver")).thenReturn(true);
 		
-		when(mockResponseUrlsService.responseCommunityEmail("Culver")).thenReturn(communityEmailUrlResponse);
+		when(mockResponseUrlsService.responseCommunityEmail("Culver")).thenReturn(expectedCommunityEmailUrlResponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -329,7 +329,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responseCommunityEmail("Culver");
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(communityEmailUrlResponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedCommunityEmailUrlResponse), actualResponseBody);
 	}	
 
 	// http://localhost:8080/communityEmail?city=<city>
@@ -352,7 +352,7 @@ public class UrlsControllerTest {
 	@Test
 	public void getUrlFlood_whenStationExist() throws Exception {
 		// ARRANGE
-		Flood floodUrlReponse = urlsResponseConfig.getUrlFloodResponse();
+		Flood expectedFloodUrlReponse = urlsResponseConfig.getUrlFloodResponse();
 		
 		FirestationMapping firestationMapping = new FirestationMapping();
 		firestationMapping.setStation("4");
@@ -360,7 +360,7 @@ public class UrlsControllerTest {
 		
 		when(mockFirestationMappingService.getFirestationMappingByIdStation("4")).thenReturn(firestationMapping);
 
-		when(mockResponseUrlsService.responseFlood(new String[] {"4"})).thenReturn(floodUrlReponse);
+		when(mockResponseUrlsService.responseFlood(new String[] {"4"})).thenReturn(expectedFloodUrlReponse);
 		
 		// ACT & ASSERT
 		MvcResult mvcResult = mockMvc
@@ -374,7 +374,7 @@ public class UrlsControllerTest {
 		verify(mockResponseUrlsService, times(1)).responseFlood(new String[] {"4"});
 
 		String actualResponseBody = mvcResult.getResponse().getContentAsString();
-		assertEquals(objectMapper.writeValueAsString(floodUrlReponse), actualResponseBody);
+		assertEquals(objectMapper.writeValueAsString(expectedFloodUrlReponse), actualResponseBody);
 	}
 
 	// http://localhost:8080/flood/stations?stations=<a list of station_numbers>

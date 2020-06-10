@@ -6,11 +6,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/**
+ * Class in charge of managing some exceptions that may happen.
+ */
 @ControllerAdvice(basePackages = { "com.safetynet" })
 public class ExceptionHandlerAdvice {
 
 	private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
 
+	/**
+	 * Method managing the RessourceNotFoundException.
+	 * 
+	 * @param e The exception
+	 */
 	@ExceptionHandler(RessourceNotFoundException.class)
 	public ResponseEntity<String> handleException(RessourceNotFoundException e) {
 
@@ -19,6 +27,11 @@ public class ExceptionHandlerAdvice {
 		return new ResponseEntity<>(e.getMessage() + e.getRessource(), e.getHttpStatus());
 	}
 
+	/**
+	 * Method managing the RessourceAlreadyExistException.
+	 * 
+	 * @param e The exception
+	 */
 	@ExceptionHandler(RessourceAlreadyExistException.class)
 	public ResponseEntity<String> handleException(RessourceAlreadyExistException e) {
 
@@ -27,6 +40,11 @@ public class ExceptionHandlerAdvice {
 		return new ResponseEntity<>(e.getMessage() + e.getRessource(), e.getHttpStatus());
 	}
 
+	/**
+	 * Method managing the InternalServerErrorException.
+	 * 
+	 * @param e The exception
+	 */
 	@ExceptionHandler(InternalServerErrorException.class)
 	public ResponseEntity<String> handleException(InternalServerErrorException e) {
 

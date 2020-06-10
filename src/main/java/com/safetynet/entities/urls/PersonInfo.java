@@ -2,6 +2,9 @@ package com.safetynet.entities.urls;
 
 import java.util.List;
 
+/**
+ * Class materializing a person info response for url response.
+ */
 public class PersonInfo {
 
 	private String firstName;

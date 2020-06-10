@@ -39,8 +39,7 @@ import com.safetynet.util.JsonFileInitializeListsImpl;
 @ExtendWith(SpringExtension.class)
 public class ResponseUrlsServiceImplTest {
 
-	// private static InputDataConfig inputDataConfig = new InputDataConfig();
-
+	// We use a dedicated input data file for tests purposes
 	private static String filePathInputDataForTests = "./data-test.json";
 
 	@TestConfiguration

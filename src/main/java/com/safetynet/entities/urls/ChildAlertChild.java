@@ -1,5 +1,8 @@
 package com.safetynet.entities.urls;
 
+/**
+ * Class materializing a child in child alert response.
+ */
 public class ChildAlertChild {
 
 	private String childFirstName;

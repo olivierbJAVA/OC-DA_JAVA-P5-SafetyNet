@@ -30,6 +30,10 @@ import com.safetynet.service.endpoints.IFirestationMappingService;
 import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.service.endpoints.IPersonService;
 
+/**
+ * Class in charge of managing the services for the responses to the URLS
+ * requests.
+ */
 @Service
 public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 
@@ -42,6 +46,13 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 	@Autowired
 	private IMedicalRecordService medicalRecordService;
 
+	/**
+	 * Return the response to the Firestation URL request.
+	 * 
+	 * @param idStation The requested id
+	 * 
+	 * @return The Firestation response corresponding to the id requested
+	 */
 	@Override
 	public Firestation responseFirestation(String idStation) {
 
@@ -83,6 +94,13 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 		return responseFirestation;
 	}
 
+	/**
+	 * Return the response to the ChildAlert URL request.
+	 * 
+	 * @param address The requested address
+	 * 
+	 * @return The ChildAlert response corresponding to the address requested
+	 */
 	@Override
 	public ChildAlert responseChildAlert(String address) {
 
@@ -129,6 +147,13 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 		return responseChildAlert;
 	}
 
+	/**
+	 * Return the response to the PhoneAlert URL request.
+	 * 
+	 * @param idStation The requested id
+	 * 
+	 * @return The PhoneAlert response corresponding to the id requested
+	 */
 	@Override
 	public Set<String> responsePhoneAlert(String idStation) {
 
@@ -148,6 +173,13 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 		return responsePhoneAlert;
 	}
 
+	/**
+	 * Return the response to the Fire URL request.
+	 * 
+	 * @param address The requested address
+	 * 
+	 * @return The Fire response corresponding to the address requested
+	 */
 	@Override
 	public Fire responseFire(String address) {
 
@@ -185,6 +217,13 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 		return responseFire;
 	}
 
+	/**
+	 * Return the response to the Flood URL request.
+	 * 
+	 * @param idsStation An array containing the requested ids
+	 * 
+	 * @return The Flood response corresponding to the ids requested
+	 */
 	@Override
 	public Flood responseFlood(String[] idsStation) {
 
@@ -245,6 +284,16 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 		return responseFlood;
 	}
 
+	/**
+	 * Return the response to the PersonInfo URL request.
+	 * 
+	 * @param firstName The firstName address
+	 * 
+	 * @param lastName  The lastName address
+	 * 
+	 * @return The PersonInfo response corresponding to the firstName and lastName
+	 *         requested
+	 */
 	@Override
 	public PersonInfo responsePersonInfo(String firstName, String lastName) {
 
@@ -301,18 +350,20 @@ public class ResponseUrlsServiceImpl implements IResponseUrlsService {
 		return responsePersonInfo;
 	}
 
+	/**
+	 * Return the response to the CommunityEmail URL request.
+	 * 
+	 * @param city The requested city
+	 * 
+	 * @return The CommunityEmail response corresponding to the city requested
+	 */
 	@Override
 	public Set<String> responseCommunityEmail(String city) {
 
 		List<Person> listPersons = personService.getAllPersons();
 
-		Set<String> responseCommunityEmail = 
-				listPersons.stream()
-				.filter(person -> person.getCity()
-				.equals(city))
-				.map(Person::getEmail)
-				.distinct()
-				.collect(Collectors.toSet());
+		Set<String> responseCommunityEmail = listPersons.stream().filter(person -> person.getCity().equals(city))
+				.map(Person::getEmail).distinct().collect(Collectors.toSet());
 
 		return responseCommunityEmail;
 	}

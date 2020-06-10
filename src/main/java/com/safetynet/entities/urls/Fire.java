@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Class materializing a fire response for url response.
+ */
 public class Fire {
 
 	@JsonProperty("StationIdForThisAddress")

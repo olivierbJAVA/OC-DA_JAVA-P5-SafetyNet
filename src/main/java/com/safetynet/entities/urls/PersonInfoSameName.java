@@ -1,5 +1,8 @@
 package com.safetynet.entities.urls;
 
+/**
+ * Class materializing a person info with same name in person info response.
+ */
 public class PersonInfoSameName {
 
 	private String firstName;

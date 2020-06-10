@@ -21,6 +21,9 @@ import com.safetynet.service.endpoints.IFirestationMappingService;
 import com.safetynet.service.endpoints.IPersonService;
 import com.safetynet.service.urls.IResponseUrlsService;
 
+/**
+ * Controller in charge of managing the urls requests.
+ */
 @RestController
 public class UrlsController {
 
@@ -35,6 +38,12 @@ public class UrlsController {
 	@Autowired
 	private IPersonService personService;
 
+	/**
+	 * Method managing the GET "/firestation?stationNumber=<station_number>" url
+	 * HTTP request.
+	 * 
+	 * @param stationNumber The stationNumber for which to get the response
+	 */
 	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")
 	public ResponseEntity<Firestation> responseFirestation(@RequestParam String stationNumber) {
@@ -53,6 +62,11 @@ public class UrlsController {
 		return new ResponseEntity<>(responseFirestation, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the GET "/childAlert?address=<address>" url HTTP request.
+	 * 
+	 * @param address The address for which to get the response
+	 */
 	// http://localhost:8080/childAlert?address=<address>
 	@GetMapping(value = "/childAlert")
 	public ResponseEntity<ChildAlert> responseChildAlert(@RequestParam String address) {
@@ -72,6 +86,12 @@ public class UrlsController {
 
 	}
 
+	/**
+	 * Method managing the GET "/phoneAlert?firestation=<firestation_number>" url
+	 * HTTP request.
+	 * 
+	 * @param firestation The firestation for which to get the response
+	 */
 	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
 	@GetMapping(value = "/phoneAlert")
 	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam String firestation) {
@@ -90,6 +110,11 @@ public class UrlsController {
 		return new ResponseEntity<>(responsePhoneAlert, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the GET "/fire?address=<address>" url HTTP request.
+	 * 
+	 * @param address The address for which to get the response
+	 */
 	// http://localhost:8080/fire?address=<address>
 	@GetMapping(value = "/fire")
 	public ResponseEntity<Fire> responseFire(@RequestParam String address) {
@@ -109,6 +134,12 @@ public class UrlsController {
 
 	}
 
+	/**
+	 * Method managing the GET "/flood/stations?stations=<a list of
+	 * station_numbers>" url HTTP request.
+	 * 
+	 * @param list of stations The list of stations for which to get the response
+	 */
 	// http://localhost:8080/flood/stations?stations=<a list of station_numbers>
 	@GetMapping(value = "/flood/stations")
 	public ResponseEntity<Flood> responseFlood(@RequestParam String[] stations) {
@@ -130,6 +161,14 @@ public class UrlsController {
 		return new ResponseEntity<>(responseFlood, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the GET
+	 * "/personInfo?firstName=<firstName>&lastName=<lastName>" url HTTP request.
+	 * 
+	 * @param firstName The firstName of the person for which to get the response
+	 * 
+	 * @param lastName  The lastName of the person for which to get the response
+	 */
 	// http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
 	@GetMapping(value = "/personInfo")
 	public ResponseEntity<PersonInfo> responsePersonInfo(String firstName, String lastName) {
@@ -149,6 +188,11 @@ public class UrlsController {
 		return new ResponseEntity<>(responsePersonInfo, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the GET "/communityEmail?city=<city>" url HTTP request.
+	 * 
+	 * @param city The city for which to get the response
+	 */
 	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
 	public ResponseEntity<Set<String>> responseCommunityEmail(@RequestParam String city) {

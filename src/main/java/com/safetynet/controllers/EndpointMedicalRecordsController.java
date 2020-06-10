@@ -23,6 +23,9 @@ import com.safetynet.exception.RessourceNotFoundException;
 import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.exception.InternalServerErrorException;
 
+/**
+ * Controller in charge of managing the endpoint for the medical records.
+ */
 @RestController
 public class EndpointMedicalRecordsController {
 
@@ -31,6 +34,9 @@ public class EndpointMedicalRecordsController {
 	@Autowired
 	private IMedicalRecordService medicalRecordService;
 
+	/**
+	 * Method managing the GET /medicalRecords endpoint HTTP request.
+	 */
 	@GetMapping(value = "/medicalRecords")
 	public ResponseEntity<List<MedicalRecord>> getAllMedicalRecords() {
 
@@ -43,6 +49,11 @@ public class EndpointMedicalRecordsController {
 		return new ResponseEntity<>(medicalRecords, HttpStatus.FOUND);
 	}
 
+	/**
+	 * Method managing the GET /medicalRecords/{id} endpoint HTTP request.
+	 * 
+	 * @param id The id of the medicalRecord to get
+	 */
 	@GetMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<MedicalRecord> getMedicalRecordById(@PathVariable String id) {
 
@@ -59,6 +70,11 @@ public class EndpointMedicalRecordsController {
 		return new ResponseEntity<>(medicalRecordToGet, HttpStatus.FOUND);
 	}
 
+	/**
+	 * Method managing the POST /firestations endpoint HTTP request.
+	 * 
+	 * @param medicalRecord The medicalRecord to add
+	 */
 	@PostMapping(value = "/medicalRecords")
 	public ResponseEntity<MedicalRecord> addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 
@@ -88,6 +104,13 @@ public class EndpointMedicalRecordsController {
 		return ResponseEntity.created(location).build();
 	}
 
+	/**
+	 * Method managing the PUT "/medicalRecords/{id}" endpoint HTTP request.
+	 * 
+	 * @param id            The id of the medicalRecord to update
+	 * 
+	 * @param medicalRecord The medicalRecord to update
+	 */
 	@PutMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable String id,
 			@RequestBody MedicalRecord medicalRecord) {
@@ -119,6 +142,11 @@ public class EndpointMedicalRecordsController {
 		return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
 	}
 
+	/**
+	 * Method managing the DELETE "/medicalRecords/{id}" endpoint HTTP request.
+	 * 
+	 * @param id The id of the medicalRecord to delete
+	 */
 	@DeleteMapping(value = "/medicalRecords/{id}")
 	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable(value = "id") String id) {
 

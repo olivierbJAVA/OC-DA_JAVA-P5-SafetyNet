@@ -1,5 +1,8 @@
 package com.safetynet.entities.endpoints;
 
+/**
+ * Class materializing a medical record.
+ */
 import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

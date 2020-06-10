@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Class materializing a flood station in flood response.
+ */
 public class FloodStation {
 
 	@JsonProperty("PersonsCoverdedByTheFirestationOrderedByAddress")

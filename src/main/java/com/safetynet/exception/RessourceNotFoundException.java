@@ -2,6 +2,9 @@ package com.safetynet.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Class for the RessourceNotFoundException.
+ */
 public class RessourceNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -20,7 +23,11 @@ public class RessourceNotFoundException extends RuntimeException {
 	/**
 	 * Constructs a new runtime exception with the specified detail message.
 	 * 
-	 * @param message the detail message.
+	 * @param httpStatus the httpStatus
+	 * 
+	 * @param message    the detail message
+	 * 
+	 * @param ressource  the resource not found
 	 */
 	public RessourceNotFoundException(HttpStatus httpStatus, String message, String ressource) {
 		super(message);
