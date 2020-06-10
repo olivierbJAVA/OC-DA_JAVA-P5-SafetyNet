@@ -17,6 +17,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.safetynet.entities.endpoints.MedicalRecord;
 import com.safetynet.repository.MedicalRecordRepositoryImpl;
 
+/**
+ * Class including unit tests for the MedicalRecordRepositoryImpl Class.
+ */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = com.safetynet.repository.MedicalRecordRepositoryImpl.class)
 public class MedicalRecordRepositoryImplTest {

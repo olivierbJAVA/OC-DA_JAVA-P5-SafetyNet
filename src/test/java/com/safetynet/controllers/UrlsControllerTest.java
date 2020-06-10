@@ -41,6 +41,9 @@ import com.safetynet.service.endpoints.IPersonService;
 import com.safetynet.service.endpoints.PersonServiceImpl;
 import com.safetynet.service.urls.IResponseUrlsService;
 
+/**
+ * Class including unit tests for the UrlsController Class.
+ */
 @WebMvcTest(UrlsController.class)
 public class UrlsControllerTest {
 

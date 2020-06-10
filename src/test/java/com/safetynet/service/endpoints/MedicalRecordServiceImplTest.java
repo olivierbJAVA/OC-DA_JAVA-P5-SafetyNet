@@ -25,6 +25,9 @@ import com.safetynet.repository.IMedicalRecordRepository;
 import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.service.endpoints.MedicalRecordServiceImpl;
 
+/**
+ * Class including unit tests for the MedicalRecordServiceImpl Class.
+ */
 @ExtendWith(SpringExtension.class)
 public class MedicalRecordServiceImplTest {
 

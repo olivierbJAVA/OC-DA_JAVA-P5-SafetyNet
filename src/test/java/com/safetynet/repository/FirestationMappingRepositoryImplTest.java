@@ -17,6 +17,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
 
+/**
+ * Class including unit tests for the FirestationMappingRepositoryImpl Class.
+ */
 @ExtendWith(SpringExtension.class)
 public class FirestationMappingRepositoryImplTest {
 

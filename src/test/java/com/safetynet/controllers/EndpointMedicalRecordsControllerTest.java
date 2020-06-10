@@ -31,6 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.entities.endpoints.MedicalRecord;
 import com.safetynet.service.endpoints.IMedicalRecordService;
 
+/**
+ * Class including unit tests for the EndpointMedicalRecordsController Class.
+ */
 @WebMvcTest(EndpointMedicalRecordsController.class)
 public class EndpointMedicalRecordsControllerTest {
 

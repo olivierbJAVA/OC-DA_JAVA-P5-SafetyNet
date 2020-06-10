@@ -21,6 +21,9 @@ import com.safetynet.entities.urls.FloodStation;
 import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.entities.urls.PersonInfoSameName;
 
+/**
+ * Class used to get expected responses to URLS requests.
+ */
 public class UrlsResponseConfig {
 
 	public Firestation getUrlFirestationResponse() {

@@ -36,6 +36,9 @@ import com.safetynet.service.endpoints.PersonServiceImpl;
 import com.safetynet.util.IInitializeLists;
 import com.safetynet.util.JsonFileInitializeListsImpl;
 
+/**
+ * Class including unit tests for the ResponseUrlsServiceImpl Class.
+ */
 @ExtendWith(SpringExtension.class)
 public class ResponseUrlsServiceImplTest {
 

@@ -30,6 +30,9 @@ import com.safetynet.service.endpoints.PersonServiceImpl;
 import com.safetynet.util.IInitializeLists;
 import com.safetynet.util.JsonFileInitializeListsImpl;
 
+/**
+ * Class including unit tests for the JsonFileInitializeListsImpl Class.
+ */
 //@SpringBootTest(properties = "spring.profiles.active:test")
 //@ActiveProfiles({"test"})
 //@SpringBootTest
@@ -143,7 +146,8 @@ public class JsonFileInitializeListsImplTest {
 		Person person23 = new Person("ZachZemicks", "Zach", "Zemicks", "892 Downing Ct", "Culver", "97451",
 				"841-874-7512", "zarc@email.com");
 
-		// Expected firestationMappings to be in the list of firestationMappings following data initialization
+		// Expected firestationMappings to be in the list of firestationMappings
+		// following data initialization
 		FirestationMapping firestationMapping1 = new FirestationMapping("748 Townings Dr", "3");
 		FirestationMapping firestationMapping2 = new FirestationMapping("951 LoneTree Rd", "2");
 		FirestationMapping firestationMapping3 = new FirestationMapping("489 Manchester St", "4");
@@ -156,7 +160,8 @@ public class JsonFileInitializeListsImplTest {
 		FirestationMapping firestationMapping10 = new FirestationMapping("112 Steppes Pl", "4");
 		FirestationMapping firestationMapping11 = new FirestationMapping("29 15th St", "2");
 
-		// Expected medicalRecords to be in the list of medicalRecords following data initialization
+		// Expected medicalRecords to be in the list of medicalRecords following data
+		// initialization
 		MedicalRecord medicalRecord1 = new MedicalRecord("JohnBoyd", "John", "Boyd", "03/06/1984",
 				new String[] { "aznol:350mg", "hydrapermazol:100mg" }, new String[] { "nillacilan" });
 		MedicalRecord medicalRecord2 = new MedicalRecord("JacobBoyd", "Jacob", "Boyd", "03/06/1989",
@@ -215,13 +220,15 @@ public class JsonFileInitializeListsImplTest {
 				person7, person8, person9, person10, person11, person12, person13, person14, person15, person16,
 				person17, person18, person19, person20, person21, person22, person23);
 
-		// We check that the list of firestationMappings generated contains the expected firestationMappings
+		// We check that the list of firestationMappings generated contains the expected
+		// firestationMappings
 		List<FirestationMapping> actualListFirestationMappings = firestationMappingService.getAllFirestationMappings();
 		assertThat(actualListFirestationMappings).containsExactlyInAnyOrder(firestationMapping1, firestationMapping2,
 				firestationMapping3, firestationMapping4, firestationMapping5, firestationMapping6, firestationMapping7,
 				firestationMapping8, firestationMapping9, firestationMapping10, firestationMapping11);
 
-		// We check that the list of medicalRecords generated contains the expected medicalRecords
+		// We check that the list of medicalRecords generated contains the expected
+		// medicalRecords
 		List<MedicalRecord> actualListMedicalRecords = medicalRecordService.getAllMedicalRecords();
 		assertThat(actualListMedicalRecords).containsExactlyInAnyOrder(medicalRecord1, medicalRecord2, medicalRecord3,
 				medicalRecord4, medicalRecord5, medicalRecord6, medicalRecord7, medicalRecord8, medicalRecord9,

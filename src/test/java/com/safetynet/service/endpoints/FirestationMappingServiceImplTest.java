@@ -25,6 +25,9 @@ import com.safetynet.repository.IFirestationMappingRepository;
 import com.safetynet.service.endpoints.FirestationMappingServiceImpl;
 import com.safetynet.service.endpoints.IFirestationMappingService;
 
+/**
+ * Class including unit tests for the FirestationMappingServiceImpl Class.
+ */
 @ExtendWith(SpringExtension.class)
 public class FirestationMappingServiceImplTest {
 

@@ -26,6 +26,9 @@ import com.safetynet.repository.IPersonRepository;
 import com.safetynet.service.endpoints.IPersonService;
 import com.safetynet.service.endpoints.PersonServiceImpl;
 
+/**
+ * Class including unit tests for the PersonServiceImpl Class.
+ */
 @ExtendWith(SpringExtension.class)
 public class PersonServiceImplTest {
 

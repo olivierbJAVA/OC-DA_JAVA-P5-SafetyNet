@@ -31,6 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.entities.endpoints.FirestationMapping;
 import com.safetynet.service.endpoints.IFirestationMappingService;
 
+/**
+ * Class including unit tests for the EndpointFirestationMappingsController Class.
+ */
 @WebMvcTest(EndpointFirestationMappingsController.class)
 public class EndpointFirestationMappingsControllerTest {
 	

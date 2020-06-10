@@ -31,6 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.entities.endpoints.Person;
 import com.safetynet.service.endpoints.IPersonService;
 
+/**
+ * Class including unit tests for the EndpointPersonsController Class.
+ */
 @WebMvcTest(EndpointPersonsController.class)
 public class EndpointPersonsControllerTest {
 
