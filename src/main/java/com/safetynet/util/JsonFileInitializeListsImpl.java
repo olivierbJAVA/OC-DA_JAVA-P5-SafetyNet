@@ -115,6 +115,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			String prettyPrintPersons = mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(personService.getAllPersons());
 			logger.debug("Initial list of persons : {}" + prettyPrintPersons);
+			System.out.println(prettyPrintPersons);
 
 		} catch (Exception e) {
 			logger.error("Error : persons data initialization " + e.toString());
@@ -147,7 +148,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			String prettyPrintFirestations = mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(firestationMappingService.getAllFirestationMappings());
 			logger.debug("Initial list of firestation mappings : {}" + prettyPrintFirestations);
-
+			System.out.println(prettyPrintFirestations);
 		} catch (Exception e) {
 			logger.error("Error : firestationMappings data initialization " + e.toString());
 		}
@@ -181,7 +182,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 			String prettyPrintMedicalRecords = mapper.writerWithDefaultPrettyPrinter()
 					.writeValueAsString(medicalRecordService.getAllMedicalRecords());
 			logger.debug("Initial list of firestation mappings : {}" + prettyPrintMedicalRecords);
-
+			System.out.println(prettyPrintMedicalRecords);
 		} catch (Exception e) {
 			logger.error("Error : medicalRecords data initialization " + e.toString());
 		}

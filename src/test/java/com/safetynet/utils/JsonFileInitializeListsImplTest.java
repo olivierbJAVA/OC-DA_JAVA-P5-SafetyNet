@@ -1,9 +1,7 @@
 package com.safetynet.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -34,10 +32,15 @@ import com.safetynet.util.JsonFileInitializeListsImpl;
 /**
  * Class including unit tests for the JsonFileInitializeListsImpl Class.
  */
+//@SpringBootTest(properties = "spring.profiles.active:test")
+//@ActiveProfiles({"test"})
+//@SpringBootTest
+//@PropertySource({ "/application-test.properties" })
 @ExtendWith(SpringExtension.class)
 public class JsonFileInitializeListsImplTest {
 
 	// We use a dedicated input data file for tests purposes
+	// @Value("${filePathInputData}")
 	private static String filePathInputDataForTests = "./data-test.json";
 
 	@TestConfiguration
@@ -92,7 +95,7 @@ public class JsonFileInitializeListsImplTest {
 	private IMedicalRecordService medicalRecordService;
 
 	@Test
-	public void getInitialData_whenInputFileIsFound() {
+	public void getInitialData() {
 		// ARRANGE
 		// Expected persons to be in the list of persons following data initialization
 		Person person1 = new Person("RogerBoyd", "Roger", "Boyd", "1509 Culver St", "Culver", "97451", "841-874-6512",
@@ -231,16 +234,23 @@ public class JsonFileInitializeListsImplTest {
 				medicalRecord10, medicalRecord11, medicalRecord12, medicalRecord13, medicalRecord14, medicalRecord15,
 				medicalRecord16, medicalRecord17, medicalRecord18, medicalRecord19, medicalRecord20, medicalRecord21,
 				medicalRecord22, medicalRecord23);
-	}
 
-	/*
-	@Test
-	public void getInitialData_whenInputFileNotFound() {
-		jsonFileInitializeListsImpl = new JsonFileInitializeListsImpl("FilePathNotFound");
+		// assertThat(actualListMedicalRecords).containsExactlyInAnyOrder(medicalRecord1,
+		// medicalRecord2, medicalRecord3);
 
-		assertThrows(FileNotFoundException.class, () -> {
-			jsonFileInitializeListsImpl.getInitialData();
-		});
+		// assertEquals(expectedListPersons, actualListPersons);
+
+		// assertEquals(expectedListFirestationMappings, actualListFirestationMappings);
+
+		// assertThat(actualListPersons,
+		// IsIterableContainingInOrder.contains(expectedListPersons.toArray()));
+
+		// assertThat(actualListPersons, is(expectedListPersons));
+
+		// assertThat(actualListPersons,
+		// IsIterableContainingInOrder.contains(expectedListPersons.toArray()));
+
+		// ObjectMapper objectMapper = new ObjectMapper();
+		// assertEquals(objectMapper.writeValueAsString(expectedListPersons),objectMapper.writeValueAsString(actualListPersons));
 	}
-	*/
 }

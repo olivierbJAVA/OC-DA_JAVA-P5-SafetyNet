@@ -21,9 +21,7 @@ public class DefaultController {
 	@GetMapping("/")
 	public ResponseEntity<String> index() {
 		logger.info("Start of services OK");
-		return new ResponseEntity<>("Welcome to the SafetyNet API !<br/><br/>Server Status is " + HttpStatus.OK.name()
-				+ ".<br/><br/>Please find the documentation at the following address : http://localhost:8080/swagger-ui.html",
-				HttpStatus.OK);
+		return new ResponseEntity<>("Server response : " + HttpStatus.OK.name(), HttpStatus.OK);
 	}
 
 }
