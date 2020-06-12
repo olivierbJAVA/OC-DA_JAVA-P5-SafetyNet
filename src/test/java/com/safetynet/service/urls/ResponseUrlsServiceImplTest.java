@@ -94,28 +94,36 @@ public class ResponseUrlsServiceImplTest {
 	}
 
 	@Autowired
+	private IInitializeLists iInitializeLists;
+	
+	@Autowired
 	private IResponseUrlsService responseUrlsServiceImplUnderTest;
-
-	// @MockBean
-	// private IPersonService mockPersonService;
 
 	private UrlsResponseConfig urlsResponseConfig;
 
 	private ObjectMapper objectMapper;
-
+/*
+	@BeforeAll
+	private static void setUp() {
+	
+	}
+*/	
 	@BeforeEach
 	private void setUpPerTest() {
 		urlsResponseConfig = new UrlsResponseConfig();
 		objectMapper = new ObjectMapper();
+		//iInitializeLists.getInitialData();
 	}
 
 	@Test
 	public void responseFirestation() {
 		// ARRANGE
-		// when(mockPersonService.getAllPersons()).thenReturn(mockListAllPersons);
 		Firestation expectedFirestationResponse = urlsResponseConfig.getUrlFirestationResponse();
 
+		//ResponseUrlsServiceImpl responseUrlsServiceImplUnderTes = new ResponseUrlsServiceImpl();
+		
 		// ACT
+				
 		Firestation actualFirestationResponse = responseUrlsServiceImplUnderTest.responseFirestation("2");
 
 		// ASSERT
