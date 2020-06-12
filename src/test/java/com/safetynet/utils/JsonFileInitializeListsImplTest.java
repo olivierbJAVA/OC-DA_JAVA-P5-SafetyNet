@@ -32,15 +32,10 @@ import com.safetynet.util.JsonFileInitializeListsImpl;
 /**
  * Class including unit tests for the JsonFileInitializeListsImpl Class.
  */
-//@SpringBootTest(properties = "spring.profiles.active:test")
-//@ActiveProfiles({"test"})
-//@SpringBootTest
-//@PropertySource({ "/application-test.properties" })
 @ExtendWith(SpringExtension.class)
 public class JsonFileInitializeListsImplTest {
 
 	// We use a dedicated input data file for tests purposes
-	// @Value("${filePathInputData}")
 	private static String filePathInputDataForTests = "./data-test.json";
 
 	@TestConfiguration
@@ -234,23 +229,16 @@ public class JsonFileInitializeListsImplTest {
 				medicalRecord10, medicalRecord11, medicalRecord12, medicalRecord13, medicalRecord14, medicalRecord15,
 				medicalRecord16, medicalRecord17, medicalRecord18, medicalRecord19, medicalRecord20, medicalRecord21,
 				medicalRecord22, medicalRecord23);
-
-		// assertThat(actualListMedicalRecords).containsExactlyInAnyOrder(medicalRecord1,
-		// medicalRecord2, medicalRecord3);
-
-		// assertEquals(expectedListPersons, actualListPersons);
-
-		// assertEquals(expectedListFirestationMappings, actualListFirestationMappings);
-
-		// assertThat(actualListPersons,
-		// IsIterableContainingInOrder.contains(expectedListPersons.toArray()));
-
-		// assertThat(actualListPersons, is(expectedListPersons));
-
-		// assertThat(actualListPersons,
-		// IsIterableContainingInOrder.contains(expectedListPersons.toArray()));
-
-		// ObjectMapper objectMapper = new ObjectMapper();
-		// assertEquals(objectMapper.writeValueAsString(expectedListPersons),objectMapper.writeValueAsString(actualListPersons));
 	}
+	
+	/*
+	@Test
+	public void getInitialData_whenInputFileNotFound() {
+		jsonFileInitializeListsImpl = new JsonFileInitializeListsImpl("FilePathNotFound");
+
+		assertThrows(FileNotFoundException.class, () -> {
+			jsonFileInitializeListsImpl.getInitialData();
+		});
+	}
+	*/
 }
