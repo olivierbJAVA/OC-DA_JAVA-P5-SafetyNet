@@ -3,6 +3,7 @@ package com.safetynet.service.urls;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.config.UrlsResponseConfig;
+import com.safetynet.entities.endpoints.FirestationMapping;
+import com.safetynet.entities.endpoints.MedicalRecord;
+import com.safetynet.entities.endpoints.Person;
 import com.safetynet.entities.urls.ChildAlert;
 import com.safetynet.entities.urls.Fire;
 import com.safetynet.entities.urls.Firestation;
@@ -90,29 +94,50 @@ public class ResponseUrlsServiceImplTest {
 		public IInitializeLists iInitializeLists() {
 			return new JsonFileInitializeListsImpl(filePathInputDataForTests);
 		}
-
 	}
 
 	@Autowired
+	IFirestationMappingService firestationMappingService;
+
+	@Autowired
+	IPersonService personService;
+
+	@Autowired
+	IMedicalRecordService medicalRecordService;
+
+	@Autowired
 	private IInitializeLists iInitializeLists;
-	
+
 	@Autowired
 	private IResponseUrlsService responseUrlsServiceImplUnderTest;
 
 	private UrlsResponseConfig urlsResponseConfig;
 
 	private ObjectMapper objectMapper;
-/*
-	@BeforeAll
-	private static void setUp() {
-	
-	}
-*/	
+
 	@BeforeEach
 	private void setUpPerTest() {
 		urlsResponseConfig = new UrlsResponseConfig();
 		objectMapper = new ObjectMapper();
-		//iInitializeLists.getInitialData();
+
+		// We clear the persons list
+		List<Person> persons = personService.getAllPersons();
+		for (Person person : persons) {
+			personService.deletePerson(person.getIdPerson());
+		}
+		// We clear the medicalRecords list
+		List<MedicalRecord> medicalRecords = medicalRecordService.getAllMedicalRecords();
+		for (MedicalRecord medicalRecord : medicalRecords) {
+			medicalRecordService.deleteMedicalRecord(medicalRecord.getIdMedicalRecord());
+		}
+		// We clear the firestationMappings list
+		List<FirestationMapping> firestationMappings = firestationMappingService.getAllFirestationMappings();
+		for (FirestationMapping firestationMapping : firestationMappings) {
+			firestationMappingService.deleteFirestationMapping(firestationMapping.getAddress());
+		}
+
+		// We initialize the data
+		iInitializeLists.getInitialData();
 	}
 
 	@Test
@@ -120,10 +145,8 @@ public class ResponseUrlsServiceImplTest {
 		// ARRANGE
 		Firestation expectedFirestationResponse = urlsResponseConfig.getUrlFirestationResponse();
 
-		//ResponseUrlsServiceImpl responseUrlsServiceImplUnderTes = new ResponseUrlsServiceImpl();
-		
 		// ACT
-				
+
 		Firestation actualFirestationResponse = responseUrlsServiceImplUnderTest.responseFirestation("2");
 
 		// ASSERT
