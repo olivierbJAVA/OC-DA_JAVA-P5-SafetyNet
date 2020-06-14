@@ -62,9 +62,9 @@ The following URLS are implemented :
 
 - Fire : <http://localhost:8080/fire?address=address>
 
-- Flood : <http://localhost:8080/flood/stations?stations=a list of station_numbers>
+- Flood : <http://localhost:8080/flood/stations?stations=a_list_of_station_numbers>
 
-- Person Info : <http://localhost:8080/personInfo?firstName=<firstName>&lastName=lastName>
+- Person Info : <http://localhost:8080/personInfo?firstName=firstName&lastName=lastName>
 
 - Community Email : <http://localhost:8080/communityEmail?city=city>
 
@@ -104,4 +104,4 @@ SpringBoot Actuators to monitor and get information about the application are av
 
 - Metrics : <http://localhost:8080/actuator/metrics>
 
-- HTTPTrace : *'http://localhost:8080/actuator/httptrace'*
+- HTTPTrace : <http://localhost:8080/actuator/httptrace>
