@@ -44,29 +44,29 @@ The API Documentation is available at the following URL : <http://localhost:8080
 ### Features
 The following Endpoints are implemented :
 
-- Persons Endpoint : *'http://localhost:8080/persons'*
+- Persons Endpoint : <http://localhost:8080/persons>
 
-- Firestation Endpoint : *'http://localhost:8080/firestations'*
+- Firestation Endpoint : <http://localhost:8080/firestations>
 
-- Medical Records Endpoint : *'http://localhost:8080/medicalRecords'*
+- Medical Records Endpoint : <http://localhost:8080/medicalRecords>
 
 For each Endpoint, the GET, POST, PUT and DELETE requests are working.
 
 The following URLS are implemented :
 
-- Firestation : *'http://localhost:8080/firestation?stationNumber=<station_number>'*
+- Firestation : <http://localhost:8080/firestation?stationNumber=station_number>
 
-- Child Alert : *'http://localhost:8080/childAlert?address=<address>'*
+- Child Alert : <http://localhost:8080/childAlert?address=address>
 
-- Phone Alert : *'http://localhost:8080/phoneAlert?firestation=<firestation_number>'*
+- Phone Alert : <http://localhost:8080/phoneAlert?firestation=firestation_number>
 
-- Fire : *'http://localhost:8080/fire?address=<address>'*
+- Fire : <http://localhost:8080/fire?address=address>
 
-- Flood : *'http://localhost:8080/flood/stations?stations=<a list of station_numbers>'*
+- Flood : <http://localhost:8080/flood/stations?stations=a list of station_numbers>
 
-- Person Info : *'http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>'*
+- Person Info : <http://localhost:8080/personInfo?firstName=<firstName>&lastName=lastName>
 
-- Community Email : *'http://localhost:8080/communityEmail?city=<city>'*
+- Community Email : <http://localhost:8080/communityEmail?city=city>
 
 For each URLS, the GET request allows to get the information.
 
@@ -98,10 +98,10 @@ Unit tests are included, you can run them using JUnit runner (`Run as JUnit test
 
 SpringBoot Actuators to monitor and get information about the application are available at the following addresses :
 
-- Health : *'http://localhost:8080/actuator/health'*
+- Health : <http://localhost:8080/actuator/health>
 
-- Info : *'http://localhost:8080/actuator/info'*
+- Info : <http://localhost:8080/actuator/info>
 
-- Metrics : *'http://localhost:8080/actuator/metrics'*
+- Metrics : <http://localhost:8080/actuator/metrics>
 
 - HTTPTrace : *'http://localhost:8080/actuator/httptrace'*
