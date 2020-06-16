@@ -103,13 +103,12 @@ public class JsonFileInitializeListsImplTest {
 			medicalRecordService.deleteMedicalRecord(medicalRecord.getIdMedicalRecord());
 		}
 		// We clear the firestationMappings list
-		List<FirestationMapping> firestationMappings = firestationMappingService
-				.getAllFirestationMappings();
+		List<FirestationMapping> firestationMappings = firestationMappingService.getAllFirestationMappings();
 		for (FirestationMapping firestationMapping : firestationMappings) {
 			firestationMappingService.deleteFirestationMapping(firestationMapping.getAddress());
 		}
 	}
-	
+
 	@Test
 	public void getInitialData() {
 		// ARRANGE
@@ -251,15 +250,5 @@ public class JsonFileInitializeListsImplTest {
 				medicalRecord16, medicalRecord17, medicalRecord18, medicalRecord19, medicalRecord20, medicalRecord21,
 				medicalRecord22, medicalRecord23);
 	}
-	
-	/*
-	@Test
-	public void getInitialData_whenInputFileNotFound() {
-		jsonFileInitializeListsImpl = new JsonFileInitializeListsImpl("FilePathNotFound");
 
-		assertThrows(FileNotFoundException.class, () -> {
-			jsonFileInitializeListsImpl.getInitialData();
-		});
-	}
-	*/
 }
