@@ -1,7 +1,7 @@
 package com.safetynet.util;
 
 /**
- * Interface to implement for managing the data initialization of the lists.
+ * Interface to implement for managing the data initialization.
  */
 public interface IInitializeLists {
 

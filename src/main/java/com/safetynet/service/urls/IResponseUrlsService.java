@@ -62,9 +62,9 @@ public interface IResponseUrlsService {
 	/**
 	 * Return the response to the PersonInfo URL request.
 	 * 
-	 * @param firstName The firstName address
+	 * @param firstName The firstName of the person
 	 * 
-	 * @param lastName  The lastName address
+	 * @param lastName  The lastName of the person
 	 * 
 	 * @return The PersonInfo response corresponding to the firstName and lastName
 	 *         requested

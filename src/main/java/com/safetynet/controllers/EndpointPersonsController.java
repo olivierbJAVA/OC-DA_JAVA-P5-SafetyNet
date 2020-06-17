@@ -102,7 +102,6 @@ public class EndpointPersonsController {
 				.buildAndExpand(person.getIdPerson()).toUri();
 
 		return ResponseEntity.created(location).build();
-		// return new ResponseEntity<>(personAdded, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	/**

@@ -23,13 +23,13 @@ import com.safetynet.service.endpoints.IMedicalRecordService;
 import com.safetynet.service.endpoints.IPersonService;
 
 /**
- * Class in charge of managing the data initialization of the lists. The data
- * come from a file which path is parameter of the object constructor.
+ * Class in charge of managing the data initialization. The data come from a
+ * file which path is parameter of the object constructor.
  */
 @Service
 public class JsonFileInitializeListsImpl implements IInitializeLists {
 
-	private static final Logger logger = LoggerFactory.getLogger("JsonInputFileReader");
+	private static final Logger logger = LoggerFactory.getLogger(JsonFileInitializeListsImpl.class);
 
 	@Autowired
 	private IPersonService personService;
@@ -73,7 +73,7 @@ public class JsonFileInitializeListsImpl implements IInitializeLists {
 		} catch (FileNotFoundException e) {
 			logger.error("Error : JSON initialization file not found" + e.toString());
 			System.out.println(
-					"Error : JSON initialization file not found. To solve the issue please name the Json initialization file 'data.json' and put it in the same directory that the SafetyNet jar file");
+					"Error : JSON initialization file not found. To solve the issue please name the Json initialization file 'data.json' and put it in the same directory as the SafetyNet jar file");
 			System.exit(0);
 		}
 

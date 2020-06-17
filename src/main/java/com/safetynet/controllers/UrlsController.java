@@ -44,7 +44,6 @@ public class UrlsController {
 	 * 
 	 * @param stationNumber The stationNumber for which to get the response
 	 */
-	// http://localhost:8080/firestation?stationNumber=<station_number>
 	@GetMapping(value = "/firestation")
 	public ResponseEntity<Firestation> responseFirestation(@RequestParam String stationNumber) {
 
@@ -67,7 +66,6 @@ public class UrlsController {
 	 * 
 	 * @param address The address for which to get the response
 	 */
-	// http://localhost:8080/childAlert?address=<address>
 	@GetMapping(value = "/childAlert")
 	public ResponseEntity<ChildAlert> responseChildAlert(@RequestParam String address) {
 
@@ -92,7 +90,6 @@ public class UrlsController {
 	 * 
 	 * @param firestation The firestation for which to get the response
 	 */
-	// http://localhost:8080/phoneAlert?firestation=<firestation_number>
 	@GetMapping(value = "/phoneAlert")
 	public ResponseEntity<Set<String>> responsePhoneAlert(@RequestParam String firestation) {
 
@@ -115,7 +112,6 @@ public class UrlsController {
 	 * 
 	 * @param address The address for which to get the response
 	 */
-	// http://localhost:8080/fire?address=<address>
 	@GetMapping(value = "/fire")
 	public ResponseEntity<Fire> responseFire(@RequestParam String address) {
 
@@ -140,7 +136,6 @@ public class UrlsController {
 	 * 
 	 * @param list of stations The list of stations for which to get the response
 	 */
-	// http://localhost:8080/flood/stations?stations=<a list of station_numbers>
 	@GetMapping(value = "/flood/stations")
 	public ResponseEntity<Flood> responseFlood(@RequestParam String[] stations) {
 
@@ -169,7 +164,6 @@ public class UrlsController {
 	 * 
 	 * @param lastName  The lastName of the person for which to get the response
 	 */
-	// http://localhost:8080/personInfo?firstName=<firstName>&lastName=<lastName>
 	@GetMapping(value = "/personInfo")
 	public ResponseEntity<PersonInfo> responsePersonInfo(String firstName, String lastName) {
 
@@ -193,7 +187,6 @@ public class UrlsController {
 	 * 
 	 * @param city The city for which to get the response
 	 */
-	// http://localhost:8080/communityEmail?city=<city>
 	@GetMapping(value = "/communityEmail")
 	public ResponseEntity<Set<String>> responseCommunityEmail(@RequestParam String city) {
 
