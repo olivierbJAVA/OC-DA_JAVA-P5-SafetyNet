@@ -36,11 +36,6 @@ A step by step explanation that tell you how to get a development environment ru
 
 Then you can import and run the application from your favorite IDE.
 
-### API Documentation
-
-The API Documentation is available at the following URL : <http://localhost:8080/swagger-ui.html>
-
-
 ### Features
 The following Endpoints are implemented :
 
