@@ -167,8 +167,7 @@ public class UrlsControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("address", "1509 Culver St"))
 					.andExpect(status().isOk())
-					.andExpect(content()
-					.contentType("application/json"))
+					.andExpect(content().contentType("application/json"))
 					.andReturn();
 
 			verify(mockResponseUrlsService, times(1)).responseChildAlert("1509 Culver St");
@@ -219,8 +218,7 @@ public class UrlsControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("firestation", "1"))
 					.andExpect(status().isOk())
-					.andExpect(content()
-					.contentType("application/json"))
+					.andExpect(content().contentType("application/json"))
 					.andReturn();
 
 			verify(mockResponseUrlsService, times(1)).responsePhoneAlert("1");
@@ -270,8 +268,7 @@ public class UrlsControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("address", "748 Townings Dr"))
 					.andExpect(status().isOk())
-					.andExpect(content()
-					.contentType("application/json"))
+					.andExpect(content().contentType("application/json"))
 					.andReturn();
 
 			verify(mockResponseUrlsService, times(1)).responseFire("748 Townings Dr");
@@ -322,8 +319,7 @@ public class UrlsControllerTest {
 					.param("firstName", "Lily")
 					.param("lastName", "Cooper"))
 					.andExpect(status().isOk())
-					.andExpect(content()
-					.contentType("application/json"))
+					.andExpect(content().contentType("application/json"))
 					.andReturn();
 
 			verify(mockResponseUrlsService, times(1)).responsePersonInfo("Lily", "Cooper");
@@ -374,8 +370,7 @@ public class UrlsControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("city", "Culver"))
 					.andExpect(status().isFound())
-					.andExpect(content()
-					.contentType("application/json"))
+					.andExpect(content().contentType("application/json"))
 					.andReturn();
 
 			verify(mockResponseUrlsService, times(1)).responseCommunityEmail("Culver");

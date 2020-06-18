@@ -41,7 +41,7 @@ The following Endpoints are implemented :
 
 - Persons Endpoint : <http://localhost:8080/persons>
 
-- Firestation Endpoint : <http://localhost:8080/firestations>
+- Firestations Endpoint : <http://localhost:8080/firestations>
 
 - Medical Records Endpoint : <http://localhost:8080/medicalRecords>
 
@@ -75,7 +75,7 @@ You can produce a standalone executable JAR file, by running the below command :
 
 The application uses a JSON format file to initialize the data. 
 
-If you run the application using a JAR executable file, the input data file has to be named *'data.json'* and to be put in the same directory as the JAR file. 
+If you run the application using a JAR executable file, the input data file has to be named *'data.json'* and has to be put in the same directory as the JAR file. 
 
 You can change this by modifying the property *'filePathInputData'* in the SpringBoot configuration file : *'application.properties'*.
 
@@ -83,13 +83,16 @@ You can change this by modifying the property *'filePathInputData'* in the Sprin
 
 The tool Log4J2 is used for logging. Logs are sent to the console and to a file.
 
-You can configure the logging to your own needs by using the file : *'log4j2-spring.xml'*.
+You can configure the logging to your own needs by using the configuration file : *'log4j2-spring.xml'*.
 
 ### Tests
 
 Unit tests are included, you can run them using JUnit runner (`Run as JUnit test`) or using Maven (`Run as Maven test`).
 
-There is a dedicated input data file for the test : *'data-test.json'*.
+There is a dedicated input data file for the tests : *'data-test.json'*.
+
+Surefire reports are generated when application is built with Maven. To get a Surefire concatenated report, please use the following Maven command : 
+`mvn surefire-report:report`
 
 ### Actuators
 

@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.safetynet.entities.endpoints.FirestationMapping;
+import com.safetynet.repository.IFirestationMappingRepository;
+import com.safetynet.repository.FirestationMappingRepositoryImpl;
 
 /**
  * Class including unit tests for the FirestationMappingRepositoryImpl Class.

@@ -143,6 +143,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responseFirestation() {
 		// ARRANGE
+		// We get the expected Firestation response for firestation "2"
 		Firestation expectedFirestationResponse = urlsResponseConfig.getUrlFirestationResponse();
 
 		// ACT
@@ -161,6 +162,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responseChildAlert_whenChildAlertNotEmpty() {
 		// ARRANGE
+		// We get the expected ChildAlert response for address "1509 Culver St"
 		ChildAlert expectedChildAlertResponse = urlsResponseConfig.getUrlChildAlertResponse();
 
 		// ACT
@@ -187,6 +189,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responsePhoneAlert() {
 		// ARRANGE
+		// We get the expected PhoneAlert response for firestation "1"
 		Set<String> expectedPhoneAlertResponse = urlsResponseConfig.getUrlPhoneAlertResponse();
 
 		// ACT
@@ -204,6 +207,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responseFire() {
 		// ARRANGE
+		// We get the expected Fire response for address "29 15th St"
 		Fire expectedFireResponse = urlsResponseConfig.getUrlFireResponse();
 
 		// ACT
@@ -221,6 +225,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responseFlood() {
 		// ARRANGE
+		// We get the expected Flood response for firestation "4"
 		Flood expectedFloodResponse = urlsResponseConfig.getUrlFloodResponse();
 
 		// ACT
@@ -238,6 +243,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responsePersonInfo() {
 		// ARRANGE
+		// We get the expected PersonInfo response for person "Lily Cooper"
 		PersonInfo expectedPersonInfoResponse = urlsResponseConfig.getUrlPersonInfoResponse();
 
 		// ACT
@@ -255,6 +261,7 @@ public class ResponseUrlsServiceImplTest {
 	@Test
 	public void responseCommunityEmail() {
 		// ARRANGE
+		// We get the expected CommunityEmail response for city "Culver"
 		Set<String> expectedCommunityEmailResponse = urlsResponseConfig.getUrlCommunityEmailResponse();
 
 		// ACT

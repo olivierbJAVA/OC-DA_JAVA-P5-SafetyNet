@@ -22,10 +22,11 @@ import com.safetynet.entities.urls.PersonInfo;
 import com.safetynet.entities.urls.PersonInfoSameName;
 
 /**
- * Class used to get expected responses to URLS requests.
+ * Class used to get expected responses to URLS requests for URLS tests.
  */
 public class UrlsResponseConfig {
 
+	// Return the expected Firestation response for firestation "2"
 	public Firestation getUrlFirestationResponse() {
 
 		Firestation firestationUrlResponse = new Firestation();
@@ -55,6 +56,7 @@ public class UrlsResponseConfig {
 		return firestationUrlResponse;
 	}
 
+	// Return the expected ChildAlert response for address "1509 Culver St"
 	public ChildAlert getUrlChildAlertResponse() {
 
 		ChildAlert childAlertUrlResponse = new ChildAlert();
@@ -82,6 +84,7 @@ public class UrlsResponseConfig {
 		return childAlertUrlResponse;
 	}
 
+	// Return the expected PhoneAlert response for firestation "1"
 	public Set<String> getUrlPhoneAlertResponse() {
 
 		Set<String> phoneAlertUrlResponse = new HashSet<>(
@@ -90,6 +93,7 @@ public class UrlsResponseConfig {
 		return phoneAlertUrlResponse;
 	}
 
+	// Return the expected Fire response for address "29 15th St"
 	public Fire getUrlFireResponse() {
 
 		Fire fireUrlResponse = new Fire();
@@ -105,6 +109,7 @@ public class UrlsResponseConfig {
 		return fireUrlResponse;
 	}
 
+	// Return the expected Flood response for firestation "4"
 	public Flood getUrlFloodResponse() {
 
 		Flood floodUrlReponse = new Flood();
@@ -144,6 +149,7 @@ public class UrlsResponseConfig {
 		return floodUrlReponse;
 	}
 
+	// Return the expected PersonInfo response for person "Lily Cooper"
 	public PersonInfo getUrlPersonInfoResponse() {
 
 		List<PersonInfoSameName> otherPersonsWithSameName = new ArrayList<PersonInfoSameName>();
@@ -160,6 +166,7 @@ public class UrlsResponseConfig {
 		return personInfoUrlResponse;
 	}
 
+	// Return the expected CommunityEmail response for city "Culver"
 	public Set<String> getUrlCommunityEmailResponse() {
 
 		Set<String> communityEmailUrlResponse = new HashSet<>(Arrays.asList("jaboyd@email.com", "ssanw@email.com",
