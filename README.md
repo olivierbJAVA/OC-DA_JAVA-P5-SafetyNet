@@ -18,6 +18,7 @@ You need to install the following software :
 - Java 1.8
 - Maven 3.6.2
 - SpringBoot 2.3.0
+- *Postman (optional : can be used if needed to perform HTTP requests to use the application)*
 
 ### Installing
 
@@ -31,6 +32,9 @@ A step by step explanation that tell you how to get a development environment ru
 
 3.Install SpringBoot :
 <https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html#getting-started-installing-spring-boot>
+
+4.Install Postman (optional) :
+<https://learning.postman.com/docs/postman/launching-postman/installation-and-updates/>
 
 ### Application running
 
